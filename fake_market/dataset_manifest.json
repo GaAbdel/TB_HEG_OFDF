@@ -1,0 +1,1738 @@
+{
+  "summary": {
+    "total": 284,
+    "benignes": 250,
+    "suspectes": 24,
+    "pieges": 10,
+    "par_difficulte": {
+      "aucune": 250,
+      "explicite": 12,
+      "implicite": 12,
+      "piege": 10
+    },
+    "positifs_par_categorie": {
+      "tabac": 4,
+      "alcool": 4,
+      "cites": 4,
+      "viande": 4,
+      "contrefacon": 4,
+      "arme": 4
+    }
+  },
+  "labels": {
+    "1000": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1001": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1002": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1003": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1004": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1005": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1006": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1007": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1008": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1009": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1010": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1011": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1012": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1013": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1014": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1015": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1016": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1017": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1018": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1019": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1020": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1021": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1022": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1023": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1024": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1025": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1026": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1027": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1028": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1029": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1030": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1031": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1032": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1033": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1034": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1035": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1036": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1037": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1038": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1039": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1040": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1041": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1042": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1043": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1044": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1045": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1046": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1047": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1048": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1049": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1050": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1051": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1052": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1053": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1054": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1055": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1056": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1057": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1058": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1059": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1060": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1061": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1062": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1063": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1064": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1065": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1066": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1067": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1068": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1069": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1070": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1071": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1072": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1073": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1074": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1075": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1076": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1077": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1078": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1079": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1080": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1081": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1082": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1083": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1084": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1085": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1086": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1087": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1088": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1089": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1090": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1091": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1092": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1093": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1094": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1095": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1096": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1097": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1098": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1099": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1100": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1101": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1102": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1103": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1104": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1105": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1106": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1107": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1108": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1109": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1110": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1111": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1112": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1113": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1114": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1115": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1116": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1117": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1118": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1119": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1120": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1121": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1122": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1123": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1124": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1125": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1126": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1127": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1128": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1129": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1130": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1131": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1132": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1133": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1134": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1135": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1136": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1137": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1138": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1139": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1140": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1141": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1142": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1143": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1144": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1145": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1146": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1147": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1148": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1149": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1150": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1151": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1152": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1153": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1154": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1155": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1156": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1157": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1158": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1159": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1160": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1161": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1162": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1163": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1164": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1165": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1166": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1167": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1168": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1169": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1170": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1171": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1172": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1173": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1174": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1175": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1176": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1177": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1178": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1179": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1180": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1181": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1182": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1183": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1184": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1185": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1186": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1187": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1188": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1189": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1190": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1191": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1192": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1193": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1194": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1195": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1196": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1197": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1198": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1199": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1200": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1201": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1202": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1203": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1204": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1205": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1206": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1207": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1208": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1209": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1210": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1211": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1212": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1213": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1214": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1215": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1216": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1217": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1218": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1219": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1220": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1221": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1222": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1223": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1224": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1225": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1226": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1227": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1228": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1229": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1230": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1231": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1232": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1233": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1234": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1235": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1236": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1237": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1238": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1239": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1240": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1241": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1242": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1243": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1244": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1245": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1246": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1247": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1248": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "1249": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "aucune",
+      "piege": false
+    },
+    "9000": {
+      "suspect": true,
+      "categorie": "tabac",
+      "difficulte": "explicite",
+      "piege": false
+    },
+    "9001": {
+      "suspect": true,
+      "categorie": "tabac",
+      "difficulte": "explicite",
+      "piege": false
+    },
+    "9002": {
+      "suspect": true,
+      "categorie": "alcool",
+      "difficulte": "explicite",
+      "piege": false
+    },
+    "9003": {
+      "suspect": true,
+      "categorie": "alcool",
+      "difficulte": "explicite",
+      "piege": false
+    },
+    "9004": {
+      "suspect": true,
+      "categorie": "cites",
+      "difficulte": "explicite",
+      "piege": false
+    },
+    "9005": {
+      "suspect": true,
+      "categorie": "cites",
+      "difficulte": "explicite",
+      "piege": false
+    },
+    "9006": {
+      "suspect": true,
+      "categorie": "viande",
+      "difficulte": "explicite",
+      "piege": false
+    },
+    "9007": {
+      "suspect": true,
+      "categorie": "viande",
+      "difficulte": "explicite",
+      "piege": false
+    },
+    "9008": {
+      "suspect": true,
+      "categorie": "contrefacon",
+      "difficulte": "explicite",
+      "piege": false
+    },
+    "9009": {
+      "suspect": true,
+      "categorie": "contrefacon",
+      "difficulte": "explicite",
+      "piege": false
+    },
+    "9010": {
+      "suspect": true,
+      "categorie": "arme",
+      "difficulte": "explicite",
+      "piege": false
+    },
+    "9011": {
+      "suspect": true,
+      "categorie": "arme",
+      "difficulte": "explicite",
+      "piege": false
+    },
+    "9012": {
+      "suspect": true,
+      "categorie": "tabac",
+      "difficulte": "implicite",
+      "piege": false
+    },
+    "9013": {
+      "suspect": true,
+      "categorie": "tabac",
+      "difficulte": "implicite",
+      "piege": false
+    },
+    "9014": {
+      "suspect": true,
+      "categorie": "alcool",
+      "difficulte": "implicite",
+      "piege": false
+    },
+    "9015": {
+      "suspect": true,
+      "categorie": "alcool",
+      "difficulte": "implicite",
+      "piege": false
+    },
+    "9016": {
+      "suspect": true,
+      "categorie": "cites",
+      "difficulte": "implicite",
+      "piege": false
+    },
+    "9017": {
+      "suspect": true,
+      "categorie": "cites",
+      "difficulte": "implicite",
+      "piege": false
+    },
+    "9018": {
+      "suspect": true,
+      "categorie": "viande",
+      "difficulte": "implicite",
+      "piege": false
+    },
+    "9019": {
+      "suspect": true,
+      "categorie": "viande",
+      "difficulte": "implicite",
+      "piege": false
+    },
+    "9020": {
+      "suspect": true,
+      "categorie": "contrefacon",
+      "difficulte": "implicite",
+      "piege": false
+    },
+    "9021": {
+      "suspect": true,
+      "categorie": "contrefacon",
+      "difficulte": "implicite",
+      "piege": false
+    },
+    "9022": {
+      "suspect": true,
+      "categorie": "arme",
+      "difficulte": "implicite",
+      "piege": false
+    },
+    "9023": {
+      "suspect": true,
+      "categorie": "arme",
+      "difficulte": "implicite",
+      "piege": false
+    },
+    "8000": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "piege",
+      "piege": true,
+      "leurre_categorie": "cites"
+    },
+    "8001": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "piege",
+      "piege": true,
+      "leurre_categorie": "cites"
+    },
+    "8002": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "piege",
+      "piege": true,
+      "leurre_categorie": "contrefacon"
+    },
+    "8003": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "piege",
+      "piege": true,
+      "leurre_categorie": "arme"
+    },
+    "8004": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "piege",
+      "piege": true,
+      "leurre_categorie": "tabac"
+    },
+    "8005": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "piege",
+      "piege": true,
+      "leurre_categorie": "alcool"
+    },
+    "8006": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "piege",
+      "piege": true,
+      "leurre_categorie": "arme"
+    },
+    "8007": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "piege",
+      "piege": true,
+      "leurre_categorie": "viande"
+    },
+    "8008": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "piege",
+      "piege": true,
+      "leurre_categorie": "arme"
+    },
+    "8009": {
+      "suspect": false,
+      "categorie": "aucune",
+      "difficulte": "piege",
+      "piege": true,
+      "leurre_categorie": "alcool"
+    }
+  }
+}

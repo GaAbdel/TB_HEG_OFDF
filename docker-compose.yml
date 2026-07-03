@@ -1,0 +1,155 @@
+# =============================================================================
+#  docker-compose.yml — pile OSINT douanière 
+# -----------------------------------------------------------------------------
+#  Profils :
+#    (défaut)  postgres + qdrant + app          -> noyau du pipeline
+#    --profile full  ajoute n8n (planification) + ui (interface enquêteur)
+#
+#  Démarrage noyau   :  docker compose up -d
+#  Démarrage complet :  docker compose --profile full up -d
+#
+#  Réseau : seuls APP_PORT et UI_PORT sont publiés sur l'hôte (4.1.2).
+#  Modèle : par défaut Ollama tourne sur l'HOTE (4.1.5), atteint via
+#           host.docker.internal. Variante VM conteneurisée : voir bloc
+#           `ollama` commenté en bas.
+# =============================================================================
+
+services:
+
+  # --- Mémoire relationnelle (épisodique, 4.3.2) -----------------------------
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    networks: [osint_net]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # --- Mémoire vectorielle (sémantique, 4.3.1) -------------------------------
+  qdrant:
+    image: qdrant/qdrant:v1.13.1
+    volumes:
+      - qdrant_data:/qdrant/storage
+    networks: [osint_net]
+    # Pas de healthcheck Compose : l'image Qdrant est distroless (ni curl ni
+    # shell). La disponibilité de Qdrant ET la présence des collections sont
+    # vérifiées par la sonde /health de l'app (4.1.6) et le smoke test.
+    restart: unless-stopped
+
+  # --- Application : API + pipeline + collecte (4.1.1) -----------------------
+  app:
+    build:
+      context: .
+      dockerfile: docker/app.Dockerfile
+    env_file: [.env]
+    environment:
+      OSINT_CONFIG: /app/config.yaml
+    volumes:
+      # Montés en lecture seule => modifiables sans rebuild (4.1.3)
+      - ./config.yaml:/app/config.yaml:ro
+      - ./prompts:/app/prompts:ro
+      - models_cache:/app/models           # cache du modèle d'embeddings (e5)
+    ports:
+      - "${APP_PORT:-8000}:8000"
+    extra_hosts:
+      # Permet au conteneur d'atteindre Ollama sur l'hôte (Linux)
+      - "host.docker.internal:host-gateway"
+    networks: [osint_net]
+    depends_on:
+      postgres:
+        condition: service_healthy
+      qdrant:
+        condition: service_started
+    restart: unless-stopped
+
+  # --- Planification (n8n) — profil full, 4.4.2 ------------------------------
+  n8n:
+    image: n8nio/n8n
+    profiles: [full]
+    env_file: [.env]
+    environment:
+      N8N_BASIC_AUTH_ACTIVE: "true"
+      N8N_BASIC_AUTH_USER: ${N8N_USER}
+      N8N_BASIC_AUTH_PASSWORD: ${N8N_PASSWORD}
+      # n8n appelle l'API interne, jamais exposée a l'hôte
+      WEBHOOK_URL: http://app:8000
+    volumes:
+      - n8n_data:/home/node/.n8n
+    networks: [osint_net]
+    depends_on:
+      app:
+        condition: service_started
+    restart: unless-stopped
+
+  # --- Interface enquêteur (human-in-the-loop) — créée à l'étape 11 ----------
+  #  Décommenter quand le dossier ui/ existera (profil full).
+  #  ui:
+  #    build:
+  #      context: ./ui
+  #      dockerfile: Dockerfile
+  #    profiles: [full]
+  #    ports:
+  #      - "${UI_PORT:-8080}:80"
+  #    networks: [osint_net]
+  #    depends_on:
+  #      app:
+  #        condition: service_started
+  #    restart: unless-stopped
+
+# --- Variante VM cible : Ollama conteneurisé avec GPU NVIDIA (4.1.5) ----------
+#  Sur la VM de production, décommenter ce service ET, dans config.yaml,
+#  remplacer ${OLLAMA_BASE_URL} par http://ollama:11434.
+#
+#  ollama:
+#    image: ollama/ollama:latest
+#    volumes:
+#      - ollama_data:/root/.ollama
+#    networks: [osint_net]
+#    deploy:
+#      resources:
+#        reservations:
+#          devices:
+#            - driver: nvidia
+#              count: all
+#              capabilities: [gpu]
+#    restart: unless-stopped
+
+  # --- Marché factice (harnais de dev/test, chapitre 5) — profil dev ----------
+  fake_market:
+    build: ./fake_market
+    profiles: [dev]
+    ports:
+      - "8001:8000"          # accès hôte pour inspection (dev uniquement)
+    networks: [osint_net]
+    restart: unless-stopped
+
+  # --- Site de démonstration « Brocante Léman » (v1/v2) — profil dev ----------
+  #  Sert LLM-CODE (v1 vs v2) et LLM-BROWSE (cible propre pour la soutenance).
+  #  Le port hôte 8002 permet la démo « navigateur visible » lancée depuis l'hôte.
+  mock_shop:
+    build: ./mock_shop
+    profiles: [dev]
+    ports:
+      - "8002:8000"          # accès hôte (démo Chromium visible + inspection)
+    networks: [osint_net]
+    restart: unless-stopped
+
+networks:
+  osint_net:
+    driver: bridge
+
+volumes:
+  models_cache:
+  postgres_data:
+  qdrant_data:
+  n8n_data:
+  # ollama_data:   # décommenter avec le service ollama

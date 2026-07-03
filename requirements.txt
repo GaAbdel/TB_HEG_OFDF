@@ -1,0 +1,20 @@
+# --- API / serveur ---
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+ 
+# --- Configuration ---
+PyYAML==6.0.2
+ 
+# --- Persistance (sondes /health) ---
+psycopg[binary,pool]==3.2.3   # PostgreSQL + pool de connexions
+qdrant-client==1.12.2         # Qdrant
+ 
+# --- Utilitaires ---
+httpx==0.28.1                # sonde du service de modèle + healthcheck
+beautifulsoup4==4.12.3       # parsing HTML déterministe (extraction)
+playwright==1.49.1           # navigation (collecte Mode A/B)
+litellm>=1.50,<2             # abstraction multi-provider (résolution topologie)
+fastembed>=0.6,<1.0          # génération d'embeddings locaux pour la similarité entre annonces et requêtes
+browser-use==0.12.9          # broswer-use
+ 
+ 

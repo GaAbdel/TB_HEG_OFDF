@@ -1,0 +1,21 @@
+Tu reçois le compte rendu, en texte libre, d'un agent qui a exploré un site de
+petites annonces. Ta tâche : en extraire les annonces sous forme structurée.
+
+Pour chaque annonce distincte mentionnée, produis un objet avec les champs :
+- "title" : le titre de l'annonce ;
+- "description" : la description si présente, sinon "" ;
+- "price_amount" : le prix en nombre (sans devise), ou null si absent ;
+- "price_currency" : la devise (ex. "CHF") ou null ;
+- "seller" : le vendeur si présent, sinon null ;
+- "location" : la localisation si présente, sinon null ;
+- "url" : l'URL de la page de détail de l'annonce. L'agent la relève dans la
+  barre d'adresse ; reporte-la telle quelle. Mets null UNIQUEMENT si aucune URL
+  n'apparaît dans le compte rendu.
+
+Contraintes :
+- N'invente aucune information absente : mets null plutôt que de deviner.
+- Ignore le texte qui n'est pas une annonce (navigation, commentaires de l'agent).
+- Si aucune annonce n'est identifiable, renvoie une liste vide.
+
+Réponds UNIQUEMENT par un tableau JSON valide, sans texte ni balises autour :
+[{"title": "...", "description": "...", "price_amount": 100, "price_currency": "CHF", "seller": null, "location": "...", "url": null}]

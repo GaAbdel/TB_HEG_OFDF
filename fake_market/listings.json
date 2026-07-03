@@ -1,0 +1,2842 @@
+[
+  {
+    "id": 1229,
+    "platform": "tutti",
+    "title": "Lot de livres — occasion",
+    "description": "Romans et BD, une cinquantaine de titres.",
+    "price": 26,
+    "currency": "CHF",
+    "seller": "vendeur562",
+    "location": "Berne"
+  },
+  {
+    "id": 1110,
+    "platform": "ricardo",
+    "title": "Télévision 55 pouces — très bon état",
+    "description": "TV LED 4K, télécommande et pied inclus.",
+    "price": 432,
+    "currency": "CHF",
+    "seller": "vendeur434",
+    "location": "Sion"
+  },
+  {
+    "id": 1194,
+    "platform": "anibis",
+    "title": "Tondeuse à gazon — bon état",
+    "description": "Tondeuse thermique, fonctionne parfaitement.",
+    "price": 270,
+    "currency": "CHF",
+    "seller": "vendeur109",
+    "location": "Lugano"
+  },
+  {
+    "id": 1218,
+    "platform": "ricardo",
+    "title": "Canapé 3 places — très bon état",
+    "description": "Canapé tissu gris, confortable, quelques traces d'usage.",
+    "price": 347,
+    "currency": "CHF",
+    "seller": "vendeur555",
+    "location": "Berne"
+  },
+  {
+    "id": 1052,
+    "platform": "tutti",
+    "title": "Réfrigérateur — occasion",
+    "description": "Frigo combiné, classe A++, encore sous garantie.",
+    "price": 417,
+    "currency": "CHF",
+    "seller": "vendeur423",
+    "location": "Bâle"
+  },
+  {
+    "id": 1068,
+    "platform": "anibis",
+    "title": "Lot de livres — occasion",
+    "description": "Romans et BD, une cinquantaine de titres.",
+    "price": 59,
+    "currency": "CHF",
+    "seller": "vendeur867",
+    "location": "Zurich"
+  },
+  {
+    "id": 8001,
+    "platform": "ricardo",
+    "title": "Défense de mammouth fossile",
+    "description": "Ivoire de mammouth fossile, espèce éteinte, commerce autorisé, pièce paléontologique.",
+    "price": 59,
+    "currency": "CHF",
+    "seller": "vendeur622",
+    "location": "Lausanne"
+  },
+  {
+    "id": 1073,
+    "platform": "ricardo",
+    "title": "Baskets de sport — comme neuf",
+    "description": "Pointure 42, portées quelques fois, propres.",
+    "price": 124,
+    "currency": "CHF",
+    "seller": "vendeur297",
+    "location": "Fribourg"
+  },
+  {
+    "id": 1069,
+    "platform": "ricardo",
+    "title": "Baskets de sport — comme neuf",
+    "description": "Pointure 42, portées quelques fois, propres.",
+    "price": 92,
+    "currency": "CHF",
+    "seller": "vendeur125",
+    "location": "Zurich"
+  },
+  {
+    "id": 1223,
+    "platform": "ricardo",
+    "title": "iPhone 12 64 Go — occasion",
+    "description": "Smartphone débloqué, batterie 87%, avec chargeur.",
+    "price": 400,
+    "currency": "CHF",
+    "seller": "vendeur321",
+    "location": "Berne"
+  },
+  {
+    "id": 1074,
+    "platform": "ricardo",
+    "title": "Guitare acoustique — très bon état",
+    "description": "Guitare folk avec housse et accordeur.",
+    "price": 277,
+    "currency": "CHF",
+    "seller": "vendeur385",
+    "location": "Sion"
+  },
+  {
+    "id": 1062,
+    "platform": "anibis",
+    "title": "iPhone 12 64 Go — bon état",
+    "description": "Smartphone débloqué, batterie 87%, avec chargeur.",
+    "price": 261,
+    "currency": "CHF",
+    "seller": "vendeur103",
+    "location": "Sion"
+  },
+  {
+    "id": 1058,
+    "platform": "ricardo",
+    "title": "Aspirateur robot — occasion",
+    "description": "Robot aspirateur avec station de charge.",
+    "price": 273,
+    "currency": "CHF",
+    "seller": "vendeur779",
+    "location": "Lausanne"
+  },
+  {
+    "id": 1109,
+    "platform": "anibis",
+    "title": "Réfrigérateur — comme neuf",
+    "description": "Frigo combiné, classe A++, encore sous garantie.",
+    "price": 243,
+    "currency": "CHF",
+    "seller": "vendeur151",
+    "location": "Bâle"
+  },
+  {
+    "id": 1119,
+    "platform": "tutti",
+    "title": "Casque audio Sony — très bon état",
+    "description": "Casque sans fil à réduction de bruit, comme neuf.",
+    "price": 120,
+    "currency": "CHF",
+    "seller": "vendeur915",
+    "location": "Genève"
+  },
+  {
+    "id": 1043,
+    "platform": "ricardo",
+    "title": "Poussette bébé — occasion",
+    "description": "Poussette pliable avec nacelle, très propre.",
+    "price": 92,
+    "currency": "CHF",
+    "seller": "vendeur767",
+    "location": "Genève"
+  },
+  {
+    "id": 1090,
+    "platform": "tutti",
+    "title": "Poussette bébé — bon état",
+    "description": "Poussette pliable avec nacelle, très propre.",
+    "price": 227,
+    "currency": "CHF",
+    "seller": "vendeur299",
+    "location": "Fribourg"
+  },
+  {
+    "id": 1008,
+    "platform": "tutti",
+    "title": "Télévision 55 pouces — neuf",
+    "description": "TV LED 4K, télécommande et pied inclus.",
+    "price": 350,
+    "currency": "CHF",
+    "seller": "vendeur949",
+    "location": "Sion"
+  },
+  {
+    "id": 1127,
+    "platform": "anibis",
+    "title": "Table en chêne massif — bon état",
+    "description": "Belle table de salle à manger, très bon état, à venir chercher.",
+    "price": 173,
+    "currency": "CHF",
+    "seller": "vendeur599",
+    "location": "Berne"
+  },
+  {
+    "id": 1048,
+    "platform": "ricardo",
+    "title": "Guitare acoustique — neuf",
+    "description": "Guitare folk avec housse et accordeur.",
+    "price": 229,
+    "currency": "CHF",
+    "seller": "vendeur588",
+    "location": "Zurich"
+  },
+  {
+    "id": 1176,
+    "platform": "anibis",
+    "title": "Tondeuse à gazon — bon état",
+    "description": "Tondeuse thermique, fonctionne parfaitement.",
+    "price": 339,
+    "currency": "CHF",
+    "seller": "vendeur906",
+    "location": "Bâle"
+  },
+  {
+    "id": 1131,
+    "platform": "ricardo",
+    "title": "Bureau d'angle — bon état",
+    "description": "Bureau en bois clair, idéal télétravail.",
+    "price": 93,
+    "currency": "CHF",
+    "seller": "vendeur401",
+    "location": "Berne"
+  },
+  {
+    "id": 1159,
+    "platform": "ricardo",
+    "title": "Tondeuse à gazon — occasion",
+    "description": "Tondeuse thermique, fonctionne parfaitement.",
+    "price": 295,
+    "currency": "CHF",
+    "seller": "vendeur874",
+    "location": "Zurich"
+  },
+  {
+    "id": 1163,
+    "platform": "anibis",
+    "title": "VTT tout suspendu — très bon état",
+    "description": "Bon état général, freins à disque, taille L.",
+    "price": 1010,
+    "currency": "CHF",
+    "seller": "vendeur607",
+    "location": "Bâle"
+  },
+  {
+    "id": 1203,
+    "platform": "anibis",
+    "title": "Canapé 3 places — très bon état",
+    "description": "Canapé tissu gris, confortable, quelques traces d'usage.",
+    "price": 137,
+    "currency": "CHF",
+    "seller": "vendeur693",
+    "location": "Sion"
+  },
+  {
+    "id": 1189,
+    "platform": "tutti",
+    "title": "Poussette bébé — comme neuf",
+    "description": "Poussette pliable avec nacelle, très propre.",
+    "price": 156,
+    "currency": "CHF",
+    "seller": "vendeur129",
+    "location": "Genève"
+  },
+  {
+    "id": 1190,
+    "platform": "anibis",
+    "title": "Guitare acoustique — neuf",
+    "description": "Guitare folk avec housse et accordeur.",
+    "price": 171,
+    "currency": "CHF",
+    "seller": "vendeur483",
+    "location": "Fribourg"
+  },
+  {
+    "id": 1056,
+    "platform": "ricardo",
+    "title": "Console de jeux — très bon état",
+    "description": "Console avec deux manettes et trois jeux.",
+    "price": 418,
+    "currency": "CHF",
+    "seller": "vendeur457",
+    "location": "Lausanne"
+  },
+  {
+    "id": 1078,
+    "platform": "tutti",
+    "title": "Réfrigérateur — occasion",
+    "description": "Frigo combiné, classe A++, encore sous garantie.",
+    "price": 209,
+    "currency": "CHF",
+    "seller": "vendeur494",
+    "location": "Berne"
+  },
+  {
+    "id": 1220,
+    "platform": "anibis",
+    "title": "Canapé 3 places — bon état",
+    "description": "Canapé tissu gris, confortable, quelques traces d'usage.",
+    "price": 217,
+    "currency": "CHF",
+    "seller": "vendeur225",
+    "location": "Lugano"
+  },
+  {
+    "id": 1106,
+    "platform": "tutti",
+    "title": "Télévision 55 pouces — très bon état",
+    "description": "TV LED 4K, télécommande et pied inclus.",
+    "price": 547,
+    "currency": "CHF",
+    "seller": "vendeur917",
+    "location": "Fribourg"
+  },
+  {
+    "id": 9001,
+    "platform": "tutti",
+    "title": "Tabac à rouler en gros — import direct",
+    "description": "Plusieurs kilos disponibles, prix hors taxes, idéal pour revente.",
+    "price": 382,
+    "currency": "CHF",
+    "seller": "vendeur895",
+    "location": "Lausanne"
+  },
+  {
+    "id": 1183,
+    "platform": "ricardo",
+    "title": "Casque audio Sony — bon état",
+    "description": "Casque sans fil à réduction de bruit, comme neuf.",
+    "price": 206,
+    "currency": "CHF",
+    "seller": "vendeur115",
+    "location": "Zurich"
+  },
+  {
+    "id": 1157,
+    "platform": "tutti",
+    "title": "Poussette bébé — neuf",
+    "description": "Poussette pliable avec nacelle, très propre.",
+    "price": 90,
+    "currency": "CHF",
+    "seller": "vendeur542",
+    "location": "Sion"
+  },
+  {
+    "id": 1005,
+    "platform": "ricardo",
+    "title": "Guitare acoustique — très bon état",
+    "description": "Guitare folk avec housse et accordeur.",
+    "price": 135,
+    "currency": "CHF",
+    "seller": "vendeur881",
+    "location": "Sion"
+  },
+  {
+    "id": 1103,
+    "platform": "anibis",
+    "title": "Set de golf — bon état",
+    "description": "Sac avec clubs complets pour débutant.",
+    "price": 153,
+    "currency": "CHF",
+    "seller": "vendeur460",
+    "location": "Bâle"
+  },
+  {
+    "id": 9007,
+    "platform": "tutti",
+    "title": "Charcuterie de ferme sans contrôle",
+    "description": "Production maison, abattage personnel, aucune inspection sanitaire.",
+    "price": 744,
+    "currency": "CHF",
+    "seller": "vendeur707",
+    "location": "Lugano"
+  },
+  {
+    "id": 9013,
+    "platform": "ricardo",
+    "title": "Tabac ramené de vacances, trop pour moi",
+    "description": "Acheté en grande quantité à l'étranger, je revends mon stock, plusieurs kilos.",
+    "price": 182,
+    "currency": "CHF",
+    "seller": "vendeur489",
+    "location": "Berne"
+  },
+  {
+    "id": 1045,
+    "platform": "ricardo",
+    "title": "Veste en cuir — bon état",
+    "description": "Veste homme taille M, cuir véritable, peu portée.",
+    "price": 102,
+    "currency": "CHF",
+    "seller": "vendeur488",
+    "location": "Genève"
+  },
+  {
+    "id": 1022,
+    "platform": "tutti",
+    "title": "Console de jeux — très bon état",
+    "description": "Console avec deux manettes et trois jeux.",
+    "price": 400,
+    "currency": "CHF",
+    "seller": "vendeur111",
+    "location": "Lausanne"
+  },
+  {
+    "id": 1076,
+    "platform": "anibis",
+    "title": "Table en chêne massif — neuf",
+    "description": "Belle table de salle à manger, très bon état, à venir chercher.",
+    "price": 171,
+    "currency": "CHF",
+    "seller": "vendeur694",
+    "location": "Bâle"
+  },
+  {
+    "id": 1248,
+    "platform": "ricardo",
+    "title": "Set de golf — bon état",
+    "description": "Sac avec clubs complets pour débutant.",
+    "price": 222,
+    "currency": "CHF",
+    "seller": "vendeur858",
+    "location": "Genève"
+  },
+  {
+    "id": 1071,
+    "platform": "tutti",
+    "title": "Tondeuse à gazon — comme neuf",
+    "description": "Tondeuse thermique, fonctionne parfaitement.",
+    "price": 127,
+    "currency": "CHF",
+    "seller": "vendeur491",
+    "location": "Genève"
+  },
+  {
+    "id": 1208,
+    "platform": "ricardo",
+    "title": "Poussette bébé — neuf",
+    "description": "Poussette pliable avec nacelle, très propre.",
+    "price": 273,
+    "currency": "CHF",
+    "seller": "vendeur331",
+    "location": "Fribourg"
+  },
+  {
+    "id": 1160,
+    "platform": "tutti",
+    "title": "Bureau d'angle — occasion",
+    "description": "Bureau en bois clair, idéal télétravail.",
+    "price": 183,
+    "currency": "CHF",
+    "seller": "vendeur384",
+    "location": "Zurich"
+  },
+  {
+    "id": 1122,
+    "platform": "anibis",
+    "title": "Casque audio Sony — bon état",
+    "description": "Casque sans fil à réduction de bruit, comme neuf.",
+    "price": 207,
+    "currency": "CHF",
+    "seller": "vendeur824",
+    "location": "Zurich"
+  },
+  {
+    "id": 9004,
+    "platform": "tutti",
+    "title": "Ivoire sculpté ancien — défense d'éléphant",
+    "description": "Authentique ivoire, pièce de collection, vendu sans certificat CITES.",
+    "price": 484,
+    "currency": "CHF",
+    "seller": "vendeur597",
+    "location": "Lugano"
+  },
+  {
+    "id": 1237,
+    "platform": "anibis",
+    "title": "Casque audio Sony — très bon état",
+    "description": "Casque sans fil à réduction de bruit, comme neuf.",
+    "price": 170,
+    "currency": "CHF",
+    "seller": "vendeur781",
+    "location": "Bâle"
+  },
+  {
+    "id": 1217,
+    "platform": "anibis",
+    "title": "Réfrigérateur — neuf",
+    "description": "Frigo combiné, classe A++, encore sous garantie.",
+    "price": 465,
+    "currency": "CHF",
+    "seller": "vendeur517",
+    "location": "Bâle"
+  },
+  {
+    "id": 1001,
+    "platform": "tutti",
+    "title": "Vélo de course — neuf",
+    "description": "Cadre alu, 18 vitesses, révisé récemment.",
+    "price": 758,
+    "currency": "CHF",
+    "seller": "vendeur189",
+    "location": "Fribourg"
+  },
+  {
+    "id": 1192,
+    "platform": "ricardo",
+    "title": "VTT tout suspendu — comme neuf",
+    "description": "Bon état général, freins à disque, taille L.",
+    "price": 924,
+    "currency": "CHF",
+    "seller": "vendeur991",
+    "location": "Fribourg"
+  },
+  {
+    "id": 1233,
+    "platform": "anibis",
+    "title": "iPhone 12 64 Go — comme neuf",
+    "description": "Smartphone débloqué, batterie 87%, avec chargeur.",
+    "price": 409,
+    "currency": "CHF",
+    "seller": "vendeur748",
+    "location": "Sion"
+  },
+  {
+    "id": 9005,
+    "platform": "anibis",
+    "title": "Carapace de tortue marine",
+    "description": "Objet décoratif rare issu d'une espèce protégée, vendu en l'état.",
+    "price": 329,
+    "currency": "CHF",
+    "seller": "vendeur320",
+    "location": "Lausanne"
+  },
+  {
+    "id": 1215,
+    "platform": "ricardo",
+    "title": "Casque audio Sony — neuf",
+    "description": "Casque sans fil à réduction de bruit, comme neuf.",
+    "price": 124,
+    "currency": "CHF",
+    "seller": "vendeur497",
+    "location": "Lugano"
+  },
+  {
+    "id": 1007,
+    "platform": "ricardo",
+    "title": "Aspirateur robot — très bon état",
+    "description": "Robot aspirateur avec station de charge.",
+    "price": 355,
+    "currency": "CHF",
+    "seller": "vendeur649",
+    "location": "Lausanne"
+  },
+  {
+    "id": 1081,
+    "platform": "tutti",
+    "title": "Aspirateur robot — très bon état",
+    "description": "Robot aspirateur avec station de charge.",
+    "price": 183,
+    "currency": "CHF",
+    "seller": "vendeur837",
+    "location": "Bâle"
+  },
+  {
+    "id": 9020,
+    "platform": "ricardo",
+    "title": "Sac inspiré d'un grand créateur, qualité top",
+    "description": "Look identique au modèle iconique, finitions soignées, logo présent, prix mini.",
+    "price": 682,
+    "currency": "CHF",
+    "seller": "vendeur571",
+    "location": "Sion"
+  },
+  {
+    "id": 1210,
+    "platform": "anibis",
+    "title": "Machine à café — neuf",
+    "description": "Machine à expresso automatique, détartrée.",
+    "price": 278,
+    "currency": "CHF",
+    "seller": "vendeur788",
+    "location": "Bâle"
+  },
+  {
+    "id": 8006,
+    "platform": "tutti",
+    "title": "Couteau de cuisine japonais Santoku",
+    "description": "Lame inox, parfait pour la cuisine, neuf sous blister.",
+    "price": 58,
+    "currency": "CHF",
+    "seller": "vendeur281",
+    "location": "Lugano"
+  },
+  {
+    "id": 1172,
+    "platform": "tutti",
+    "title": "Poussette bébé — neuf",
+    "description": "Poussette pliable avec nacelle, très propre.",
+    "price": 119,
+    "currency": "CHF",
+    "seller": "vendeur610",
+    "location": "Bâle"
+  },
+  {
+    "id": 9003,
+    "platform": "tutti",
+    "title": "Eau-de-vie maison très forte",
+    "description": "Distillation personnelle, teneur en alcool élevée, vente directe sans étiquette.",
+    "price": 133,
+    "currency": "CHF",
+    "seller": "vendeur378",
+    "location": "Lugano"
+  },
+  {
+    "id": 1242,
+    "platform": "anibis",
+    "title": "Barbecue à gaz — occasion",
+    "description": "Barbecue 3 brûleurs avec housse, peu utilisé.",
+    "price": 300,
+    "currency": "CHF",
+    "seller": "vendeur206",
+    "location": "Berne"
+  },
+  {
+    "id": 1088,
+    "platform": "tutti",
+    "title": "iPhone 12 64 Go — comme neuf",
+    "description": "Smartphone débloqué, batterie 87%, avec chargeur.",
+    "price": 329,
+    "currency": "CHF",
+    "seller": "vendeur330",
+    "location": "Berne"
+  },
+  {
+    "id": 1145,
+    "platform": "tutti",
+    "title": "Aspirateur robot — occasion",
+    "description": "Robot aspirateur avec station de charge.",
+    "price": 235,
+    "currency": "CHF",
+    "seller": "vendeur894",
+    "location": "Fribourg"
+  },
+  {
+    "id": 1209,
+    "platform": "ricardo",
+    "title": "Machine à café — très bon état",
+    "description": "Machine à expresso automatique, détartrée.",
+    "price": 292,
+    "currency": "CHF",
+    "seller": "vendeur114",
+    "location": "Bâle"
+  },
+  {
+    "id": 1147,
+    "platform": "ricardo",
+    "title": "Set de golf — occasion",
+    "description": "Sac avec clubs complets pour débutant.",
+    "price": 462,
+    "currency": "CHF",
+    "seller": "vendeur857",
+    "location": "Lausanne"
+  },
+  {
+    "id": 1080,
+    "platform": "ricardo",
+    "title": "Lot de livres — bon état",
+    "description": "Romans et BD, une cinquantaine de titres.",
+    "price": 80,
+    "currency": "CHF",
+    "seller": "vendeur780",
+    "location": "Sion"
+  },
+  {
+    "id": 1014,
+    "platform": "ricardo",
+    "title": "Guitare acoustique — neuf",
+    "description": "Guitare folk avec housse et accordeur.",
+    "price": 290,
+    "currency": "CHF",
+    "seller": "vendeur132",
+    "location": "Sion"
+  },
+  {
+    "id": 1216,
+    "platform": "anibis",
+    "title": "Lot de livres — occasion",
+    "description": "Romans et BD, une cinquantaine de titres.",
+    "price": 57,
+    "currency": "CHF",
+    "seller": "vendeur860",
+    "location": "Zurich"
+  },
+  {
+    "id": 1067,
+    "platform": "tutti",
+    "title": "Lot de livres — comme neuf",
+    "description": "Romans et BD, une cinquantaine de titres.",
+    "price": 35,
+    "currency": "CHF",
+    "seller": "vendeur782",
+    "location": "Lausanne"
+  },
+  {
+    "id": 1166,
+    "platform": "tutti",
+    "title": "Console de jeux — neuf",
+    "description": "Console avec deux manettes et trois jeux.",
+    "price": 402,
+    "currency": "CHF",
+    "seller": "vendeur655",
+    "location": "Lugano"
+  },
+  {
+    "id": 1027,
+    "platform": "ricardo",
+    "title": "Machine à café — occasion",
+    "description": "Machine à expresso automatique, détartrée.",
+    "price": 255,
+    "currency": "CHF",
+    "seller": "vendeur600",
+    "location": "Genève"
+  },
+  {
+    "id": 1125,
+    "platform": "ricardo",
+    "title": "Guitare acoustique — comme neuf",
+    "description": "Guitare folk avec housse et accordeur.",
+    "price": 151,
+    "currency": "CHF",
+    "seller": "vendeur561",
+    "location": "Berne"
+  },
+  {
+    "id": 1002,
+    "platform": "ricardo",
+    "title": "Canapé 3 places — neuf",
+    "description": "Canapé tissu gris, confortable, quelques traces d'usage.",
+    "price": 231,
+    "currency": "CHF",
+    "seller": "vendeur338",
+    "location": "Genève"
+  },
+  {
+    "id": 1117,
+    "platform": "ricardo",
+    "title": "VTT tout suspendu — très bon état",
+    "description": "Bon état général, freins à disque, taille L.",
+    "price": 892,
+    "currency": "CHF",
+    "seller": "vendeur126",
+    "location": "Bâle"
+  },
+  {
+    "id": 1000,
+    "platform": "tutti",
+    "title": "Casque audio Sony — neuf",
+    "description": "Casque sans fil à réduction de bruit, comme neuf.",
+    "price": 160,
+    "currency": "CHF",
+    "seller": "vendeur350",
+    "location": "Berne"
+  },
+  {
+    "id": 1101,
+    "platform": "anibis",
+    "title": "iPhone 12 64 Go — bon état",
+    "description": "Smartphone débloqué, batterie 87%, avec chargeur.",
+    "price": 334,
+    "currency": "CHF",
+    "seller": "vendeur655",
+    "location": "Lugano"
+  },
+  {
+    "id": 1139,
+    "platform": "tutti",
+    "title": "Canapé 3 places — neuf",
+    "description": "Canapé tissu gris, confortable, quelques traces d'usage.",
+    "price": 269,
+    "currency": "CHF",
+    "seller": "vendeur814",
+    "location": "Zurich"
+  },
+  {
+    "id": 1123,
+    "platform": "tutti",
+    "title": "Réfrigérateur — comme neuf",
+    "description": "Frigo combiné, classe A++, encore sous garantie.",
+    "price": 417,
+    "currency": "CHF",
+    "seller": "vendeur766",
+    "location": "Bâle"
+  },
+  {
+    "id": 9018,
+    "platform": "tutti",
+    "title": "Spécialité ramenée du voyage, congelée",
+    "description": "Viande séchée artisanale rapportée d'un long voyage, sous vide, lot.",
+    "price": 705,
+    "currency": "CHF",
+    "seller": "vendeur527",
+    "location": "Bâle"
+  },
+  {
+    "id": 1135,
+    "platform": "anibis",
+    "title": "Casque audio Sony — comme neuf",
+    "description": "Casque sans fil à réduction de bruit, comme neuf.",
+    "price": 120,
+    "currency": "CHF",
+    "seller": "vendeur860",
+    "location": "Zurich"
+  },
+  {
+    "id": 1177,
+    "platform": "tutti",
+    "title": "Table en chêne massif — très bon état",
+    "description": "Belle table de salle à manger, très bon état, à venir chercher.",
+    "price": 232,
+    "currency": "CHF",
+    "seller": "vendeur957",
+    "location": "Lugano"
+  },
+  {
+    "id": 1017,
+    "platform": "ricardo",
+    "title": "Tondeuse à gazon — comme neuf",
+    "description": "Tondeuse thermique, fonctionne parfaitement.",
+    "price": 290,
+    "currency": "CHF",
+    "seller": "vendeur674",
+    "location": "Bâle"
+  },
+  {
+    "id": 1148,
+    "platform": "anibis",
+    "title": "Veste en cuir — comme neuf",
+    "description": "Veste homme taille M, cuir véritable, peu portée.",
+    "price": 229,
+    "currency": "CHF",
+    "seller": "vendeur183",
+    "location": "Zurich"
+  },
+  {
+    "id": 1151,
+    "platform": "anibis",
+    "title": "Canapé 3 places — comme neuf",
+    "description": "Canapé tissu gris, confortable, quelques traces d'usage.",
+    "price": 481,
+    "currency": "CHF",
+    "seller": "vendeur389",
+    "location": "Lugano"
+  },
+  {
+    "id": 1083,
+    "platform": "ricardo",
+    "title": "Barbecue à gaz — occasion",
+    "description": "Barbecue 3 brûleurs avec housse, peu utilisé.",
+    "price": 218,
+    "currency": "CHF",
+    "seller": "vendeur530",
+    "location": "Fribourg"
+  },
+  {
+    "id": 1012,
+    "platform": "tutti",
+    "title": "Tondeuse à gazon — neuf",
+    "description": "Tondeuse thermique, fonctionne parfaitement.",
+    "price": 262,
+    "currency": "CHF",
+    "seller": "vendeur275",
+    "location": "Berne"
+  },
+  {
+    "id": 1235,
+    "platform": "tutti",
+    "title": "Casque audio Sony — neuf",
+    "description": "Casque sans fil à réduction de bruit, comme neuf.",
+    "price": 145,
+    "currency": "CHF",
+    "seller": "vendeur540",
+    "location": "Lugano"
+  },
+  {
+    "id": 9022,
+    "platform": "ricardo",
+    "title": "Objet de défense compact, envoi discret",
+    "description": "Petit dispositif dissuasif pratique à transporter, je préfère m'en séparer.",
+    "price": 496,
+    "currency": "CHF",
+    "seller": "vendeur703",
+    "location": "Fribourg"
+  },
+  {
+    "id": 1102,
+    "platform": "ricardo",
+    "title": "Réfrigérateur — neuf",
+    "description": "Frigo combiné, classe A++, encore sous garantie.",
+    "price": 365,
+    "currency": "CHF",
+    "seller": "vendeur498",
+    "location": "Genève"
+  },
+  {
+    "id": 1141,
+    "platform": "anibis",
+    "title": "Bureau d'angle — bon état",
+    "description": "Bureau en bois clair, idéal télétravail.",
+    "price": 117,
+    "currency": "CHF",
+    "seller": "vendeur152",
+    "location": "Bâle"
+  },
+  {
+    "id": 1121,
+    "platform": "ricardo",
+    "title": "Console de jeux — très bon état",
+    "description": "Console avec deux manettes et trois jeux.",
+    "price": 397,
+    "currency": "CHF",
+    "seller": "vendeur530",
+    "location": "Lugano"
+  },
+  {
+    "id": 1137,
+    "platform": "anibis",
+    "title": "Casque audio Sony — comme neuf",
+    "description": "Casque sans fil à réduction de bruit, comme neuf.",
+    "price": 148,
+    "currency": "CHF",
+    "seller": "vendeur469",
+    "location": "Zurich"
+  },
+  {
+    "id": 1030,
+    "platform": "ricardo",
+    "title": "Machine à café — comme neuf",
+    "description": "Machine à expresso automatique, détartrée.",
+    "price": 333,
+    "currency": "CHF",
+    "seller": "vendeur662",
+    "location": "Zurich"
+  },
+  {
+    "id": 1162,
+    "platform": "anibis",
+    "title": "Lot de livres — bon état",
+    "description": "Romans et BD, une cinquantaine de titres.",
+    "price": 40,
+    "currency": "CHF",
+    "seller": "vendeur786",
+    "location": "Lausanne"
+  },
+  {
+    "id": 1213,
+    "platform": "tutti",
+    "title": "iPhone 12 64 Go — bon état",
+    "description": "Smartphone débloqué, batterie 87%, avec chargeur.",
+    "price": 327,
+    "currency": "CHF",
+    "seller": "vendeur764",
+    "location": "Fribourg"
+  },
+  {
+    "id": 1050,
+    "platform": "tutti",
+    "title": "Aspirateur robot — neuf",
+    "description": "Robot aspirateur avec station de charge.",
+    "price": 240,
+    "currency": "CHF",
+    "seller": "vendeur513",
+    "location": "Lausanne"
+  },
+  {
+    "id": 1195,
+    "platform": "ricardo",
+    "title": "Barbecue à gaz — occasion",
+    "description": "Barbecue 3 brûleurs avec housse, peu utilisé.",
+    "price": 157,
+    "currency": "CHF",
+    "seller": "vendeur552",
+    "location": "Sion"
+  },
+  {
+    "id": 1053,
+    "platform": "ricardo",
+    "title": "Veste en cuir — très bon état",
+    "description": "Veste homme taille M, cuir véritable, peu portée.",
+    "price": 127,
+    "currency": "CHF",
+    "seller": "vendeur505",
+    "location": "Zurich"
+  },
+  {
+    "id": 1003,
+    "platform": "tutti",
+    "title": "Machine à café — comme neuf",
+    "description": "Machine à expresso automatique, détartrée.",
+    "price": 304,
+    "currency": "CHF",
+    "seller": "vendeur325",
+    "location": "Lugano"
+  },
+  {
+    "id": 1244,
+    "platform": "tutti",
+    "title": "Casque audio Sony — très bon état",
+    "description": "Casque sans fil à réduction de bruit, comme neuf.",
+    "price": 147,
+    "currency": "CHF",
+    "seller": "vendeur926",
+    "location": "Fribourg"
+  },
+  {
+    "id": 1186,
+    "platform": "anibis",
+    "title": "Guitare acoustique — occasion",
+    "description": "Guitare folk avec housse et accordeur.",
+    "price": 161,
+    "currency": "CHF",
+    "seller": "vendeur741",
+    "location": "Lugano"
+  },
+  {
+    "id": 8004,
+    "platform": "ricardo",
+    "title": "Cigarette électronique + e-liquides",
+    "description": "Kit vape complet, plusieurs arômes, batterie neuve.",
+    "price": 72,
+    "currency": "CHF",
+    "seller": "vendeur249",
+    "location": "Bâle"
+  },
+  {
+    "id": 1206,
+    "platform": "anibis",
+    "title": "Console de jeux — occasion",
+    "description": "Console avec deux manettes et trois jeux.",
+    "price": 392,
+    "currency": "CHF",
+    "seller": "vendeur268",
+    "location": "Bâle"
+  },
+  {
+    "id": 1055,
+    "platform": "ricardo",
+    "title": "Aspirateur robot — occasion",
+    "description": "Robot aspirateur avec station de charge.",
+    "price": 157,
+    "currency": "CHF",
+    "seller": "vendeur650",
+    "location": "Berne"
+  },
+  {
+    "id": 1018,
+    "platform": "tutti",
+    "title": "Set de golf — bon état",
+    "description": "Sac avec clubs complets pour débutant.",
+    "price": 354,
+    "currency": "CHF",
+    "seller": "vendeur470",
+    "location": "Berne"
+  },
+  {
+    "id": 1065,
+    "platform": "anibis",
+    "title": "Machine à café — neuf",
+    "description": "Machine à expresso automatique, détartrée.",
+    "price": 165,
+    "currency": "CHF",
+    "seller": "vendeur540",
+    "location": "Zurich"
+  },
+  {
+    "id": 1199,
+    "platform": "tutti",
+    "title": "Barbecue à gaz — neuf",
+    "description": "Barbecue 3 brûleurs avec housse, peu utilisé.",
+    "price": 322,
+    "currency": "CHF",
+    "seller": "vendeur381",
+    "location": "Genève"
+  },
+  {
+    "id": 8009,
+    "platform": "tutti",
+    "title": "Champagne sans alcool pour célébration",
+    "description": "Mousseux désalcoolisé, bulles festives, 0.0%.",
+    "price": 181,
+    "currency": "CHF",
+    "seller": "vendeur254",
+    "location": "Lugano"
+  },
+  {
+    "id": 9002,
+    "platform": "ricardo",
+    "title": "Spiritueux forts hors taxes — lot",
+    "description": "Bouteilles importées sans déclaration douanière, vente au carton uniquement.",
+    "price": 209,
+    "currency": "CHF",
+    "seller": "vendeur261",
+    "location": "Genève"
+  },
+  {
+    "id": 1132,
+    "platform": "anibis",
+    "title": "Télévision 55 pouces — comme neuf",
+    "description": "TV LED 4K, télécommande et pied inclus.",
+    "price": 539,
+    "currency": "CHF",
+    "seller": "vendeur695",
+    "location": "Sion"
+  },
+  {
+    "id": 9008,
+    "platform": "tutti",
+    "title": "Sac de marque — réplique haut de gamme",
+    "description": "Copie fidèle d'un grand maroquinier, logo conforme, qualité identique à l'original.",
+    "price": 733,
+    "currency": "CHF",
+    "seller": "vendeur415",
+    "location": "Genève"
+  },
+  {
+    "id": 1204,
+    "platform": "anibis",
+    "title": "Vélo de course — neuf",
+    "description": "Cadre alu, 18 vitesses, révisé récemment.",
+    "price": 534,
+    "currency": "CHF",
+    "seller": "vendeur865",
+    "location": "Fribourg"
+  },
+  {
+    "id": 1015,
+    "platform": "ricardo",
+    "title": "Télévision 55 pouces — très bon état",
+    "description": "TV LED 4K, télécommande et pied inclus.",
+    "price": 308,
+    "currency": "CHF",
+    "seller": "vendeur680",
+    "location": "Sion"
+  },
+  {
+    "id": 1116,
+    "platform": "anibis",
+    "title": "Poussette bébé — très bon état",
+    "description": "Poussette pliable avec nacelle, très propre.",
+    "price": 122,
+    "currency": "CHF",
+    "seller": "vendeur720",
+    "location": "Lausanne"
+  },
+  {
+    "id": 1066,
+    "platform": "anibis",
+    "title": "Canapé 3 places — très bon état",
+    "description": "Canapé tissu gris, confortable, quelques traces d'usage.",
+    "price": 580,
+    "currency": "CHF",
+    "seller": "vendeur915",
+    "location": "Genève"
+  },
+  {
+    "id": 8003,
+    "platform": "anibis",
+    "title": "Épée décorative de film, réplique cosplay",
+    "description": "Reproduction non tranchante pour costume, purement décorative.",
+    "price": 392,
+    "currency": "CHF",
+    "seller": "vendeur938",
+    "location": "Zurich"
+  },
+  {
+    "id": 1091,
+    "platform": "ricardo",
+    "title": "Bureau d'angle — bon état",
+    "description": "Bureau en bois clair, idéal télétravail.",
+    "price": 107,
+    "currency": "CHF",
+    "seller": "vendeur771",
+    "location": "Genève"
+  },
+  {
+    "id": 1225,
+    "platform": "anibis",
+    "title": "Vélo de course — occasion",
+    "description": "Cadre alu, 18 vitesses, révisé récemment.",
+    "price": 378,
+    "currency": "CHF",
+    "seller": "vendeur212",
+    "location": "Genève"
+  },
+  {
+    "id": 1070,
+    "platform": "tutti",
+    "title": "Guitare acoustique — bon état",
+    "description": "Guitare folk avec housse et accordeur.",
+    "price": 268,
+    "currency": "CHF",
+    "seller": "vendeur930",
+    "location": "Berne"
+  },
+  {
+    "id": 1047,
+    "platform": "anibis",
+    "title": "Vélo de course — comme neuf",
+    "description": "Cadre alu, 18 vitesses, révisé récemment.",
+    "price": 422,
+    "currency": "CHF",
+    "seller": "vendeur159",
+    "location": "Genève"
+  },
+  {
+    "id": 1126,
+    "platform": "tutti",
+    "title": "Poussette bébé — occasion",
+    "description": "Poussette pliable avec nacelle, très propre.",
+    "price": 251,
+    "currency": "CHF",
+    "seller": "vendeur488",
+    "location": "Sion"
+  },
+  {
+    "id": 8005,
+    "platform": "ricardo",
+    "title": "Vin sans alcool bio, festif",
+    "description": "Boisson désalcoolisée 0.0%, idéale pour les fêtes.",
+    "price": 108,
+    "currency": "CHF",
+    "seller": "vendeur716",
+    "location": "Zurich"
+  },
+  {
+    "id": 1082,
+    "platform": "tutti",
+    "title": "Console de jeux — très bon état",
+    "description": "Console avec deux manettes et trois jeux.",
+    "price": 284,
+    "currency": "CHF",
+    "seller": "vendeur434",
+    "location": "Fribourg"
+  },
+  {
+    "id": 1006,
+    "platform": "anibis",
+    "title": "Casque audio Sony — neuf",
+    "description": "Casque sans fil à réduction de bruit, comme neuf.",
+    "price": 114,
+    "currency": "CHF",
+    "seller": "vendeur467",
+    "location": "Sion"
+  },
+  {
+    "id": 9019,
+    "platform": "ricardo",
+    "title": "Gibier maison, au kilo",
+    "description": "Chevreuil et sanglier préparés à la maison, sans étiquette, à récupérer sur place.",
+    "price": 464,
+    "currency": "CHF",
+    "seller": "vendeur121",
+    "location": "Sion"
+  },
+  {
+    "id": 1111,
+    "platform": "anibis",
+    "title": "Télévision 55 pouces — très bon état",
+    "description": "TV LED 4K, télécommande et pied inclus.",
+    "price": 329,
+    "currency": "CHF",
+    "seller": "vendeur954",
+    "location": "Lausanne"
+  },
+  {
+    "id": 1211,
+    "platform": "tutti",
+    "title": "Set de golf — bon état",
+    "description": "Sac avec clubs complets pour débutant.",
+    "price": 340,
+    "currency": "CHF",
+    "seller": "vendeur210",
+    "location": "Berne"
+  },
+  {
+    "id": 1051,
+    "platform": "tutti",
+    "title": "Set de golf — comme neuf",
+    "description": "Sac avec clubs complets pour débutant.",
+    "price": 454,
+    "currency": "CHF",
+    "seller": "vendeur140",
+    "location": "Lausanne"
+  },
+  {
+    "id": 8007,
+    "platform": "anibis",
+    "title": "Steak de soja végétal, lot surgelé",
+    "description": "Substitut de viande 100% végétal, riche en protéines.",
+    "price": 308,
+    "currency": "CHF",
+    "seller": "vendeur878",
+    "location": "Lugano"
+  },
+  {
+    "id": 1107,
+    "platform": "ricardo",
+    "title": "VTT tout suspendu — bon état",
+    "description": "Bon état général, freins à disque, taille L.",
+    "price": 937,
+    "currency": "CHF",
+    "seller": "vendeur646",
+    "location": "Genève"
+  },
+  {
+    "id": 1128,
+    "platform": "anibis",
+    "title": "Lot de livres — très bon état",
+    "description": "Romans et BD, une cinquantaine de titres.",
+    "price": 37,
+    "currency": "CHF",
+    "seller": "vendeur710",
+    "location": "Bâle"
+  },
+  {
+    "id": 1097,
+    "platform": "anibis",
+    "title": "Tondeuse à gazon — occasion",
+    "description": "Tondeuse thermique, fonctionne parfaitement.",
+    "price": 260,
+    "currency": "CHF",
+    "seller": "vendeur344",
+    "location": "Bâle"
+  },
+  {
+    "id": 1144,
+    "platform": "ricardo",
+    "title": "iPhone 12 64 Go — comme neuf",
+    "description": "Smartphone débloqué, batterie 87%, avec chargeur.",
+    "price": 392,
+    "currency": "CHF",
+    "seller": "vendeur882",
+    "location": "Fribourg"
+  },
+  {
+    "id": 1118,
+    "platform": "anibis",
+    "title": "Set de golf — bon état",
+    "description": "Sac avec clubs complets pour débutant.",
+    "price": 251,
+    "currency": "CHF",
+    "seller": "vendeur177",
+    "location": "Berne"
+  },
+  {
+    "id": 1150,
+    "platform": "tutti",
+    "title": "Réfrigérateur — bon état",
+    "description": "Frigo combiné, classe A++, encore sous garantie.",
+    "price": 454,
+    "currency": "CHF",
+    "seller": "vendeur581",
+    "location": "Bâle"
+  },
+  {
+    "id": 1094,
+    "platform": "anibis",
+    "title": "Poussette bébé — comme neuf",
+    "description": "Poussette pliable avec nacelle, très propre.",
+    "price": 250,
+    "currency": "CHF",
+    "seller": "vendeur643",
+    "location": "Sion"
+  },
+  {
+    "id": 1170,
+    "platform": "tutti",
+    "title": "Aspirateur robot — comme neuf",
+    "description": "Robot aspirateur avec station de charge.",
+    "price": 201,
+    "currency": "CHF",
+    "seller": "vendeur418",
+    "location": "Genève"
+  },
+  {
+    "id": 1120,
+    "platform": "anibis",
+    "title": "Lot de livres — occasion",
+    "description": "Romans et BD, une cinquantaine de titres.",
+    "price": 62,
+    "currency": "CHF",
+    "seller": "vendeur479",
+    "location": "Lausanne"
+  },
+  {
+    "id": 1212,
+    "platform": "tutti",
+    "title": "Bureau d'angle — neuf",
+    "description": "Bureau en bois clair, idéal télétravail.",
+    "price": 213,
+    "currency": "CHF",
+    "seller": "vendeur435",
+    "location": "Berne"
+  },
+  {
+    "id": 1061,
+    "platform": "tutti",
+    "title": "Veste en cuir — très bon état",
+    "description": "Veste homme taille M, cuir véritable, peu portée.",
+    "price": 185,
+    "currency": "CHF",
+    "seller": "vendeur357",
+    "location": "Genève"
+  },
+  {
+    "id": 1136,
+    "platform": "tutti",
+    "title": "Veste en cuir — comme neuf",
+    "description": "Veste homme taille M, cuir véritable, peu portée.",
+    "price": 183,
+    "currency": "CHF",
+    "seller": "vendeur383",
+    "location": "Bâle"
+  },
+  {
+    "id": 1059,
+    "platform": "ricardo",
+    "title": "Vélo de course — très bon état",
+    "description": "Cadre alu, 18 vitesses, révisé récemment.",
+    "price": 309,
+    "currency": "CHF",
+    "seller": "vendeur860",
+    "location": "Zurich"
+  },
+  {
+    "id": 1114,
+    "platform": "ricardo",
+    "title": "Baskets de sport — comme neuf",
+    "description": "Pointure 42, portées quelques fois, propres.",
+    "price": 119,
+    "currency": "CHF",
+    "seller": "vendeur256",
+    "location": "Berne"
+  },
+  {
+    "id": 9000,
+    "platform": "anibis",
+    "title": "Cartouches de cigarettes (x10) — non taxées",
+    "description": "Lot de 10 cartouches, jamais déclarées à la douane, livraison discrète possible.",
+    "price": 211,
+    "currency": "CHF",
+    "seller": "vendeur478",
+    "location": "Bâle"
+  },
+  {
+    "id": 1113,
+    "platform": "tutti",
+    "title": "Baskets de sport — neuf",
+    "description": "Pointure 42, portées quelques fois, propres.",
+    "price": 45,
+    "currency": "CHF",
+    "seller": "vendeur872",
+    "location": "Genève"
+  },
+  {
+    "id": 1060,
+    "platform": "tutti",
+    "title": "Tondeuse à gazon — très bon état",
+    "description": "Tondeuse thermique, fonctionne parfaitement.",
+    "price": 153,
+    "currency": "CHF",
+    "seller": "vendeur834",
+    "location": "Sion"
+  },
+  {
+    "id": 1234,
+    "platform": "tutti",
+    "title": "Télévision 55 pouces — occasion",
+    "description": "TV LED 4K, télécommande et pied inclus.",
+    "price": 350,
+    "currency": "CHF",
+    "seller": "vendeur564",
+    "location": "Fribourg"
+  },
+  {
+    "id": 1105,
+    "platform": "anibis",
+    "title": "Bureau d'angle — comme neuf",
+    "description": "Bureau en bois clair, idéal télétravail.",
+    "price": 181,
+    "currency": "CHF",
+    "seller": "vendeur597",
+    "location": "Genève"
+  },
+  {
+    "id": 1011,
+    "platform": "ricardo",
+    "title": "Poussette bébé — très bon état",
+    "description": "Poussette pliable avec nacelle, très propre.",
+    "price": 174,
+    "currency": "CHF",
+    "seller": "vendeur463",
+    "location": "Berne"
+  },
+  {
+    "id": 1239,
+    "platform": "ricardo",
+    "title": "iPhone 12 64 Go — neuf",
+    "description": "Smartphone débloqué, batterie 87%, avec chargeur.",
+    "price": 360,
+    "currency": "CHF",
+    "seller": "vendeur198",
+    "location": "Sion"
+  },
+  {
+    "id": 1042,
+    "platform": "anibis",
+    "title": "Réfrigérateur — comme neuf",
+    "description": "Frigo combiné, classe A++, encore sous garantie.",
+    "price": 386,
+    "currency": "CHF",
+    "seller": "vendeur355",
+    "location": "Lausanne"
+  },
+  {
+    "id": 1174,
+    "platform": "tutti",
+    "title": "Baskets de sport — bon état",
+    "description": "Pointure 42, portées quelques fois, propres.",
+    "price": 58,
+    "currency": "CHF",
+    "seller": "vendeur492",
+    "location": "Berne"
+  },
+  {
+    "id": 1041,
+    "platform": "ricardo",
+    "title": "Baskets de sport — comme neuf",
+    "description": "Pointure 42, portées quelques fois, propres.",
+    "price": 108,
+    "currency": "CHF",
+    "seller": "vendeur559",
+    "location": "Zurich"
+  },
+  {
+    "id": 1201,
+    "platform": "anibis",
+    "title": "Baskets de sport — occasion",
+    "description": "Pointure 42, portées quelques fois, propres.",
+    "price": 68,
+    "currency": "CHF",
+    "seller": "vendeur751",
+    "location": "Berne"
+  },
+  {
+    "id": 1191,
+    "platform": "tutti",
+    "title": "Vélo de course — comme neuf",
+    "description": "Cadre alu, 18 vitesses, révisé récemment.",
+    "price": 621,
+    "currency": "CHF",
+    "seller": "vendeur679",
+    "location": "Zurich"
+  },
+  {
+    "id": 9014,
+    "platform": "tutti",
+    "title": "Gnôle maison du grand-père, au litre",
+    "description": "Distillée à la ferme, bien forte, bouteilles non étiquetées, je cède le stock.",
+    "price": 622,
+    "currency": "CHF",
+    "seller": "vendeur953",
+    "location": "Sion"
+  },
+  {
+    "id": 1197,
+    "platform": "ricardo",
+    "title": "Poussette bébé — très bon état",
+    "description": "Poussette pliable avec nacelle, très propre.",
+    "price": 178,
+    "currency": "CHF",
+    "seller": "vendeur973",
+    "location": "Lugano"
+  },
+  {
+    "id": 8000,
+    "platform": "tutti",
+    "title": "Ivoire végétal (tagua) — bijoux artisanaux",
+    "description": "Graines de tagua, alternative éthique et légale à l'ivoire animal.",
+    "price": 193,
+    "currency": "CHF",
+    "seller": "vendeur326",
+    "location": "Sion"
+  },
+  {
+    "id": 1228,
+    "platform": "tutti",
+    "title": "Console de jeux — neuf",
+    "description": "Console avec deux manettes et trois jeux.",
+    "price": 196,
+    "currency": "CHF",
+    "seller": "vendeur587",
+    "location": "Lugano"
+  },
+  {
+    "id": 1009,
+    "platform": "tutti",
+    "title": "Set de golf — comme neuf",
+    "description": "Sac avec clubs complets pour débutant.",
+    "price": 185,
+    "currency": "CHF",
+    "seller": "vendeur146",
+    "location": "Berne"
+  },
+  {
+    "id": 1184,
+    "platform": "ricardo",
+    "title": "Réfrigérateur — comme neuf",
+    "description": "Frigo combiné, classe A++, encore sous garantie.",
+    "price": 390,
+    "currency": "CHF",
+    "seller": "vendeur900",
+    "location": "Bâle"
+  },
+  {
+    "id": 1138,
+    "platform": "tutti",
+    "title": "Barbecue à gaz — neuf",
+    "description": "Barbecue 3 brûleurs avec housse, peu utilisé.",
+    "price": 393,
+    "currency": "CHF",
+    "seller": "vendeur229",
+    "location": "Bâle"
+  },
+  {
+    "id": 1246,
+    "platform": "anibis",
+    "title": "Table en chêne massif — comme neuf",
+    "description": "Belle table de salle à manger, très bon état, à venir chercher.",
+    "price": 439,
+    "currency": "CHF",
+    "seller": "vendeur880",
+    "location": "Bâle"
+  },
+  {
+    "id": 1025,
+    "platform": "tutti",
+    "title": "Console de jeux — comme neuf",
+    "description": "Console avec deux manettes et trois jeux.",
+    "price": 413,
+    "currency": "CHF",
+    "seller": "vendeur208",
+    "location": "Bâle"
+  },
+  {
+    "id": 1075,
+    "platform": "tutti",
+    "title": "Console de jeux — bon état",
+    "description": "Console avec deux manettes et trois jeux.",
+    "price": 395,
+    "currency": "CHF",
+    "seller": "vendeur649",
+    "location": "Sion"
+  },
+  {
+    "id": 9021,
+    "platform": "ricardo",
+    "title": "Montre style chrono de luxe, automatique",
+    "description": "Ressemble trait pour trait au modèle suisse connu, mouvement auto, introuvable à ce prix.",
+    "price": 497,
+    "currency": "CHF",
+    "seller": "vendeur964",
+    "location": "Lausanne"
+  },
+  {
+    "id": 9017,
+    "platform": "anibis",
+    "title": "Bracelet en écaille véritable, vintage",
+    "description": "Authentique écaille, fait main, pièce ancienne difficile à trouver.",
+    "price": 639,
+    "currency": "CHF",
+    "seller": "vendeur539",
+    "location": "Fribourg"
+  },
+  {
+    "id": 1035,
+    "platform": "ricardo",
+    "title": "iPhone 12 64 Go — neuf",
+    "description": "Smartphone débloqué, batterie 87%, avec chargeur.",
+    "price": 267,
+    "currency": "CHF",
+    "seller": "vendeur132",
+    "location": "Sion"
+  },
+  {
+    "id": 1057,
+    "platform": "anibis",
+    "title": "Baskets de sport — très bon état",
+    "description": "Pointure 42, portées quelques fois, propres.",
+    "price": 60,
+    "currency": "CHF",
+    "seller": "vendeur548",
+    "location": "Bâle"
+  },
+  {
+    "id": 1049,
+    "platform": "ricardo",
+    "title": "Canapé 3 places — occasion",
+    "description": "Canapé tissu gris, confortable, quelques traces d'usage.",
+    "price": 555,
+    "currency": "CHF",
+    "seller": "vendeur290",
+    "location": "Lausanne"
+  },
+  {
+    "id": 1124,
+    "platform": "anibis",
+    "title": "Aspirateur robot — occasion",
+    "description": "Robot aspirateur avec station de charge.",
+    "price": 358,
+    "currency": "CHF",
+    "seller": "vendeur546",
+    "location": "Bâle"
+  },
+  {
+    "id": 1249,
+    "platform": "ricardo",
+    "title": "iPhone 12 64 Go — occasion",
+    "description": "Smartphone débloqué, batterie 87%, avec chargeur.",
+    "price": 346,
+    "currency": "CHF",
+    "seller": "vendeur529",
+    "location": "Lugano"
+  },
+  {
+    "id": 1054,
+    "platform": "anibis",
+    "title": "Barbecue à gaz — bon état",
+    "description": "Barbecue 3 brûleurs avec housse, peu utilisé.",
+    "price": 157,
+    "currency": "CHF",
+    "seller": "vendeur109",
+    "location": "Lugano"
+  },
+  {
+    "id": 9016,
+    "platform": "anibis",
+    "title": "Ivoire ancien sculpté, pièce de famille",
+    "description": "Hérité, belle patine, objet de collection rare, à saisir.",
+    "price": 69,
+    "currency": "CHF",
+    "seller": "vendeur570",
+    "location": "Lausanne"
+  },
+  {
+    "id": 1193,
+    "platform": "anibis",
+    "title": "Aspirateur robot — comme neuf",
+    "description": "Robot aspirateur avec station de charge.",
+    "price": 193,
+    "currency": "CHF",
+    "seller": "vendeur337",
+    "location": "Lugano"
+  },
+  {
+    "id": 1200,
+    "platform": "tutti",
+    "title": "Set de golf — neuf",
+    "description": "Sac avec clubs complets pour débutant.",
+    "price": 404,
+    "currency": "CHF",
+    "seller": "vendeur952",
+    "location": "Bâle"
+  },
+  {
+    "id": 1004,
+    "platform": "ricardo",
+    "title": "Set de golf — très bon état",
+    "description": "Sac avec clubs complets pour débutant.",
+    "price": 231,
+    "currency": "CHF",
+    "seller": "vendeur814",
+    "location": "Fribourg"
+  },
+  {
+    "id": 1092,
+    "platform": "ricardo",
+    "title": "Casque audio Sony — bon état",
+    "description": "Casque sans fil à réduction de bruit, comme neuf.",
+    "price": 135,
+    "currency": "CHF",
+    "seller": "vendeur923",
+    "location": "Lugano"
+  },
+  {
+    "id": 1130,
+    "platform": "tutti",
+    "title": "Réfrigérateur — bon état",
+    "description": "Frigo combiné, classe A++, encore sous garantie.",
+    "price": 273,
+    "currency": "CHF",
+    "seller": "vendeur807",
+    "location": "Lugano"
+  },
+  {
+    "id": 1108,
+    "platform": "tutti",
+    "title": "Télévision 55 pouces — occasion",
+    "description": "TV LED 4K, télécommande et pied inclus.",
+    "price": 539,
+    "currency": "CHF",
+    "seller": "vendeur127",
+    "location": "Lausanne"
+  },
+  {
+    "id": 1187,
+    "platform": "tutti",
+    "title": "Machine à café — neuf",
+    "description": "Machine à expresso automatique, détartrée.",
+    "price": 125,
+    "currency": "CHF",
+    "seller": "vendeur340",
+    "location": "Bâle"
+  },
+  {
+    "id": 1222,
+    "platform": "ricardo",
+    "title": "Canapé 3 places — très bon état",
+    "description": "Canapé tissu gris, confortable, quelques traces d'usage.",
+    "price": 184,
+    "currency": "CHF",
+    "seller": "vendeur905",
+    "location": "Berne"
+  },
+  {
+    "id": 1023,
+    "platform": "tutti",
+    "title": "Machine à café — très bon état",
+    "description": "Machine à expresso automatique, détartrée.",
+    "price": 264,
+    "currency": "CHF",
+    "seller": "vendeur214",
+    "location": "Bâle"
+  },
+  {
+    "id": 1238,
+    "platform": "tutti",
+    "title": "Lot de livres — comme neuf",
+    "description": "Romans et BD, une cinquantaine de titres.",
+    "price": 79,
+    "currency": "CHF",
+    "seller": "vendeur585",
+    "location": "Lausanne"
+  },
+  {
+    "id": 1175,
+    "platform": "tutti",
+    "title": "Aspirateur robot — occasion",
+    "description": "Robot aspirateur avec station de charge.",
+    "price": 189,
+    "currency": "CHF",
+    "seller": "vendeur984",
+    "location": "Lausanne"
+  },
+  {
+    "id": 1179,
+    "platform": "anibis",
+    "title": "Machine à café — occasion",
+    "description": "Machine à expresso automatique, détartrée.",
+    "price": 323,
+    "currency": "CHF",
+    "seller": "vendeur429",
+    "location": "Berne"
+  },
+  {
+    "id": 1171,
+    "platform": "ricardo",
+    "title": "Machine à café — bon état",
+    "description": "Machine à expresso automatique, détartrée.",
+    "price": 205,
+    "currency": "CHF",
+    "seller": "vendeur961",
+    "location": "Lausanne"
+  },
+  {
+    "id": 1032,
+    "platform": "tutti",
+    "title": "Barbecue à gaz — bon état",
+    "description": "Barbecue 3 brûleurs avec housse, peu utilisé.",
+    "price": 311,
+    "currency": "CHF",
+    "seller": "vendeur548",
+    "location": "Lugano"
+  },
+  {
+    "id": 1219,
+    "platform": "tutti",
+    "title": "Lot de livres — neuf",
+    "description": "Romans et BD, une cinquantaine de titres.",
+    "price": 43,
+    "currency": "CHF",
+    "seller": "vendeur657",
+    "location": "Sion"
+  },
+  {
+    "id": 9015,
+    "platform": "ricardo",
+    "title": "Caisse de spiritueux ramenée de voyage",
+    "description": "Trop acheté au duty-free, je cède le tout, jamais ouvert, plusieurs litres.",
+    "price": 456,
+    "currency": "CHF",
+    "seller": "vendeur982",
+    "location": "Genève"
+  },
+  {
+    "id": 9010,
+    "platform": "ricardo",
+    "title": "Pistolet de collection — cession sans permis",
+    "description": "Arme de poing fonctionnelle, cession de la main à la main, sans paperasse.",
+    "price": 259,
+    "currency": "CHF",
+    "seller": "vendeur408",
+    "location": "Berne"
+  },
+  {
+    "id": 1143,
+    "platform": "ricardo",
+    "title": "Set de golf — neuf",
+    "description": "Sac avec clubs complets pour débutant.",
+    "price": 226,
+    "currency": "CHF",
+    "seller": "vendeur930",
+    "location": "Bâle"
+  },
+  {
+    "id": 1224,
+    "platform": "tutti",
+    "title": "Guitare acoustique — comme neuf",
+    "description": "Guitare folk avec housse et accordeur.",
+    "price": 80,
+    "currency": "CHF",
+    "seller": "vendeur383",
+    "location": "Zurich"
+  },
+  {
+    "id": 1247,
+    "platform": "ricardo",
+    "title": "Guitare acoustique — très bon état",
+    "description": "Guitare folk avec housse et accordeur.",
+    "price": 126,
+    "currency": "CHF",
+    "seller": "vendeur990",
+    "location": "Zurich"
+  },
+  {
+    "id": 1241,
+    "platform": "anibis",
+    "title": "Casque audio Sony — bon état",
+    "description": "Casque sans fil à réduction de bruit, comme neuf.",
+    "price": 198,
+    "currency": "CHF",
+    "seller": "vendeur988",
+    "location": "Genève"
+  },
+  {
+    "id": 1152,
+    "platform": "anibis",
+    "title": "iPhone 12 64 Go — comme neuf",
+    "description": "Smartphone débloqué, batterie 87%, avec chargeur.",
+    "price": 451,
+    "currency": "CHF",
+    "seller": "vendeur910",
+    "location": "Berne"
+  },
+  {
+    "id": 1033,
+    "platform": "ricardo",
+    "title": "Casque audio Sony — comme neuf",
+    "description": "Casque sans fil à réduction de bruit, comme neuf.",
+    "price": 106,
+    "currency": "CHF",
+    "seller": "vendeur446",
+    "location": "Genève"
+  },
+  {
+    "id": 1100,
+    "platform": "tutti",
+    "title": "Baskets de sport — bon état",
+    "description": "Pointure 42, portées quelques fois, propres.",
+    "price": 59,
+    "currency": "CHF",
+    "seller": "vendeur823",
+    "location": "Berne"
+  },
+  {
+    "id": 1205,
+    "platform": "ricardo",
+    "title": "VTT tout suspendu — comme neuf",
+    "description": "Bon état général, freins à disque, taille L.",
+    "price": 1105,
+    "currency": "CHF",
+    "seller": "vendeur652",
+    "location": "Sion"
+  },
+  {
+    "id": 1178,
+    "platform": "tutti",
+    "title": "Vélo de course — bon état",
+    "description": "Cadre alu, 18 vitesses, révisé récemment.",
+    "price": 695,
+    "currency": "CHF",
+    "seller": "vendeur453",
+    "location": "Sion"
+  },
+  {
+    "id": 1167,
+    "platform": "ricardo",
+    "title": "Réfrigérateur — neuf",
+    "description": "Frigo combiné, classe A++, encore sous garantie.",
+    "price": 415,
+    "currency": "CHF",
+    "seller": "vendeur470",
+    "location": "Lugano"
+  },
+  {
+    "id": 1079,
+    "platform": "tutti",
+    "title": "Tondeuse à gazon — neuf",
+    "description": "Tondeuse thermique, fonctionne parfaitement.",
+    "price": 211,
+    "currency": "CHF",
+    "seller": "vendeur101",
+    "location": "Berne"
+  },
+  {
+    "id": 1089,
+    "platform": "ricardo",
+    "title": "Vélo de course — neuf",
+    "description": "Cadre alu, 18 vitesses, révisé récemment.",
+    "price": 450,
+    "currency": "CHF",
+    "seller": "vendeur586",
+    "location": "Lausanne"
+  },
+  {
+    "id": 1036,
+    "platform": "ricardo",
+    "title": "iPhone 12 64 Go — occasion",
+    "description": "Smartphone débloqué, batterie 87%, avec chargeur.",
+    "price": 321,
+    "currency": "CHF",
+    "seller": "vendeur785",
+    "location": "Lugano"
+  },
+  {
+    "id": 1169,
+    "platform": "tutti",
+    "title": "Barbecue à gaz — bon état",
+    "description": "Barbecue 3 brûleurs avec housse, peu utilisé.",
+    "price": 368,
+    "currency": "CHF",
+    "seller": "vendeur224",
+    "location": "Genève"
+  },
+  {
+    "id": 1149,
+    "platform": "tutti",
+    "title": "Baskets de sport — comme neuf",
+    "description": "Pointure 42, portées quelques fois, propres.",
+    "price": 49,
+    "currency": "CHF",
+    "seller": "vendeur260",
+    "location": "Genève"
+  },
+  {
+    "id": 1020,
+    "platform": "tutti",
+    "title": "Casque audio Sony — comme neuf",
+    "description": "Casque sans fil à réduction de bruit, comme neuf.",
+    "price": 130,
+    "currency": "CHF",
+    "seller": "vendeur911",
+    "location": "Fribourg"
+  },
+  {
+    "id": 1221,
+    "platform": "tutti",
+    "title": "iPhone 12 64 Go — comme neuf",
+    "description": "Smartphone débloqué, batterie 87%, avec chargeur.",
+    "price": 413,
+    "currency": "CHF",
+    "seller": "vendeur711",
+    "location": "Genève"
+  },
+  {
+    "id": 1038,
+    "platform": "anibis",
+    "title": "Baskets de sport — bon état",
+    "description": "Pointure 42, portées quelques fois, propres.",
+    "price": 64,
+    "currency": "CHF",
+    "seller": "vendeur196",
+    "location": "Lausanne"
+  },
+  {
+    "id": 1154,
+    "platform": "ricardo",
+    "title": "Tondeuse à gazon — comme neuf",
+    "description": "Tondeuse thermique, fonctionne parfaitement.",
+    "price": 115,
+    "currency": "CHF",
+    "seller": "vendeur269",
+    "location": "Bâle"
+  },
+  {
+    "id": 1168,
+    "platform": "ricardo",
+    "title": "Poussette bébé — neuf",
+    "description": "Poussette pliable avec nacelle, très propre.",
+    "price": 148,
+    "currency": "CHF",
+    "seller": "vendeur662",
+    "location": "Zurich"
+  },
+  {
+    "id": 1185,
+    "platform": "tutti",
+    "title": "Guitare acoustique — occasion",
+    "description": "Guitare folk avec housse et accordeur.",
+    "price": 181,
+    "currency": "CHF",
+    "seller": "vendeur765",
+    "location": "Lausanne"
+  },
+  {
+    "id": 1064,
+    "platform": "ricardo",
+    "title": "Machine à café — neuf",
+    "description": "Machine à expresso automatique, détartrée.",
+    "price": 128,
+    "currency": "CHF",
+    "seller": "vendeur807",
+    "location": "Zurich"
+  },
+  {
+    "id": 1232,
+    "platform": "ricardo",
+    "title": "Bureau d'angle — bon état",
+    "description": "Bureau en bois clair, idéal télétravail.",
+    "price": 90,
+    "currency": "CHF",
+    "seller": "vendeur429",
+    "location": "Zurich"
+  },
+  {
+    "id": 1098,
+    "platform": "tutti",
+    "title": "Poussette bébé — neuf",
+    "description": "Poussette pliable avec nacelle, très propre.",
+    "price": 153,
+    "currency": "CHF",
+    "seller": "vendeur340",
+    "location": "Bâle"
+  },
+  {
+    "id": 1227,
+    "platform": "anibis",
+    "title": "Table en chêne massif — comme neuf",
+    "description": "Belle table de salle à manger, très bon état, à venir chercher.",
+    "price": 106,
+    "currency": "CHF",
+    "seller": "vendeur229",
+    "location": "Fribourg"
+  },
+  {
+    "id": 1142,
+    "platform": "ricardo",
+    "title": "Bureau d'angle — neuf",
+    "description": "Bureau en bois clair, idéal télétravail.",
+    "price": 172,
+    "currency": "CHF",
+    "seller": "vendeur603",
+    "location": "Lausanne"
+  },
+  {
+    "id": 1024,
+    "platform": "anibis",
+    "title": "Réfrigérateur — comme neuf",
+    "description": "Frigo combiné, classe A++, encore sous garantie.",
+    "price": 151,
+    "currency": "CHF",
+    "seller": "vendeur839",
+    "location": "Bâle"
+  },
+  {
+    "id": 1084,
+    "platform": "tutti",
+    "title": "VTT tout suspendu — occasion",
+    "description": "Bon état général, freins à disque, taille L.",
+    "price": 608,
+    "currency": "CHF",
+    "seller": "vendeur515",
+    "location": "Genève"
+  },
+  {
+    "id": 1016,
+    "platform": "anibis",
+    "title": "Veste en cuir — bon état",
+    "description": "Veste homme taille M, cuir véritable, peu portée.",
+    "price": 224,
+    "currency": "CHF",
+    "seller": "vendeur569",
+    "location": "Zurich"
+  },
+  {
+    "id": 1085,
+    "platform": "ricardo",
+    "title": "Barbecue à gaz — très bon état",
+    "description": "Barbecue 3 brûleurs avec housse, peu utilisé.",
+    "price": 340,
+    "currency": "CHF",
+    "seller": "vendeur904",
+    "location": "Sion"
+  },
+  {
+    "id": 1245,
+    "platform": "tutti",
+    "title": "Machine à café — occasion",
+    "description": "Machine à expresso automatique, détartrée.",
+    "price": 103,
+    "currency": "CHF",
+    "seller": "vendeur723",
+    "location": "Bâle"
+  },
+  {
+    "id": 1161,
+    "platform": "tutti",
+    "title": "Set de golf — bon état",
+    "description": "Sac avec clubs complets pour débutant.",
+    "price": 401,
+    "currency": "CHF",
+    "seller": "vendeur193",
+    "location": "Lugano"
+  },
+  {
+    "id": 1202,
+    "platform": "tutti",
+    "title": "Aspirateur robot — très bon état",
+    "description": "Robot aspirateur avec station de charge.",
+    "price": 190,
+    "currency": "CHF",
+    "seller": "vendeur743",
+    "location": "Lausanne"
+  },
+  {
+    "id": 1013,
+    "platform": "anibis",
+    "title": "VTT tout suspendu — bon état",
+    "description": "Bon état général, freins à disque, taille L.",
+    "price": 576,
+    "currency": "CHF",
+    "seller": "vendeur755",
+    "location": "Berne"
+  },
+  {
+    "id": 1153,
+    "platform": "tutti",
+    "title": "Réfrigérateur — neuf",
+    "description": "Frigo combiné, classe A++, encore sous garantie.",
+    "price": 265,
+    "currency": "CHF",
+    "seller": "vendeur763",
+    "location": "Zurich"
+  },
+  {
+    "id": 1173,
+    "platform": "anibis",
+    "title": "Console de jeux — très bon état",
+    "description": "Console avec deux manettes et trois jeux.",
+    "price": 393,
+    "currency": "CHF",
+    "seller": "vendeur594",
+    "location": "Lugano"
+  },
+  {
+    "id": 1086,
+    "platform": "anibis",
+    "title": "Poussette bébé — bon état",
+    "description": "Poussette pliable avec nacelle, très propre.",
+    "price": 252,
+    "currency": "CHF",
+    "seller": "vendeur318",
+    "location": "Lugano"
+  },
+  {
+    "id": 1198,
+    "platform": "anibis",
+    "title": "Casque audio Sony — comme neuf",
+    "description": "Casque sans fil à réduction de bruit, comme neuf.",
+    "price": 181,
+    "currency": "CHF",
+    "seller": "vendeur688",
+    "location": "Bâle"
+  },
+  {
+    "id": 1104,
+    "platform": "tutti",
+    "title": "Télévision 55 pouces — bon état",
+    "description": "TV LED 4K, télécommande et pied inclus.",
+    "price": 582,
+    "currency": "CHF",
+    "seller": "vendeur852",
+    "location": "Berne"
+  },
+  {
+    "id": 1099,
+    "platform": "tutti",
+    "title": "Guitare acoustique — très bon état",
+    "description": "Guitare folk avec housse et accordeur.",
+    "price": 100,
+    "currency": "CHF",
+    "seller": "vendeur241",
+    "location": "Zurich"
+  },
+  {
+    "id": 1072,
+    "platform": "ricardo",
+    "title": "Bureau d'angle — comme neuf",
+    "description": "Bureau en bois clair, idéal télétravail.",
+    "price": 187,
+    "currency": "CHF",
+    "seller": "vendeur458",
+    "location": "Bâle"
+  },
+  {
+    "id": 1095,
+    "platform": "tutti",
+    "title": "Poussette bébé — occasion",
+    "description": "Poussette pliable avec nacelle, très propre.",
+    "price": 209,
+    "currency": "CHF",
+    "seller": "vendeur536",
+    "location": "Lugano"
+  },
+  {
+    "id": 1093,
+    "platform": "ricardo",
+    "title": "Canapé 3 places — occasion",
+    "description": "Canapé tissu gris, confortable, quelques traces d'usage.",
+    "price": 589,
+    "currency": "CHF",
+    "seller": "vendeur968",
+    "location": "Lausanne"
+  },
+  {
+    "id": 1040,
+    "platform": "anibis",
+    "title": "Casque audio Sony — neuf",
+    "description": "Casque sans fil à réduction de bruit, comme neuf.",
+    "price": 176,
+    "currency": "CHF",
+    "seller": "vendeur919",
+    "location": "Lausanne"
+  },
+  {
+    "id": 1156,
+    "platform": "anibis",
+    "title": "Barbecue à gaz — bon état",
+    "description": "Barbecue 3 brûleurs avec housse, peu utilisé.",
+    "price": 376,
+    "currency": "CHF",
+    "seller": "vendeur652",
+    "location": "Lugano"
+  },
+  {
+    "id": 1133,
+    "platform": "tutti",
+    "title": "Bureau d'angle — occasion",
+    "description": "Bureau en bois clair, idéal télétravail.",
+    "price": 158,
+    "currency": "CHF",
+    "seller": "vendeur535",
+    "location": "Sion"
+  },
+  {
+    "id": 1134,
+    "platform": "anibis",
+    "title": "Lot de livres — bon état",
+    "description": "Romans et BD, une cinquantaine de titres.",
+    "price": 39,
+    "currency": "CHF",
+    "seller": "vendeur357",
+    "location": "Berne"
+  },
+  {
+    "id": 8008,
+    "platform": "tutti",
+    "title": "Pistolet à eau XL pour enfants",
+    "description": "Jouet d'été grande capacité, plastique, sans danger.",
+    "price": 309,
+    "currency": "CHF",
+    "seller": "vendeur758",
+    "location": "Sion"
+  },
+  {
+    "id": 1112,
+    "platform": "tutti",
+    "title": "Bureau d'angle — neuf",
+    "description": "Bureau en bois clair, idéal télétravail.",
+    "price": 208,
+    "currency": "CHF",
+    "seller": "vendeur153",
+    "location": "Sion"
+  },
+  {
+    "id": 1181,
+    "platform": "tutti",
+    "title": "Canapé 3 places — très bon état",
+    "description": "Canapé tissu gris, confortable, quelques traces d'usage.",
+    "price": 362,
+    "currency": "CHF",
+    "seller": "vendeur822",
+    "location": "Fribourg"
+  },
+  {
+    "id": 1063,
+    "platform": "ricardo",
+    "title": "Vélo de course — très bon état",
+    "description": "Cadre alu, 18 vitesses, révisé récemment.",
+    "price": 652,
+    "currency": "CHF",
+    "seller": "vendeur664",
+    "location": "Fribourg"
+  },
+  {
+    "id": 1010,
+    "platform": "ricardo",
+    "title": "Barbecue à gaz — neuf",
+    "description": "Barbecue 3 brûleurs avec housse, peu utilisé.",
+    "price": 171,
+    "currency": "CHF",
+    "seller": "vendeur489",
+    "location": "Bâle"
+  },
+  {
+    "id": 1044,
+    "platform": "ricardo",
+    "title": "iPhone 12 64 Go — comme neuf",
+    "description": "Smartphone débloqué, batterie 87%, avec chargeur.",
+    "price": 354,
+    "currency": "CHF",
+    "seller": "vendeur597",
+    "location": "Lugano"
+  },
+  {
+    "id": 1165,
+    "platform": "ricardo",
+    "title": "Tondeuse à gazon — très bon état",
+    "description": "Tondeuse thermique, fonctionne parfaitement.",
+    "price": 348,
+    "currency": "CHF",
+    "seller": "vendeur891",
+    "location": "Fribourg"
+  },
+  {
+    "id": 1129,
+    "platform": "tutti",
+    "title": "Machine à café — neuf",
+    "description": "Machine à expresso automatique, détartrée.",
+    "price": 187,
+    "currency": "CHF",
+    "seller": "vendeur187",
+    "location": "Berne"
+  },
+  {
+    "id": 9012,
+    "platform": "ricardo",
+    "title": "Cartouches de clopes — lot, arrangement possible",
+    "description": "Plusieurs cartouches dispo, paiement cash, je me déplace dans la région.",
+    "price": 57,
+    "currency": "CHF",
+    "seller": "vendeur609",
+    "location": "Fribourg"
+  },
+  {
+    "id": 1182,
+    "platform": "anibis",
+    "title": "Télévision 55 pouces — comme neuf",
+    "description": "TV LED 4K, télécommande et pied inclus.",
+    "price": 218,
+    "currency": "CHF",
+    "seller": "vendeur229",
+    "location": "Sion"
+  },
+  {
+    "id": 1087,
+    "platform": "anibis",
+    "title": "VTT tout suspendu — neuf",
+    "description": "Bon état général, freins à disque, taille L.",
+    "price": 827,
+    "currency": "CHF",
+    "seller": "vendeur779",
+    "location": "Sion"
+  },
+  {
+    "id": 1214,
+    "platform": "ricardo",
+    "title": "Casque audio Sony — comme neuf",
+    "description": "Casque sans fil à réduction de bruit, comme neuf.",
+    "price": 99,
+    "currency": "CHF",
+    "seller": "vendeur411",
+    "location": "Lugano"
+  },
+  {
+    "id": 9011,
+    "platform": "ricardo",
+    "title": "Couteau papillon et matraque télescopique",
+    "description": "Objets prohibés vendus en lot, envoi discret.",
+    "price": 311,
+    "currency": "CHF",
+    "seller": "vendeur396",
+    "location": "Sion"
+  },
+  {
+    "id": 1207,
+    "platform": "tutti",
+    "title": "Bureau d'angle — très bon état",
+    "description": "Bureau en bois clair, idéal télétravail.",
+    "price": 156,
+    "currency": "CHF",
+    "seller": "vendeur923",
+    "location": "Lausanne"
+  },
+  {
+    "id": 1026,
+    "platform": "ricardo",
+    "title": "Console de jeux — occasion",
+    "description": "Console avec deux manettes et trois jeux.",
+    "price": 219,
+    "currency": "CHF",
+    "seller": "vendeur482",
+    "location": "Zurich"
+  },
+  {
+    "id": 1115,
+    "platform": "tutti",
+    "title": "Vélo de course — bon état",
+    "description": "Cadre alu, 18 vitesses, révisé récemment.",
+    "price": 317,
+    "currency": "CHF",
+    "seller": "vendeur677",
+    "location": "Berne"
+  },
+  {
+    "id": 1031,
+    "platform": "tutti",
+    "title": "Tondeuse à gazon — occasion",
+    "description": "Tondeuse thermique, fonctionne parfaitement.",
+    "price": 208,
+    "currency": "CHF",
+    "seller": "vendeur316",
+    "location": "Berne"
+  },
+  {
+    "id": 1077,
+    "platform": "tutti",
+    "title": "Canapé 3 places — neuf",
+    "description": "Canapé tissu gris, confortable, quelques traces d'usage.",
+    "price": 342,
+    "currency": "CHF",
+    "seller": "vendeur453",
+    "location": "Sion"
+  },
+  {
+    "id": 9006,
+    "platform": "anibis",
+    "title": "Viande de brousse importée",
+    "description": "Spécialité importée, viande non contrôlée par les services vétérinaires, congelée.",
+    "price": 490,
+    "currency": "CHF",
+    "seller": "vendeur213",
+    "location": "Bâle"
+  },
+  {
+    "id": 1243,
+    "platform": "ricardo",
+    "title": "Vélo de course — bon état",
+    "description": "Cadre alu, 18 vitesses, révisé récemment.",
+    "price": 310,
+    "currency": "CHF",
+    "seller": "vendeur458",
+    "location": "Sion"
+  },
+  {
+    "id": 1164,
+    "platform": "ricardo",
+    "title": "Télévision 55 pouces — occasion",
+    "description": "TV LED 4K, télécommande et pied inclus.",
+    "price": 432,
+    "currency": "CHF",
+    "seller": "vendeur190",
+    "location": "Sion"
+  },
+  {
+    "id": 1096,
+    "platform": "anibis",
+    "title": "VTT tout suspendu — bon état",
+    "description": "Bon état général, freins à disque, taille L.",
+    "price": 565,
+    "currency": "CHF",
+    "seller": "vendeur869",
+    "location": "Berne"
+  },
+  {
+    "id": 1230,
+    "platform": "tutti",
+    "title": "Aspirateur robot — neuf",
+    "description": "Robot aspirateur avec station de charge.",
+    "price": 386,
+    "currency": "CHF",
+    "seller": "vendeur408",
+    "location": "Lugano"
+  },
+  {
+    "id": 1021,
+    "platform": "anibis",
+    "title": "Aspirateur robot — neuf",
+    "description": "Robot aspirateur avec station de charge.",
+    "price": 315,
+    "currency": "CHF",
+    "seller": "vendeur710",
+    "location": "Lugano"
+  },
+  {
+    "id": 9023,
+    "platform": "tutti",
+    "title": "Couteau à ouverture rapide, lame auto",
+    "description": "Mécanisme à cran, la lame sort toute seule, pièce de collection.",
+    "price": 130,
+    "currency": "CHF",
+    "seller": "vendeur505",
+    "location": "Bâle"
+  },
+  {
+    "id": 1196,
+    "platform": "tutti",
+    "title": "Set de golf — très bon état",
+    "description": "Sac avec clubs complets pour débutant.",
+    "price": 367,
+    "currency": "CHF",
+    "seller": "vendeur806",
+    "location": "Bâle"
+  },
+  {
+    "id": 8002,
+    "platform": "tutti",
+    "title": "Réplique Ferrari échelle 1:18",
+    "description": "Maquette de collection en métal, à exposer en vitrine.",
+    "price": 281,
+    "currency": "CHF",
+    "seller": "vendeur298",
+    "location": "Sion"
+  },
+  {
+    "id": 1046,
+    "platform": "anibis",
+    "title": "Télévision 55 pouces — très bon état",
+    "description": "TV LED 4K, télécommande et pied inclus.",
+    "price": 346,
+    "currency": "CHF",
+    "seller": "vendeur533",
+    "location": "Lugano"
+  },
+  {
+    "id": 1039,
+    "platform": "anibis",
+    "title": "Réfrigérateur — très bon état",
+    "description": "Frigo combiné, classe A++, encore sous garantie.",
+    "price": 360,
+    "currency": "CHF",
+    "seller": "vendeur578",
+    "location": "Genève"
+  },
+  {
+    "id": 1146,
+    "platform": "anibis",
+    "title": "Poussette bébé — bon état",
+    "description": "Poussette pliable avec nacelle, très propre.",
+    "price": 230,
+    "currency": "CHF",
+    "seller": "vendeur539",
+    "location": "Bâle"
+  },
+  {
+    "id": 1188,
+    "platform": "anibis",
+    "title": "Baskets de sport — neuf",
+    "description": "Pointure 42, portées quelques fois, propres.",
+    "price": 52,
+    "currency": "CHF",
+    "seller": "vendeur878",
+    "location": "Lausanne"
+  },
+  {
+    "id": 1029,
+    "platform": "ricardo",
+    "title": "Set de golf — neuf",
+    "description": "Sac avec clubs complets pour débutant.",
+    "price": 398,
+    "currency": "CHF",
+    "seller": "vendeur935",
+    "location": "Lausanne"
+  },
+  {
+    "id": 1019,
+    "platform": "anibis",
+    "title": "Vélo de course — occasion",
+    "description": "Cadre alu, 18 vitesses, révisé récemment.",
+    "price": 293,
+    "currency": "CHF",
+    "seller": "vendeur873",
+    "location": "Genève"
+  },
+  {
+    "id": 1231,
+    "platform": "anibis",
+    "title": "Table en chêne massif — neuf",
+    "description": "Belle table de salle à manger, très bon état, à venir chercher.",
+    "price": 285,
+    "currency": "CHF",
+    "seller": "vendeur536",
+    "location": "Lausanne"
+  },
+  {
+    "id": 1236,
+    "platform": "anibis",
+    "title": "Baskets de sport — bon état",
+    "description": "Pointure 42, portées quelques fois, propres.",
+    "price": 98,
+    "currency": "CHF",
+    "seller": "vendeur508",
+    "location": "Fribourg"
+  },
+  {
+    "id": 1158,
+    "platform": "ricardo",
+    "title": "Aspirateur robot — très bon état",
+    "description": "Robot aspirateur avec station de charge.",
+    "price": 166,
+    "currency": "CHF",
+    "seller": "vendeur334",
+    "location": "Genève"
+  },
+  {
+    "id": 1037,
+    "platform": "ricardo",
+    "title": "Veste en cuir — occasion",
+    "description": "Veste homme taille M, cuir véritable, peu portée.",
+    "price": 245,
+    "currency": "CHF",
+    "seller": "vendeur684",
+    "location": "Lugano"
+  },
+  {
+    "id": 9009,
+    "platform": "ricardo",
+    "title": "Montres de luxe répliques 1:1",
+    "description": "Clones de modèles connus, mouvement automatique, prix imbattable.",
+    "price": 454,
+    "currency": "CHF",
+    "seller": "vendeur713",
+    "location": "Genève"
+  },
+  {
+    "id": 1180,
+    "platform": "anibis",
+    "title": "Baskets de sport — occasion",
+    "description": "Pointure 42, portées quelques fois, propres.",
+    "price": 69,
+    "currency": "CHF",
+    "seller": "vendeur976",
+    "location": "Fribourg"
+  },
+  {
+    "id": 1028,
+    "platform": "anibis",
+    "title": "Casque audio Sony — très bon état",
+    "description": "Casque sans fil à réduction de bruit, comme neuf.",
+    "price": 151,
+    "currency": "CHF",
+    "seller": "vendeur159",
+    "location": "Berne"
+  },
+  {
+    "id": 1140,
+    "platform": "ricardo",
+    "title": "Bureau d'angle — neuf",
+    "description": "Bureau en bois clair, idéal télétravail.",
+    "price": 216,
+    "currency": "CHF",
+    "seller": "vendeur391",
+    "location": "Lugano"
+  },
+  {
+    "id": 1155,
+    "platform": "anibis",
+    "title": "Aspirateur robot — occasion",
+    "description": "Robot aspirateur avec station de charge.",
+    "price": 344,
+    "currency": "CHF",
+    "seller": "vendeur227",
+    "location": "Lugano"
+  },
+  {
+    "id": 1226,
+    "platform": "anibis",
+    "title": "Vélo de course — neuf",
+    "description": "Cadre alu, 18 vitesses, révisé récemment.",
+    "price": 443,
+    "currency": "CHF",
+    "seller": "vendeur702",
+    "location": "Sion"
+  },
+  {
+    "id": 1240,
+    "platform": "ricardo",
+    "title": "Vélo de course — occasion",
+    "description": "Cadre alu, 18 vitesses, révisé récemment.",
+    "price": 800,
+    "currency": "CHF",
+    "seller": "vendeur675",
+    "location": "Sion"
+  },
+  {
+    "id": 1034,
+    "platform": "ricardo",
+    "title": "Set de golf — occasion",
+    "description": "Sac avec clubs complets pour débutant.",
+    "price": 451,
+    "currency": "CHF",
+    "seller": "vendeur325",
+    "location": "Genève"
+  }
+]

@@ -1,0 +1,36 @@
+# Secrets
+credentials.yaml
+.env
+*.key
+*.pem
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+
+# Données locales / runtime
+/data/*
+!/data/rules/
+*.log
+
+# Playwright
+.playwright/
+
+# OS / IDE
+.DS_Store
+.idea/
+
+# docker-composte.everride.yml
+docker-compose.override.yml
+
+# local IDE conf
+.vscode/
+
+# Fichiers de travail internes
+.claude/
+AUDIT_CLAUDE_CODE.md

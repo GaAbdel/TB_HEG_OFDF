@@ -1,0 +1,47 @@
+{
+  "name": "OFDF — Surveillance périodique (Mode A)",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            { "field": "hours", "hoursInterval": 6 }
+          ]
+        }
+      },
+      "id": "schedule-trigger",
+      "name": "Toutes les 6 heures",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [260, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://app:8000/search",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"seeds\": [\"cigarettes\", \"ivoire\", \"alcool fort\"],\n  \"platform\": \"fake_market\",\n  \"base_url\": \"http://fake_market:8000\"\n}",
+        "options": {}
+      },
+      "id": "http-search",
+      "name": "Déclencher une recherche",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [520, 300]
+    }
+  ],
+  "connections": {
+    "Toutes les 6 heures": {
+      "main": [
+        [
+          { "node": "Déclencher une recherche", "type": "main", "index": 0 }
+        ]
+      ]
+    }
+  },
+  "settings": { "executionOrder": "v1" },
+  "meta": {
+    "description": "Surveillance automatique : déclenche périodiquement une recherche (EXPAND -> collecte -> scoring) sur des termes de veille. Mode A = surveillance planifiée et déterministe. À adapter : intervalle, seeds, plateforme cible."
+  }
+}

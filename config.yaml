@@ -1,0 +1,158 @@
+# =============================================================================
+#  config.yaml — Configuration centrale du pipeline
+# -----------------------------------------------------------------------------
+#  Ce fichier règle le service de modèle (via LiteLLM). La topologie est un
+#  simple paramètre : passer de "locale" à "centrale" ne demande que de changer
+#  la ligne "topologie".
+#  Monté en lecture seule dans le conteneur app : modifiable sans reconstruire.
+#  Les secrets ne sont PAS ici ; ils viennent de .env, référencés par ${NOM}.
+# =============================================================================
+
+# --- Topologie active : locale | centrale | cloud ----------------------------
+#  locale   : Ollama sur l'hôte, aucune dépendance externe (défaut)
+#  centrale : serveur interne OFDF (endpoint compatible OpenAI)
+#  cloud    : fournisseur externe (OpenAI, Anthropic...) — déclenche l'avis LPD
+topologie: locale
+
+topologies:
+  locale:
+    api_base: ${OLLAMA_BASE_URL}        # http://host.docker.internal:11434
+    model: ollama/qwen3:8b
+  centrale:
+    api_base: http://serveur-ia-interne:8000/v1
+    model: openai/qwen3-8b              # endpoint compatible OpenAI (vLLM/TGI/Ollama)
+  cloud:
+    api_base: null                      # fournisseur par défaut de LiteLLM
+    model: anthropic/claude-haiku-4-5-20251001   # économique pour le scoring
+
+# --- Modèle par agent (facultatif) -------------------------------------------
+#  Par défaut, chaque agent utilise le modèle de la topologie. On peut en
+#  assigner un différent à un agent en le décommentant ci-dessous.
+per_agent:
+  # LLM-CODE:
+  #   model: ollama/qwen2.5-coder:7b    # modèle orienté code
+  # LLM-SCORE:
+  #   model: ollama/qwen3:8b            # modèle orienté raisonnement
+
+  # LLM-BROWSE pilote la navigation du Mode B. Il n'utilise pas LiteLLM : le
+  # fournisseur est déduit du préfixe du modèle. On adapte ce modèle en une
+  # ligne selon l'infrastructure (cloud, serveur interne, ou Ollama local).
+  LLM-BROWSE:
+    model: anthropic/claude-sonnet-4-6         # ou claude-haiku-4-5-20251001 (moins cher)
+  #   Serveur interne OFDF :
+  #   LLM-BROWSE:
+  #     model: openai/<nom-du-modele>
+  #     api_base: http://serveur-ia-interne:8000/v1
+  #   Local via Ollama :
+  #   LLM-BROWSE:
+  #     model: ollama/qwen3:8b
+  #     api_base: ${OLLAMA_BASE_URL}
+
+# --- Embeddings multilingues (FR/DE) -----------------------------------------
+#  Modèle léger (via fastembed), pour limiter la mémoire utilisée en dev.
+embeddings:
+  model: intfloat/multilingual-e5-large   # multilingue FR/DE, dimension 1024
+  dimension: 1024
+  query_prefix: "query: "                 # préfixes requis par les modèles e5
+  passage_prefix: "passage: "
+  cache_dir: /app/models                  # modèle conservé sur un volume
+
+# --- Clé du modèle (valeur réelle dans .env) ---------------------------------
+modele:
+  api_key: ${LLM_API_KEY}              # vide en local ; renseignée en cloud
+
+# --- Garde-fou LPD -----------------------------------------------------------
+#  Le mode cloud envoie des données à un tiers : consentement explicite exigé.
+lpd:
+  exiger_consentement_cloud: true
+
+# --- RAG (récupération de règles douanières) ---------------------------------
+rag:
+  top_k: 3                 # nombre maximal de règles ajoutées au prompt
+  score_threshold: 0.80    # similarité minimale ; écarte le bruit
+
+# --- Collecte (Mode A) -------------------------------------------------------
+collecte:
+  budget_actions: 40          # plafond d'actions par session
+  concurrence_max: 4          # pages Chromium simultanées
+  timeout_page_s: 30
+  # Domaines autorisés en Mode A (surveillance)
+  allowlist:
+    - ricardo.ch
+    - anibis.ch
+    - tutti.ch
+  # Chemins toujours interdits (Mode A et B)
+  blocklist:
+    - login
+    - signin
+    - checkout
+    - payment
+    - paiement
+
+# --- Qdrant (mémoire sémantique) ---------------------------------------------
+qdrant:
+  host: qdrant
+  port: 6333
+  collections:
+    customs_rules: customs_rules                # règles douanières (statique)
+    confirmed_suspicious: confirmed_suspicious  # cas validés (ajout différé)
+
+# --- PostgreSQL (mémoire épisodique) -----------------------------------------
+postgres:
+  host: postgres
+  port: 5432
+  db: ${POSTGRES_DB}
+  user: ${POSTGRES_USER}
+  # mot de passe : ${POSTGRES_PASSWORD} (dans .env, non versionné)
+
+# --- Mode B : exploration ----------------------------------------------------
+# La liste ci-dessous fixe les sites autorisés. L'enquêteur choisit PARMI eux ;
+# il ne peut pas l'étendre. Ajouter un site est une action d'administration
+# (modification de ce fichier).
+# Grandes plateformes (Ricardo, Tutti, Anibis) : traitées en Mode A. Petits
+# sites : trop nombreux pour un extracteur chacun, donc explorés en Mode B.
+mode_b:
+  sites_autorises:
+    # -- Sites de démonstration --
+    - label: "Site démo v1 — Brocante Léman (Démo)"
+      base_url: "http://mock_shop:8000/v1"
+      platform: "mock_shop"
+    - label: "Site démo v2 — Brocante Léman (Démo)"
+      base_url: "http://mock_shop:8000/v2"
+      platform: "mock_shop"
+    - label: "Marché de test — fake_market (Démo)"
+      base_url: "http://fake_market:8000"
+      platform: "fake_market"
+
+    # -- Petits sites réels (cible du Mode B) --
+    - label: "ToutYPasse Suisse"
+      base_url: "https://www.toutypasse.ch"
+      platform: "toutypasse"
+    - label: "Topannonces"
+      base_url: "https://topannonces.ch"
+      platform: "topannonces"
+    - label: "Trovas"
+      base_url: "https://trovas.ch"
+      platform: "trovas"
+    - label: "SuisseRomande"
+      base_url: "https://suisseromande.com"
+      platform: "suisseromande"
+  # Mode B-2 (recherche autonome de sites) : verrou, désactivé par défaut.
+  # Son activation relève de l'administrateur OFDF. Tant que false, la recherche
+  # autonome est refusée et l'action de recherche web est exclue de l'agent.
+  autonomous_search_enabled: false
+
+# --- Réparation de code par LLM-CODE (verrou, comme le Mode B-2) --------------
+#  Concerne les extracteurs écrits en code (.py). Désactivé par défaut :
+#  générer du code franchit la limite d'auditabilité. Activation = décision de
+#  l'administrateur OFDF. Même activé, le code proposé n'est JAMAIS exécuté par
+#  l'application : il est déposé dans "proposals_dir", relu, puis installé à la
+#  main par un développeur.
+code_repair:
+  enabled: false
+  proposals_dir: "data/extractor_proposals"
+  # Si true, le code proposé est exécuté dans un sous-processus isolé (avec délai
+  # maximal) pour vérifier qu'il se charge et respecte l'interface, et corrigé en
+  # boucle. Ce contrôle ne remplace pas une isolation de sécurité complète.
+  validate: true
+  max_iters: 3
