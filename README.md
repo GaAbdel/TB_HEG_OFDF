@@ -78,7 +78,7 @@ cp .env.example .env
 #    Éditer .env : POSTGRES_PASSWORD et ADMIN_PASSWORD sont requis.
 #    En mode cloud, renseigner aussi LLM_API_KEY (ex. clé Anthropic « sk-ant-... »,
 #    sans guillemets). En mode local, LLM_API_KEY reste vide.
-#    ⚠️  Sous Windows, vérifier que le fichier s'appelle bien « .env » et non
+#    /!\  Sous Windows, vérifier que le fichier s'appelle bien « .env » et non
 #    « .env.txt » : ls -la .env
 
 # 2. Construction et démarrage du noyau (postgres + qdrant + app)
@@ -89,7 +89,7 @@ docker compose up -d --build
 # 3. Provisionnement de la base vectorielle (RAG), une seule fois
 docker compose exec app python scripts/init_qdrant.py    # crée les collections
 docker compose exec app python scripts/ingest_rules.py   # charge data/rules/*.md
-#    ⚠️  Au premier « ingest_rules », le modèle d'embeddings (~2,25 Go) se
+#    /!\  Au premier « ingest_rules », le modèle d'embeddings (~2,25 Go) se
 #    télécharge : l'étape peut sembler figée plusieurs minutes. C'est normal,
 #    laisser terminer. Le corpus de règles doit être présent dans data/rules/.
 
@@ -124,6 +124,23 @@ vaut 0, relancer `ingest_rules.py` et vérifier le contenu de `data/rules/`.
 | `src/` (code) | `docker compose up -d --build app` (reconstruit l'image) |
 | `data/rules/` | `docker compose exec app python scripts/ingest_rules.py` |
 
+## Démonstration sur les marchés fictifs (profil `dev`)
+
+Les plateformes de test `fake_market` et `mock_shop` ne font **pas** partie du
+cœur de production : elles sont isolées dans le profil `dev`. Toute recherche de
+démonstration qui les vise exige donc de démarrer la pile avec ce profil :
+
+```bash
+docker compose --profile dev up -d --build
+```
+
+Sans ce profil, une recherche Mode A sur `fake_market` (ou `mock_shop`) échoue
+avec `net::ERR_NAME_NOT_RESOLVED` : le conteneur du marché fictif n'est pas
+démarré, son nom d'hôte n'est donc pas résolu sur le réseau Docker.
+
+En Git Bash / Linux / macOS, le script `./start.sh --dev` réalise ce démarrage
+en une commande.
+
 ## Exécution hôte (démonstration LLM-BROWSE en navigateur visible)
 
 La quasi-totalité du système tourne dans Docker : aucun environnement Python
@@ -149,10 +166,15 @@ PYTHONPATH=src python scripts/demo_soutenance.py
 
 ## Profils de déploiement
 
-Le profil par défaut ne démarre que le cœur (`postgres`, `qdrant`, `app`).
+Le profil par défaut ne démarre que le cœur (`postgres`, `qdrant`, `app`). Les
+marchés fictifs et la planification sont isolés dans des profils séparés, pour
+ne jamais tourner en production sans décision explicite.
 
 ```bash
-# Environnements de démonstration (marchés fictifs, ports hôte 8001 et 8002)
+# Cœur seul (production)
+docker compose up -d --build
+
+# Démonstration : cœur + marchés fictifs (ports hôte 8001 et 8002)
 docker compose --profile dev up -d --build
 
 # Planification par n8n
@@ -186,9 +208,11 @@ Un modèle distinct peut être attribué à chaque agent via le bloc `per_agent`
 |---|---|---|
 | `.env not found` au `up` | Étape 1 non faite | `cp .env.example .env` |
 | `service "app" is not running` | Pile non démarrée | `docker compose up -d --build` puis `docker compose ps` |
+| `net::ERR_NAME_NOT_RESOLVED` sur `fake_market`/`mock_shop` | Marché fictif non démarré (profil `dev`) | `docker compose --profile dev up -d` |
 | `Aucun fichier .md dans /app/data/rules` | `data/` non monté ou corpus absent | Vérifier le montage `./data:/app/data` (compose) et le contenu de `data/rules/` |
 | `model` KO, `topologie=locale` | Ollama non démarré | Lancer Ollama, `ollama list` doit montrer `qwen3:8b` |
 | `model` KO en cloud | Clé absente / config non rechargée | Vérifier `LLM_API_KEY` et `topologie: cloud`, puis `docker compose up -d app` |
+| `'ascii' codec can't encode` à l'appel du modèle | Clé d'API absente ou caractère parasite dans `.env` | Vérifier `LLM_API_KEY` (`grep LLM_API_KEY .env`) |
 | Score toujours nul | RAG vide | `ingest_rules.py` ; vérifier `points_count` |
 | Changement de `config.yaml` sans effet | Conteneur non recréé | `docker compose up -d app` |
 
