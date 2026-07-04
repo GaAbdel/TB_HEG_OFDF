@@ -15,12 +15,22 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --upgrade pip && pip install -r requirements.txt
 
+# Outils de développement et de test (dépôt académique : tests reproductibles
+# depuis le conteneur, sans installation hôte).
+RUN pip install pytest==8.3.4 ruff==0.8.4
+
 # 2) Navigateur Playwright (Chromium) + dépendances système, lisibles par tous
 RUN playwright install --with-deps chromium && chmod -R a+rX /ms-playwright
 
 # 3) Code applicatif
 COPY src/ ./src/
 COPY scripts/ ./scripts/
+COPY tests/ ./tests/
+# Marchés fictifs : requis par la suite de tests (fixtures d'extraction et de
+# navigation) et par le profil « dev ». Copiés pour que pytest s'exécute dans
+# le conteneur exactement comme depuis la racine du dépôt.
+COPY fake_market/ ./fake_market/
+COPY mock_shop/ ./mock_shop/
 # config.yaml et prompts/ sont MONTÉS en lecture seule (cf. docker-compose),
 # pas copiés : modifiables sans rebuild.
 
