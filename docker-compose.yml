@@ -54,9 +54,15 @@ services:
     environment:
       OSINT_CONFIG: /app/config.yaml
     volumes:
-      # Montés en lecture seule => modifiables sans rebuild (4.1.3)
+      # Montés en lecture seule : modifiables sans reconstruire l'image
       - ./config.yaml:/app/config.yaml:ro
       - ./prompts:/app/prompts:ro
+      # Données de l'application : le corpus de règles lu par ingest_rules.py,
+      # ainsi que les fichiers écrits par l'application (journaux d'audit,
+      # propositions de LLM-CODE, résultats d'évaluation). Monté depuis l'hôte
+      # plutôt qu'intégré à l'image : les données sont conservées après une
+      # reconstruction et restent consultables depuis l'hôte .
+      - ./data:/app/data
       - models_cache:/app/models           # cache du modèle d'embeddings (e5)
     ports:
       - "${APP_PORT:-8000}:8000"
