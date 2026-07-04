@@ -108,11 +108,14 @@ docker compose exec app python scripts/smoke_test.py
 
 ### Vérifier que le RAG est bien peuplé (recommandé)
 
+Qdrant n'est pas exposé sur l'hôte (accessible uniquement sur le réseau Docker) :
+la vérification se fait donc depuis le conteneur `app`.
+
 ```bash
-curl -s http://localhost:6333/collections/customs_rules | grep -o '"points_count":[0-9]*'
+docker compose exec app python -c "from qdrant_client import QdrantClient; c=QdrantClient(host='qdrant', port=6333); print('points:', c.get_collection('customs_rules').points_count)"
 ```
 
-Un `points_count` supérieur à zéro confirme que les règles sont ingérées. S'il
+Un nombre de points supérieur à zéro confirme que les règles sont ingérées. S'il
 vaut 0, relancer `ingest_rules.py` et vérifier le contenu de `data/rules/`.
 
 ### Prise en compte des modifications
