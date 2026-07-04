@@ -9,40 +9,143 @@ jamais des décisions : la validation reste à l'enquêteur, et chaque étape es
 
 Version : 0.9.0
 
-## Prérequis
+## Démarrage automatisé (recommandé)
 
-- Docker et Docker Compose
-- Pour la topologie locale (par défaut) : Ollama installé sur l'hôte, avec le
-  modèle `qwen3:8b` (`ollama pull qwen3:8b`). Les conteneurs l'atteignent via
-  `host.docker.internal`.
-
-## Démarrage rapide
+Un script de démarrage prépare tout en une commande : création du `.env`,
+construction et démarrage de la pile, attente de l'API, provisionnement du RAG,
+puis vérification. Il ne dispense pas d'installer les prérequis (Docker ; Ollama
+en mode local — voir ci-dessous).
 
 ```bash
-# 1. Configuration des secrets (jamais versionnés)
+# Windows (PowerShell, aucune dépendance) :
+powershell -ExecutionPolicy Bypass -File .\start.ps1
+#   ajouter -Dev pour inclure les marchés de démonstration
+
+# Git Bash / Linux / macOS :
+./start.sh          # ou ./start.sh --dev
+```
+
+La procédure manuelle détaillée ci-dessous reste valable pour qui veut
+comprendre ou contrôler chaque étape.
+
+## Prérequis logiciels
+
+Installer et démarrer **avant** toute autre étape :
+
+- **Docker Desktop** (fournit `docker` et `docker compose`), lancé et actif.
+- **Selon le mode de modèle choisi** (voir la section « Choix du fournisseur de
+  modèle » ci-dessous) :
+  - *mode local* : **Ollama** installé sur l'hôte, avec le modèle `qwen3:8b`
+    (`ollama pull qwen3:8b`, ~5 Go). Ollama doit tourner pendant l'utilisation.
+  - *mode cloud* : une **clé d'API** du fournisseur (p. ex. Anthropic). Aucune
+    installation d'Ollama requise.
+
+## Choix du fournisseur de modèle (local ou cloud)
+
+Le système fonctionne avec un modèle **local** (souveraineté des données, défaut)
+ou **cloud** (aucune installation, plus rapide selon la machine). Ce choix se fait
+dans `config.yaml`, champ `topologie`, et détermine ce qu'il faut préparer.
+
+| Mode | `topologie` | À préparer | Données transmises à un tiers |
+|---|---|---|---|
+| **Local** (défaut) | `locale` | Ollama + `qwen3:8b` sur l'hôte | Aucune |
+| **Cloud** | `cloud` | `LLM_API_KEY` dans `.env` | Oui — déclenche l'avis LPD |
+
+Un modèle **différent par agent** est possible via le bloc `per_agent` de
+`config.yaml` : par exemple LLM-SCORE en local et LLM-BROWSE en cloud.
+
+> **Important (souveraineté / LPD).** Router ne serait-ce qu'**un seul agent**
+> vers un fournisseur cloud (via `per_agent`) constitue déjà une transmission de
+> données à un tiers, **même si `topologie` reste `locale`**. En contexte OFDF,
+> toute bascule cloud doit être un choix conscient et journalisé. Pour une
+> souveraineté totale, garder `topologie: locale` et aucun agent routé en cloud.
+
+Basculer le système entier en cloud (p. ex. pour une démonstration) :
+
+```yaml
+# config.yaml
+topologie: cloud     # au lieu de "locale"
+```
+
+et renseigner `LLM_API_KEY` dans `.env`. Toute modification de `config.yaml`
+ou de `.env` exige de **recréer le conteneur** : `docker compose up -d app`.
+
+## Installation pas à pas
+
+```bash
+# 1. Secrets et paramètres (jamais versionnés)
 cp .env.example .env
-#    Renseigner dans .env : POSTGRES_PASSWORD, ADMIN_PASSWORD,
-#    LLM_API_KEY (si topologie distante), APP_PORT, etc.
+#    Éditer .env : POSTGRES_PASSWORD et ADMIN_PASSWORD sont requis.
+#    En mode cloud, renseigner aussi LLM_API_KEY (ex. clé Anthropic « sk-ant-... »,
+#    sans guillemets). En mode local, LLM_API_KEY reste vide.
+#    ⚠️  Sous Windows, vérifier que le fichier s'appelle bien « .env » et non
+#    « .env.txt » : ls -la .env
 
-# 2. Construction et démarrage (profil par défaut : postgres, qdrant, app)
+# 2. Construction et démarrage du noyau (postgres + qdrant + app)
 docker compose up -d --build
-#    Le schéma PostgreSQL est créé automatiquement au premier démarrage
-#    (sql/init.sql), lors de la création du volume postgres_data.
+#    Le schéma PostgreSQL est créé automatiquement au premier démarrage.
+#    Le premier build est long (dépendances Python + navigateur Playwright).
 
-# 3. Provisionnement du RAG (obligatoire, une seule fois)
-docker compose exec app python scripts/init_qdrant.py
-docker compose exec app python scripts/ingest_rules.py
+# 3. Provisionnement de la base vectorielle (RAG), une seule fois
+docker compose exec app python scripts/init_qdrant.py    # crée les collections
+docker compose exec app python scripts/ingest_rules.py   # charge data/rules/*.md
+#    ⚠️  Au premier « ingest_rules », le modèle d'embeddings (~2,25 Go) se
+#    télécharge : l'étape peut sembler figée plusieurs minutes. C'est normal,
+#    laisser terminer. Le corpus de règles doit être présent dans data/rules/.
 
-# 4. Accès
+# 4. Vérification du déploiement
+docker compose exec app python scripts/smoke_test.py
+#    Doit afficher la topologie active et « OK » pour postgres, qdrant ET model.
+#    Si « model » est KO : en local, vérifier qu'Ollama tourne (ollama list) ;
+#    en cloud, vérifier LLM_API_KEY et que config.yaml est bien en « cloud »
+#    (puis « docker compose up -d app » pour recharger).
+
+# 5. Accès
 #    Interface enquêteur      : http://localhost:8000/ui
 #    Console d'administration : http://localhost:8000/admin   (ADMIN_PASSWORD requis)
 #    Documentation d'API      : http://localhost:8000/docs
 ```
 
-> **Important.** Le code applicatif est intégré à l'image lors de sa construction
-> (il n'est pas monté à chaud). Après toute modification de `src/`, reconstruire :
-> `docker compose up -d --build app`. Seuls `config.yaml` et `prompts/` sont montés
-> en lecture seule et prennent effet par simple `docker compose restart app`.
+### Vérifier que le RAG est bien peuplé (recommandé)
+
+```bash
+curl -s http://localhost:6333/collections/customs_rules | grep -o '"points_count":[0-9]*'
+```
+
+Un `points_count` supérieur à zéro confirme que les règles sont ingérées. S'il
+vaut 0, relancer `ingest_rules.py` et vérifier le contenu de `data/rules/`.
+
+### Prise en compte des modifications
+
+| Fichier modifié | Commande pour appliquer |
+|---|---|
+| `config.yaml`, `.env` | `docker compose up -d app` (recrée le conteneur) |
+| `prompts/` | `docker compose restart app` |
+| `src/` (code) | `docker compose up -d --build app` (reconstruit l'image) |
+| `data/rules/` | `docker compose exec app python scripts/ingest_rules.py` |
+
+## Exécution hôte (démonstration LLM-BROWSE en navigateur visible)
+
+La quasi-totalité du système tourne dans Docker : aucun environnement Python
+local n'est requis. **Seule exception** : les scripts qui ouvrent un navigateur
+*visible* (`scripts/demo_soutenance.py`, `scripts/browse_demo.py`) doivent
+s'exécuter sur l'hôte, car le conteneur `app` n'a pas d'affichage graphique.
+
+Préparer l'environnement hôte une seule fois :
+
+```bash
+python -m venv .venv
+source .venv/Scripts/activate      # Windows / Git Bash ; Linux/macOS : source .venv/bin/activate
+pip install -r requirements.txt
+playwright install chromium
+export LLM_API_KEY=...              # LLM-BROWSE peut viser un fournisseur cloud
+```
+
+Puis, environnement activé :
+
+```bash
+PYTHONPATH=src python scripts/demo_soutenance.py
+```
 
 ## Profils de déploiement
 
@@ -77,6 +180,18 @@ sans modification de code :
 
 Un modèle distinct peut être attribué à chaque agent via le bloc `per_agent`.
 
+## Résolution des problèmes courants
+
+| Symptôme | Cause probable | Action |
+|---|---|---|
+| `.env not found` au `up` | Étape 1 non faite | `cp .env.example .env` |
+| `service "app" is not running` | Pile non démarrée | `docker compose up -d --build` puis `docker compose ps` |
+| `Aucun fichier .md dans /app/data/rules` | `data/` non monté ou corpus absent | Vérifier le montage `./data:/app/data` (compose) et le contenu de `data/rules/` |
+| `model` KO, `topologie=locale` | Ollama non démarré | Lancer Ollama, `ollama list` doit montrer `qwen3:8b` |
+| `model` KO en cloud | Clé absente / config non rechargée | Vérifier `LLM_API_KEY` et `topologie: cloud`, puis `docker compose up -d app` |
+| Score toujours nul | RAG vide | `ingest_rules.py` ; vérifier `points_count` |
+| Changement de `config.yaml` sans effet | Conteneur non recréé | `docker compose up -d app` |
+
 ## Évaluation
 
 ```bash
@@ -84,39 +199,17 @@ docker compose exec app python scripts/evaluate.py
 ```
 
 Compare le pipeline (LLM + RAG) à une référence par mots-clés sur le jeu de
-284 annonces annotées de `fake_market/`. Produit `data/eval/results.json` et
-`data/eval/metrics.json`. Le graphique de séparation se régénère en local :
-`python scripts/plot_scores.py`.
+284 annonces annotées. Produit `data/eval/results.json` et `data/eval/metrics.json`.
 
 ## Tests
 
 ```bash
-PYTHONPATH=src pytest      # en local, depuis la racine
+docker compose exec app python -m pytest -q
 ```
 
 Couvrent extraction, garde-fous, validation de schéma, chaînage du journal
 d'audit et points d'entrée de l'API, sur fixtures HTML statiques, sans réseau
 ni appel de modèle.
-
-## Structure du dépôt
-
-```
-src/osint/        Code applicatif
-  collecte/         Extracteurs, garde-fous, session navigateur
-  analyse/          Agents LLM (expand, parse, score, code, browse), RAG
-  orchestration/    Pipeline (Mode A) et exploration (Mode B)
-  persistance/      Accès PostgreSQL, journal d'audit
-  api/              API FastAPI, console d'administration
-  visualisation/    Interfaces HTML, rapports
-prompts/          Prompts versionnés (un fichier par agent)
-sql/init.sql      Schéma PostgreSQL (auto-exécuté au premier démarrage)
-scripts/          Provisionnement, évaluation, démonstrations
-fake_market/      Marché fictif + jeu d'évaluation annoté
-mock_shop/        Marché fictif à sélecteurs (démo réparation)
-n8n/workflows/    Workflows de planification
-tests/            Suite de tests
-docker/           Dockerfile de l'application
-```
 
 ## Sécurité et confidentialité
 
@@ -125,4 +218,4 @@ docker/           Dockerfile de l'application
 - Journal d'audit scellé par chaînage de hachage : altération détectable.
 - Console d'administration désactivée si `ADMIN_PASSWORD` n'est pas défini.
 
-Architecture détaillée et exploitation : voir `DOCUMENTATION.md`.
+Architecture détaillée et exploitation : voir `documentation.md`.
