@@ -224,14 +224,40 @@ class Config:
             self.get("lpd", "exiger_consentement_cloud", default=True)
         )
 
-    def assert_lpd_compliance(self, consentement_cloud: bool = False) -> None:
-        """Bloque le démarrage en topologie cloud tant qu'un consentement explicite
-        n'a pas été fourni (souveraineté des données)."""
-        if self.cloud_consent_required() and not consentement_cloud:
+    def assert_lpd_compliance(
+        self,
+        consentement_cloud: bool = False,
+        agents: list[str] | None = None,
+    ) -> None:
+        """Bloque l'exécution qui transmettrait des données à un fournisseur tiers
+        sans consentement explicite (souveraineté des données, art. 34 LPD).
+
+        Deux niveaux de détection, cumulés :
+          - topologie globale « cloud » ;
+          - `agents` : chaque agent est contrôlé INDIVIDUELLEMENT via
+            `is_third_party_transfer`, ce qui couvre le routage `per_agent` (un
+            seul agent, ex. LLM-BROWSE, peut sortir dans le cloud alors que la
+            topologie globale reste « locale »).
+        """
+        # Le garde-fou peut être désactivé explicitement en configuration.
+        if not self.get("lpd", "exiger_consentement_cloud", default=True):
+            return
+
+        # Détection des transferts vers un tiers, avec le fournisseur concerné.
+        cibles: list[str] = []
+        if self.topologie == "cloud":
+            provider = self.resolve_model().model.split("/", 1)[0]
+            cibles.append(f"topologie=cloud ({provider})")
+        for agent in agents or []:
+            if self.is_third_party_transfer(agent):
+                provider = self.resolve_model(agent).model.split("/", 1)[0]
+                cibles.append(f"{agent} ({provider})")
+
+        if cibles and not consentement_cloud:
+            detail = ", ".join(dict.fromkeys(cibles))  # dédupliqué, ordre stable
             raise ConfigError(
-                "GARDE-FOU LPD : la topologie 'cloud' transmet des données a "
-                "un fournisseur tiers. Démarrage bloqué : un consentement explicite "
-                "est requis."
+                "Attention : traitement dans le cloud — les données sont "
+                f"transmises à un fournisseur tiers ({detail})."
             )
 
 

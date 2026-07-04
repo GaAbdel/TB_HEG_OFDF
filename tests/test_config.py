@@ -99,10 +99,30 @@ def test_lpd_guard_blocks_cloud(monkeypatch):
     raw["topologie"] = "cloud"
     cfg = Config(raw)
     assert cfg.cloud_consent_required() is True
-    with pytest.raises(ConfigError, match="GARDE-FOU LPD"):
+    with pytest.raises(ConfigError, match="fournisseur tiers"):
         cfg.assert_lpd_compliance(consentement_cloud=False)
     # accepté explicitement -> ne lève pas
     cfg.assert_lpd_compliance(consentement_cloud=True)
+
+
+def test_lpd_guard_per_agent_blocks(monkeypatch):
+    """Détection PAR AGENT : un seul agent routé cloud déclenche le blocage,
+    même en topologie locale (couverture du routage per_agent)."""
+    import yaml
+
+    raw = yaml.safe_load(YAML)
+    raw["topologie"] = "locale"
+    raw["per_agent"] = {"LLM-BROWSE": {"model": "anthropic/claude-haiku-4-5-20251001"}}
+    cfg = Config(raw)
+    # La topologie globale reste locale...
+    assert cfg.cloud_consent_required() is False
+    # ...mais l'agent LLM-BROWSE sort en cloud : blocage sans consentement.
+    with pytest.raises(ConfigError, match="fournisseur tiers"):
+        cfg.assert_lpd_compliance(consentement_cloud=False, agents=["LLM-BROWSE"])
+    # consentement fourni -> passe
+    cfg.assert_lpd_compliance(consentement_cloud=True, agents=["LLM-BROWSE"])
+    # un agent local (LLM-SCORE, hérite de la topologie locale) ne bloque pas
+    cfg.assert_lpd_compliance(consentement_cloud=False, agents=["LLM-SCORE"])
 
 
 def test_lpd_guard_local_ok(monkeypatch):
