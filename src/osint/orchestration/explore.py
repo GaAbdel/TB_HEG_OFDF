@@ -74,7 +74,8 @@ def _parse_browse_result(cfg: "Config", raw_text: str, url: str) -> list[dict]:
     return [d for d in data if isinstance(d, dict) and d.get("title")]
 
 
-def _run_browse_isolated(cfg: "Config", url: str, max_steps: int) -> dict:
+def _run_browse_isolated(cfg: "Config", url: str, max_steps: int, focus: str = "",
+                         generated_terms: list[str] | None = None) -> dict:
     """Exécute run_browse (async) dans une boucle d'évènements ISOLÉE.
 
     Le pipeline d'exploration est appelé, côté API, depuis _execute_job qui a
@@ -92,7 +93,9 @@ def _run_browse_isolated(cfg: "Config", url: str, max_steps: int) -> dict:
 
     def _worker() -> None:
         try:
-            box["result"] = asyncio.run(run_browse(cfg, url, max_steps=max_steps))
+            box["result"] = asyncio.run(run_browse(
+                cfg, url, max_steps=max_steps, focus=focus,
+                generated_terms=generated_terms or []))
         except BaseException as exc:  # noqa: BLE001 - remonté au thread appelant
             box["error"] = exc
 
@@ -104,9 +107,10 @@ def _run_browse_isolated(cfg: "Config", url: str, max_steps: int) -> dict:
     return box["result"]
 
 
-def _default_explorer(cfg: "Config", url: str, max_steps: int) -> list[dict]:
+def _default_explorer(cfg: "Config", url: str, max_steps: int, focus: str = "",
+                      generated_terms: list[str] | None = None) -> list[dict]:
     """Explorateur réel : LLM-BROWSE puis structuration. Validé en conditions réelles."""
-    result = _run_browse_isolated(cfg, url, max_steps)
+    result = _run_browse_isolated(cfg, url, max_steps, focus, generated_terms)
     return _parse_browse_result(cfg, result.get("result") or "", url)
 
 
@@ -116,7 +120,7 @@ def run_explore_pipeline(
     sites: list[dict],
     depth: str = "standard",
     focus: str = "",
-    explorer: Callable[["Config", str, int], list[dict]] | None = None,
+    explorer: Callable[..., list[dict]] | None = None,
 ) -> dict:
     """Explore des sites AUTORISÉS (Mode B-1) et persiste/score les annonces.
 
@@ -127,18 +131,28 @@ def run_explore_pipeline(
     _t0 = time.monotonic()
     max_steps = DEPTH_STEPS.get(depth, DEPTH_STEPS["standard"])
 
-    # Focus optionnel (Mode B-1) : si l'enquêteur précise une cible, on en dérive
-    # les catégories visées via LLM-EXPAND — SANS toucher au comportement de
-    # BROWSE (qui explore toujours librement). Ces catégories pilotent seulement
-    # le tri à deux niveaux du rapport (comme en Mode A). Au mieux : une panne
-    # d'EXPAND ne doit jamais empêcher l'exploration.
+    # Focus optionnel (Mode B-1) : si l'enquêteur précise une cible, LLM-EXPAND
+    # en dérive la/les catégorie(s) ET des formulations associées. Ces éléments
+    # ORIENTENT prioritairement LLM-BROWSE (exemples non limitatifs, sans filtre
+    # littéral ni exclusif) et pilotent le tri à deux niveaux du rapport. C'est
+    # l'enquêteur qui déclenche cette orientation ; sans focus, l'exploration
+    # reste libre. Au mieux : une panne d'EXPAND n'empêche jamais l'exploration.
     target_categories: list[str] = []
+    generated_terms: list[str] = []
     if focus.strip():
         try:
             from osint.analyse.expander import expand_terms
-            target_categories = expand_terms(cfg, focus.strip()).get("categories", []) or []
+            expanded = expand_terms(cfg, focus.strip())
+            target_categories = expanded.get("categories", []) or []
+            # Termes élargis par LLM-EXPAND (ivoire, écaille…) : conservés pour
+            # ORIENTER l'exploration comme EXEMPLES non limitatifs (pas comme
+            # filtre littéral) et tracés dans le run.
+            generated_terms = list(dict.fromkeys(
+                str(t).strip() for t in (expanded.get("terms", []) or []) if str(t).strip()
+            ))[:10]   # cap : au-delà, contre-productif vu le budget d'actions
         except Exception:
             target_categories = []
+            generated_terms = []
     retriever = QdrantRuleRetriever.from_config(cfg)
     score_model = cfg.resolve_model("LLM-SCORE").model
 
@@ -148,9 +162,11 @@ def run_explore_pipeline(
             params={
                 "sites": [s.get("label") for s in sites],
                 "depth": depth,
+                "mode": "B1",
                 "mode_b": "exploration",
                 "seeds": [focus.strip()] if focus.strip() else [],
                 "target_categories": target_categories,
+                "generated_terms": generated_terms,
             },
             config_snapshot={"sites": sites, "depth": depth},
         )
@@ -164,9 +180,24 @@ def run_explore_pipeline(
         par_categorie: dict[str, int] = {}
         par_site: dict[str, int] = {}
 
+        # Kwargs d'orientation supportés par l'explorateur (calculé UNE fois).
+        # Rétrocompatibilité : un explorateur injecté (tests) peut n'accepter que
+        # (cfg, url, max_steps) ; on ne lui passe focus/generated_terms que s'il
+        # les déclare. L'explorateur réel les propage jusqu'à LLM-BROWSE.
+        import inspect
+        try:
+            _sig = inspect.signature(explorer).parameters
+        except (TypeError, ValueError):
+            _sig = {}
+        _explore_kwargs: dict = {}
+        if "focus" in _sig:
+            _explore_kwargs["focus"] = focus.strip()
+        if "generated_terms" in _sig:
+            _explore_kwargs["generated_terms"] = generated_terms
+
         for site in sites:
             pid = get_or_create_platform(conn, site["platform"], site["base_url"])
-            listings = explorer(cfg, site["base_url"], max_steps) or []
+            listings = explorer(cfg, site["base_url"], max_steps, **_explore_kwargs) or []
             par_site[site.get("label", site["platform"])] = len(listings)
             collected += len(listings)
             for it in listings:
@@ -201,6 +232,7 @@ def run_explore_pipeline(
                         par_categorie[cat] = par_categorie.get(cat, 0) + 1
 
         etapes = {
+            "expand": {"categories": target_categories, "termes": len(generated_terms)},
             "exploration": {"sites": par_site, "profondeur": depth},
             "collecte": {"annonces": collected},
             "scoring": {"scorees": scored, "alertes": alertes, "par_categorie": par_categorie},

@@ -55,15 +55,74 @@ def _lien_public(url: str) -> str:
     return url
 
 
+def _bloc_scoring(sco: dict) -> str:
+    """Phrase de synthèse du scoring, commune aux deux modes."""
+    alertes = sco.get("alertes", 0)
+    detail = sco.get("par_categorie") or {}
+    if detail:
+        rep = ", ".join(f"{n} {CATEGORIES.get(c, c)}" for c, n in
+                        sorted(detail.items(), key=lambda kv: -kv[1]))
+        return (f"L'analyse a produit {alertes} signal(aux) prioritaire(s) sur "
+                f"{sco.get('scorees', 0)} annonces analysées ({rep}).")
+    return (f"L'analyse a examiné {sco.get('scorees', 0)} annonces, "
+            f"sans signal prioritaire.")
+
+
 def _phrase_deroule(run: dict) -> str:
-    """Formule le déroulé de la recherche en langage d'enquêteur (non technique)."""
-    etapes = (run.get("stats") or {}).get("etapes")
+    """Formule le déroulé de la recherche en langage d'enquêteur (non technique).
+
+    Deux régimes distincts, décrits fidèlement :
+      - Mode A (surveillance) : LLM-EXPAND génère des termes qui PILOTENT la
+        collecte -> on rend compte des termes et catégories ciblés.
+      - Mode B (exploration) : sans requête, l'agent explore LIBREMENT les sites
+        désignés ; avec une requête, LLM-EXPAND l'enrichit et ces éléments
+        ORIENTENT prioritairement la navigation ET le tri, sans filtrage strict.
+        (L'étape "expand" n'était pas décrite en Mode B -> l'ancienne formulation
+        affichait à tort « 0 termes / aucune catégorie ».)
+    """
+    stats = run.get("stats") or {}
+    etapes = stats.get("etapes")
     if not etapes:
         return ""
-    exp = etapes.get("expand", {})
     col = etapes.get("collecte", {})
     sco = etapes.get("scoring", {})
 
+    # --- Mode B : exploration libre -----------------------------------------
+    params = run.get("params") or {}
+    mode = str(params.get("mode") or "").upper()
+    is_mode_b = (
+        mode in {"B", "B1", "B2"}
+        or stats.get("mode_b") is True
+        or "exploration" in etapes
+    )
+    if is_mode_b:
+        sites = (etapes.get("exploration", {}).get("sites")) or {}
+        nb_sites = len(sites)
+        seeds = params.get("seeds") or []
+        focus = str(seeds[0]).strip() if seeds else ""
+        cats = params.get("target_categories") or []
+        if nb_sites == 1:
+            p1 = "En exploration (Mode B), l'agent a parcouru librement le site désigné."
+        else:
+            p1 = (f"En exploration (Mode B), l'agent a parcouru librement "
+                  f"les {nb_sites} sites désignés.")
+        if focus:
+            terms = params.get("generated_terms") or []
+            if cats:
+                libelles = ", ".join(CATEGORIES.get(c, c) for c in cats)
+                p1 += (f" La requête « {focus} » (rattachée à : {libelles}) a orienté "
+                       f"l'exploration et la priorisation des résultats.")
+            else:
+                p1 += (f" La requête « {focus} » a orienté l'exploration et la "
+                       f"priorisation des résultats.")
+            if terms:
+                p1 += (f" LLM-EXPAND en a dérivé {len(terms)} formulation(s) "
+                       f"associée(s) pour guider l'agent.")
+        p2 = f"La collecte a relevé {col.get('annonces', 0)} annonces."
+        return f"{p1} {p2} {_bloc_scoring(sco)}"
+
+    # --- Mode A : surveillance (collecte pilotée par LLM-EXPAND) -------------
+    exp = etapes.get("expand", {})
     cats = exp.get("categories") or []
     if cats:
         libelles = ", ".join(CATEGORIES.get(c, c) for c in cats)
@@ -72,18 +131,7 @@ def _phrase_deroule(run: dict) -> str:
         cible = "n'a ciblé aucune catégorie précise"
     p1 = f"La recherche {cible} et a généré {exp.get('termes', 0)} termes de recherche."
     p2 = f"La collecte a relevé {col.get('annonces', 0)} annonces."
-
-    alertes = sco.get("alertes", 0)
-    detail = sco.get("par_categorie") or {}
-    if detail:
-        rep = ", ".join(f"{n} {CATEGORIES.get(c, c)}" for c, n in
-                        sorted(detail.items(), key=lambda kv: -kv[1]))
-        p3 = (f"L'analyse a produit {alertes} signal(aux) prioritaire(s) sur "
-              f"{sco.get('scorees', 0)} annonces analysées ({rep}).")
-    else:
-        p3 = (f"L'analyse a examiné {sco.get('scorees', 0)} annonces, "
-              f"sans signal prioritaire.")
-    return f"{p1} {p2} {p3}"
+    return f"{p1} {p2} {_bloc_scoring(sco)}"
 
 
 def build_report_data(run: dict, listings: list[dict]) -> dict:

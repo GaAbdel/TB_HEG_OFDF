@@ -35,10 +35,49 @@ if TYPE_CHECKING:
 DEFAULT_EXCLUDED_ACTIONS: tuple[str, ...] = ("search_google",)
 
 
-def build_browse_task(start_url: str, *, prompt_version: str = "browse_v1") -> str:
-    """Construit la consigne métier (lecture seule) à partir du prompt versionné."""
+def build_browse_task(start_url: str, *, focus: str = "",
+                      generated_terms: list[str] | None = None,
+                      prompt_version: str = "browse_v1") -> str:
+    """Construit la consigne métier (lecture seule) à partir du prompt versionné.
+
+    `focus` (optionnel, saisi par l'enquêteur) oriente l'exploration : s'il est
+    fourni, l'agent PRIORISE les annonces pouvant relever de cet objet — y
+    compris les formulations implicites ou détournées — tout en continuant de
+    relever ce qui paraît suspect au-delà. Sans focus, l'exploration reste libre
+    (comportement par défaut). C'est l'enquêteur qui décide d'orienter ou non ;
+    l'agent ne fixe jamais lui-même une cible.
+
+    `generated_terms` (issus de LLM-EXPAND) sont fournis à l'agent comme des
+    EXEMPLES NON LIMITATIFS de formes possibles, jamais comme un filtre littéral :
+    ils aident un modèle peu capable sans l'enfermer dans la correspondance de
+    mots-clés, ce qui ferait manquer les annonces déguisées (cœur du système).
+    """
     template = load_prompt(prompt_version)
-    return template.replace("{start_url}", start_url)
+    task = template.replace("{start_url}", start_url)
+    focus = (focus or "").strip()
+    terms = [t for t in (generated_terms or []) if t]
+    if "{focus_block}" in task:
+        if focus:
+            exemples = ""
+            if terms:
+                exemples = (
+                    "Exemples de formes possibles (liste NON exhaustive, ne pas s'y "
+                    f"limiter) : {', '.join(terms)}.\n"
+                )
+            bloc = (
+                f"\nObjet prioritaire de la recherche : {focus}\n"
+                f"{exemples}"
+                "Relève EN PRIORITÉ les annonces pouvant relever de cet objet, y "
+                "compris les formulations implicites ou détournées (désignations "
+                "vagues, absence de mention explicite). Ne te limite pas à une "
+                "correspondance littérale de mots. Continue néanmoins de relever "
+                "les autres annonces rencontrées, même hors de cet objet, dans la "
+                "limite du budget d'actions.\n"
+            )
+        else:
+            bloc = ""
+        task = task.replace("{focus_block}", bloc)
+    return task
 
 
 def resolve_allowed_domains(start_url: str, extra: list[str] | None = None) -> list[str]:
@@ -180,6 +219,8 @@ async def run_browse(
     max_steps: int = 12,
     headless: bool = True,
     model: str | None = None,
+    focus: str = "",
+    generated_terms: list[str] | None = None,
     allowed_domains: list[str] | None = None,
     exclude_actions: tuple[str, ...] = DEFAULT_EXCLUDED_ACTIONS,
     audit_log_dir: str | None = "data/audit",
@@ -240,7 +281,7 @@ async def run_browse(
     )
 
     agent_kwargs = dict(
-        task=build_browse_task(start_url),
+        task=build_browse_task(start_url, focus=focus, generated_terms=generated_terms),
         llm=browse_llm,
         browser_session=session,
         use_vision=False,      # lecture seule, pas de capture
@@ -259,6 +300,8 @@ async def run_browse(
         "max_steps": max_steps,
         "model": model,
         "prompt_version": "browse_v1",
+        "focus": focus or None,
+        "generated_terms": [t for t in (generated_terms or []) if t] or None,
         "prompt_hash": prompt_hash(system_prompt),
         "trace": _trace(history),
     }
