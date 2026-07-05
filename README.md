@@ -122,10 +122,19 @@ vaut 0, relancer `ingest_rules.py` et vérifier le contenu de `data/rules/`.
 
 | Fichier modifié | Commande pour appliquer |
 |---|---|
-| `config.yaml`, `.env` | `docker compose up -d app` (recrée le conteneur) |
+| `config.yaml` | `docker compose restart app` (relit la config montée en volume) |
+| `.env` | `docker compose up -d app` (recrée le conteneur, recharge l'environnement) |
 | `prompts/` | `docker compose restart app` |
 | `src/` (code) | `docker compose up -d --build app` (reconstruit l'image) |
 | `data/rules/` | `docker compose exec app python scripts/ingest_rules.py` |
+
+> **Pourquoi deux commandes différentes ?** `up -d` compare la *définition* du
+> service (image, variables du `.env`, montages) et ne recrée le conteneur que
+> si elle a changé — le **contenu** d'un fichier monté en volume lui est
+> invisible : modifier `config.yaml` puis `up -d app` ne fait donc **rien**.
+> `restart` redémarre le processus, qui relit sa configuration — mais sans
+> recharger le `.env`. En cas de doute :
+> `docker compose up -d --force-recreate app` couvre les deux cas.
 
 ## Démonstration sur les marchés fictifs (profil `dev`)
 
@@ -143,6 +152,29 @@ démarré, son nom d'hôte n'est donc pas résolu sur le réseau Docker.
 
 En Git Bash / Linux / macOS, le script `./start.sh --dev` réalise ce démarrage
 en une commande.
+
+### Dérouler la démonstration
+
+Une fois la pile démarrée avec le profil `dev`, ouvrir l'interface enquêteur :
+**http://localhost:8000/ui**
+
+- **Mode A (surveillance)** : la plateforme `fake_market` est présélectionnée
+  dans la liste — cliquer « Lancer la recherche », puis observer les annonces
+  collectées, leurs scores argumentés et le rapport généré.
+- **Mode B (exploration)** : cocher un site autorisé, saisir éventuellement une
+  requête ciblée (ex. « cigarettes » — LLM-EXPAND en dérive des formulations
+  voisines transmises à l'agent de navigation). Un champ **vide** déclenche une
+  exploration **libre** : tout est relevé, le tri se fait au score seul.
+
+Les marchés fictifs restent consultables directement dans un navigateur :
+**http://localhost:8001** (`fake_market`) et **http://localhost:8002**
+(`mock_shop`) — utile pour comparer ce que voit l'humain et ce que relève le
+pipeline.
+
+> **Note.** La suite de tests (`docker compose exec app python -m pytest -q`)
+> ne nécessite **pas** le profil `dev` : les fixtures HTML et les marchés
+> fictifs sont embarqués dans l'image au build, la suite s'exécute hors ligne
+> sur le cœur seul.
 
 ## Exécution hôte (démonstration LLM-BROWSE en navigateur visible)
 
