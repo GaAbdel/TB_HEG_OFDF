@@ -18,6 +18,7 @@ Usage :
 from __future__ import annotations
 
 import json
+import shutil
 import time
 from pathlib import Path
 
@@ -26,6 +27,7 @@ from osint.analyse.scorer import score_listing
 from osint.config import get_config
 
 EVAL_DIR = Path("/app/data/eval")
+SOURCE_DIR = Path("/app/fake_market")    # jeu de données versionné (vérité terrain)
 LISTINGS = EVAL_DIR / "listings.json"
 MANIFEST = EVAL_DIR / "dataset_manifest.json"
 RESULTS = EVAL_DIR / "results.json"
@@ -43,6 +45,20 @@ KEYWORDS = {
     "contrefacon": ["copie", "réplique", "replique", "contrefac", "faux", "imitation"],
     "arme": ["arme", "armes", "pistolet", "couteau", "munition", "matraque", "poignard", "revolver"],
 }
+
+
+def _provision_eval_dir() -> None:
+    """Copie le jeu d'évaluation versionné vers data/eval s'il est absent.
+
+    Les entrées canoniques (annonces + vérité terrain) vivent dans
+    fake_market/, versionnées et copiées dans l'image ; data/eval ne contient
+    que la copie de travail et les sorties du run (results, metrics),
+    persistées sur l'hôte via le montage ./data:/app/data.
+    """
+    EVAL_DIR.mkdir(parents=True, exist_ok=True)
+    for name in ("listings.json", "dataset_manifest.json"):
+        if not (EVAL_DIR / name).exists():
+            shutil.copy2(SOURCE_DIR / name, EVAL_DIR / name)
 
 
 def keyword_predict(text: str) -> tuple[bool, str]:
@@ -169,6 +185,8 @@ def print_report(m: dict) -> None:
 
 
 def main() -> None:
+    _provision_eval_dir()
+
     cfg = get_config()
     cfg.assert_lpd_compliance(consentement_cloud=True)
     retriever = QdrantRuleRetriever.from_config(cfg)
