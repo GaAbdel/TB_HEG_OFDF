@@ -531,7 +531,7 @@ Ils utilisent des fixtures locales et ne nécessitent pas le profil `dev`.
 Résultat de référence :
 
 ```text
-143 passed
+147 passed
 ```
 
 ---
