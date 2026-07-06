@@ -18,17 +18,20 @@ from osint.analyse.expander import expand_terms
 from osint.analyse.retriever import QdrantRuleRetriever
 from osint.analyse.scorer import score_listing
 from osint.collecte.fake_market_extractor import FakeMarketExtractor
+from osint.collecte.anibis_extractor import AnibisExtractor
 from osint.collecte.selector_based_extractor import (
     ExtractorBrokenError,
     SelectorBasedExtractor,
 )
 
-# Plateformes disposant d'un extracteur FIGÉ (parsing dans le code). En démo,
-# fake_market. Les extracteurs à SÉLECTEURS (réparables) ne sont plus listés ici :
-# une plateforme est « à sélecteurs » dès qu'elle a une version active en base
-# (table extractor_versions) — cf. list_selector_platforms. Onboarder un tel site
-# = insérer sa version active, sans toucher au code.
-EXTRACTORS: dict = {"fake_market": FakeMarketExtractor}
+# Plateformes disposant d'un extracteur CODÉ (parsing dans le code). fake_market
+# (démo à faible volume) et anibis (JSON-LD schema.org : donnée structurée hors
+# du texte du DOM, non couverte par le mécanisme à sélecteurs). Les extracteurs
+# à SÉLECTEURS (réparables) ne sont PAS listés ici : une plateforme est « à
+# sélecteurs » dès qu'elle a une version active en base (extractor_versions) —
+# cf. list_selector_platforms. Onboarder un tel site = insérer sa version active,
+# sans toucher au code ; onboarder un site à extracteur codé = ce registre + rebuild.
+EXTRACTORS: dict = {"fake_market": FakeMarketExtractor, "anibis": AnibisExtractor}
 from osint.collecte.guardrails import Guardrails
 from osint.persistance.db import transaction
 from osint.analyse.code_repair import make_llm_repair_fn, repair_selectors
@@ -166,7 +169,21 @@ async def run_search_pipeline(
     concurrency = cfg.get("collecte", "concurrence_max", default=4)
 
     if platform in EXTRACTORS:
-        extractor = EXTRACTORS[platform](base_url, guardrails, concurrency=concurrency, terms=terms)
+        # Extracteurs codés « purs » (signature fixe). AnibisExtractor a besoin
+        # de sa configuration de recherche (chemin, plafonds) : on la lit en
+        # base et on la lui injecte. Le _list_path d'Anibis encode le terme de
+        # recherche (URL opaque), donc il vit en configuration, pas dans le code.
+        if platform == "anibis":
+            with transaction() as conn:
+                anibis_cfg = get_active_selectors(conn, platform) or {}
+            extractor = AnibisExtractor(
+                base_url, guardrails, concurrency=concurrency,
+                terms=terms, config=anibis_cfg,
+            )
+        else:
+            extractor = EXTRACTORS[platform](
+                base_url, guardrails, concurrency=concurrency, terms=terms
+            )
     else:
         # Sinon : extracteur à sélecteurs SI la plateforme a une version active
         # en base (source de vérité déclarative, pas de registre codé en dur).
