@@ -231,3 +231,69 @@ def test_rupture_emporte_les_metadonnees_pour_la_reparation():
     # être refusionnées dans le candidat (pas de régression à l'approbation).
     assert exc.meta.get("_list_path") == "/search"
     assert exc.meta.get("_next_page") == "a.next"
+
+
+# --- Pagination par construction d'URL (_page_param, cas Anibis) -------------
+
+def _make_indexed_site(pages: int, per_page: int = 2, param: str = "?page="):
+    """Site paginé par index d'URL : page 1 = /search, page N = /search?page=N."""
+    site: dict[str, str] = {}
+    idc = 1
+    ids_by_page: list[list[int]] = []
+    for p in range(1, pages + 1):
+        ids = list(range(idc, idc + per_page))
+        ids_by_page.append(ids)
+        idc += per_page
+        url = f"{BASE}/search" if p == 1 else f"{BASE}/search{param}{p}"
+        site[url] = _list_page(ids, None)  # pas de lien « suivant » : c'est l'URL qui indexe
+    # une page au-delà de la dernière : vide (0 carte)
+    site[f"{BASE}/search{param}{pages + 1}"] = _list_page([], None)
+    for ids in ids_by_page:
+        for i in ids:
+            site[f"{BASE}/item/{i}"] = _detail(i)
+    return site
+
+
+def test_pagination_par_url_construit_les_pages():
+    sel = {
+        **FIELD_SELECTORS,
+        "_list_path": "/search",
+        "_card_selector": "a.card",
+        "_page_param": "?page=",
+        "_max_pages": 3,
+    }
+    ext = _extractor(sel)
+    records = _run(ext, _make_indexed_site(3))
+    assert len(records) == 6
+    assert f"{BASE}/search?page=2" in ext._test_calls
+    assert f"{BASE}/search?page=3" in ext._test_calls
+
+
+def test_pagination_par_url_s_arrete_sur_page_vide():
+    # 2 pages réelles, _max_pages=5 : la boucle doit s'arrêter en trouvant la
+    # page 3 vide, sans aller jusqu'à 5.
+    sel = {
+        **FIELD_SELECTORS,
+        "_list_path": "/search",
+        "_card_selector": "a.card",
+        "_page_param": "?page=",
+        "_max_pages": 5,
+    }
+    ext = _extractor(sel)
+    records = _run(ext, _make_indexed_site(2))
+    assert len(records) == 4
+    assert f"{BASE}/search?page=4" not in ext._test_calls
+    assert f"{BASE}/search?page=5" not in ext._test_calls
+
+
+def test_page_param_prioritaire_et_dans_meta():
+    sel = {
+        **FIELD_SELECTORS,
+        "_list_path": "/search",
+        "_card_selector": "a.card",
+        "_page_param": "?page=",
+        "_max_pages": 2,
+    }
+    ext = _extractor(sel)
+    assert ext.page_param == "?page="
+    assert ext.meta.get("_page_param") == "?page="

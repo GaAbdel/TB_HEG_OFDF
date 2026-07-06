@@ -133,6 +133,15 @@ class SelectorBasedExtractor:
         self.list_path: str = selectors.pop("_list_path", list_path)
         self.card_selector: str = selectors.pop("_card_selector", card_selector)
         self.next_page_selector: str | None = selectors.pop("_next_page", None)
+        # Deux mécanismes de pagination, mutuellement exclusifs :
+        #   - `_next_page` : sélecteur d'un lien « suivant » (site où la page
+        #     suivante est un <a href>). On SUIT le lien.
+        #   - `_page_param` : suffixe de requête indexé (ex. "?page=" ou
+        #     "&page="). On CONSTRUIT l'URL de chaque page (site où la
+        #     pagination est un <button> JS sans href, mais où l'index de page
+        #     se reflète dans l'URL — cas d'Anibis). Numérotation à partir de 1,
+        #     la page 1 restant l'URL de base (aucun suffixe ajouté).
+        self.page_param: str | None = selectors.pop("_page_param", None)
         try:
             self.max_pages: int = max(1, int(selectors.pop("_max_pages", 1)))
         except (TypeError, ValueError):
@@ -153,6 +162,7 @@ class SelectorBasedExtractor:
             "_list_path": self.list_path,
             "_card_selector": self.card_selector,
             **({"_next_page": self.next_page_selector} if self.next_page_selector else {}),
+            **({"_page_param": self.page_param} if self.page_param else {}),
             **({"_max_pages": self.max_pages} if self.max_pages > 1 else {}),
             **({"_max_listings": self.max_listings} if self.max_listings else {}),
         }
@@ -163,6 +173,27 @@ class SelectorBasedExtractor:
         ) as session:
             return await self._collect(session.fetch)
 
+    def _next_list_url(
+        self, base_list_url: str, soup, current_url: str, pages_done: int
+    ) -> str | None:
+        """URL de la page de résultats suivante, ou None s'il n'y en a pas.
+
+        Deux stratégies, selon la config :
+          - `_page_param` : construction d'URL indexée (page 1 = URL de base ;
+            page N>=2 = base + suffixe + N). Le suffixe porte son séparateur
+            (« ?page= » ou « &page= ») ; on ne présume pas de l'état de la
+            query string de `_list_path`.
+          - `_next_page` : suivi du lien « suivant » présent dans le DOM.
+        Sans aucune des deux : pas de page suivante (comportement mono-page).
+        """
+        if self.page_param:
+            return f"{base_list_url}{self.page_param}{pages_done + 1}"
+        if self.next_page_selector:
+            nxt = soup.select_one(self.next_page_selector)
+            if nxt and nxt.get("href"):
+                return urljoin(current_url, nxt.get("href"))
+        return None
+
     async def _collect(self, fetch) -> list[dict]:
         """Cœur testable : `fetch(url) -> html`. Lève ExtractorBrokenError si cassé."""
         # --- Parcours de la ou des pages de résultats -------------------------
@@ -172,7 +203,8 @@ class SelectorBasedExtractor:
         # comportement historique inchangé.
         hrefs: list[str] = []
         list_html: str | None = None
-        url: str | None = self.base_url + self.list_path
+        base_list_url = self.base_url + self.list_path
+        url: str | None = base_list_url
         pages = 0
         visited: set[str] = set()
         while url and pages < self.max_pages:
@@ -181,18 +213,23 @@ class SelectorBasedExtractor:
             visited.add(url)
             list_html = await fetch(url)
             soup = BeautifulSoup(list_html, "html.parser")
-            hrefs += [
+            page_hrefs = [
                 urljoin(url, a.get("href"))
                 for a in soup.select(self.card_selector)
                 if a.get("href")
             ]
+            hrefs += page_hrefs
             pages += 1
-            nxt = (
-                soup.select_one(self.next_page_selector)
-                if self.next_page_selector
-                else None
-            )
-            url = urljoin(url, nxt.get("href")) if (nxt and nxt.get("href")) else None
+
+            # Arrêt anticipé : une page de résultats sans aucune carte signale
+            # la fin de la pagination (dépassement du dernier index), même si
+            # `_max_pages` n'est pas atteint. Ne s'applique qu'après la 1re page
+            # (une 1re page vide relève de la détection de rupture, pas de la
+            # fin de pagination).
+            if pages > 1 and not page_hrefs:
+                break
+
+            url = self._next_list_url(base_list_url, soup, url, pages)
 
         # Dédoublonnage en préservant l'ordre : une même annonce peut
         # apparaître sur plusieurs pages (remontées, mises en avant).
