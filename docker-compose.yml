@@ -1,21 +1,24 @@
 # =============================================================================
-#  docker-compose.yml — pile OSINT douanière 
+#  docker-compose.yml — pile OSINT douanière
 # -----------------------------------------------------------------------------
 #  Profils :
-#    (défaut)  postgres + qdrant + app          -> noyau du pipeline
-#    --profile dev   ajoute les marchés fictifs (fake_market, mock_shop)
-#    --profile full  ajoute n8n (planification)
-#  L'interface enquêteur est servie par l'application FastAPI sur /ui (pas de
-#  service séparé).
+#    (défaut)       postgres + qdrant + app
+#    --profile dev  ajoute les marchés fictifs (fake_market, mock_shop)
+#    --profile full ajoute n8n (planification)
 #
-#  Démarrage noyau   :  docker compose up -d
-#  Démarrage complet :  docker compose --profile full up -d
+#  L'interface enquêteur est servie par l'application FastAPI sur /ui
+#  (aucun service d'interface séparé).
 #
-#  Réseau : seul APP_PORT est publié sur l'hôte (4.1.2). L'interface /ui et la
-#  console /admin sont servies par l'application sur ce même port.
-#  Modèle : par défaut Ollama tourne sur l'HOTE (4.1.5), atteint via
-#           host.docker.internal. Variante VM conteneurisée : voir bloc
-#           `ollama` commenté en bas.
+#  Démarrage noyau   : docker compose up -d
+#  Démarrage démo    : docker compose --profile dev up -d
+#  Démarrage complet : docker compose --profile full up -d
+#
+#  Réseau : seul APP_PORT est publié sur l'hôte pour le noyau. L'interface /ui
+#  et la console /admin sont servies par l'application sur ce même port.
+#
+#  Modèle : par défaut, Ollama tourne sur l'HÔTE et est atteint depuis le
+#  conteneur via host.docker.internal. Pour une variante conteneurisée avec GPU,
+#  voir le bloc `ollama` commenté plus bas.
 # =============================================================================
 
 services:
@@ -45,8 +48,8 @@ services:
       - qdrant_data:/qdrant/storage
     networks: [osint_net]
     # Pas de healthcheck Compose : l'image Qdrant est distroless (ni curl ni
-    # shell). La disponibilité de Qdrant ET la présence des collections sont
-    # vérifiées par la sonde /health de l'app (4.1.6) et le smoke test.
+    # shell). La disponibilité de Qdrant et la présence des collections sont
+    # vérifiées par la sonde /health de l'app et par le smoke test.
     restart: unless-stopped
 
   # --- Application : API + pipeline + collecte (4.1.1) -----------------------
@@ -58,14 +61,23 @@ services:
     environment:
       OSINT_CONFIG: /app/config.yaml
     volumes:
-      # Montés en lecture seule => modifiables sans rebuild (4.1.3)
+      # Configuration et prompts montés en lecture seule :
+      # ils restent modifiables sans reconstruction de l'image.
       - ./config.yaml:/app/config.yaml:ro
       - ./prompts:/app/prompts:ro
-      - models_cache:/app/models           # cache du modèle d'embeddings (e5)
+
+      # Corpus RAG et données produites par le pipeline :
+      # journaux Mode B, résultats d'évaluation et propositions LLM-CODE.
+      # Le montage est en lecture-écriture afin que ces données persistent
+      # sur l'hôte après la recréation du conteneur.
+      - ./data:/app/data
+
+      # Cache persistant du modèle d'embeddings.
+      - models_cache:/app/models
     ports:
       - "${APP_PORT:-8000}:8000"
     extra_hosts:
-      # Permet au conteneur d'atteindre Ollama sur l'hôte (Linux)
+      # Permet au conteneur d'atteindre Ollama exécuté sur l'hôte.
       - "host.docker.internal:host-gateway"
     networks: [osint_net]
     depends_on:
@@ -84,7 +96,7 @@ services:
       N8N_BASIC_AUTH_ACTIVE: "true"
       N8N_BASIC_AUTH_USER: ${N8N_USER}
       N8N_BASIC_AUTH_PASSWORD: ${N8N_PASSWORD}
-      # n8n appelle l'API interne, jamais exposée a l'hôte
+      # n8n appelle l'API interne, jamais exposée sur l'hôte.
       WEBHOOK_URL: http://app:8000
     volumes:
       - n8n_data:/home/node/.n8n
@@ -94,25 +106,7 @@ services:
         condition: service_started
     restart: unless-stopped
 
-# --- Variante VM cible : Ollama conteneurisé avec GPU NVIDIA (4.1.5) ----------
-#  Sur la VM de production, décommenter ce service ET, dans config.yaml,
-#  remplacer ${OLLAMA_BASE_URL} par http://ollama:11434.
-#
-#  ollama:
-#    image: ollama/ollama:latest
-#    volumes:
-#      - ollama_data:/root/.ollama
-#    networks: [osint_net]
-#    deploy:
-#      resources:
-#        reservations:
-#          devices:
-#            - driver: nvidia
-#              count: all
-#              capabilities: [gpu]
-#    restart: unless-stopped
-
-  # --- Marché factice (harnais de dev/test, chapitre 5) — profil dev ----------
+  # --- Marché factice (harnais de dev/test, chapitre 5) — profil dev ---------
   fake_market:
     build: ./fake_market
     profiles: [dev]
@@ -121,16 +115,34 @@ services:
     networks: [osint_net]
     restart: unless-stopped
 
-  # --- Site de démonstration « Brocante Léman » (v1/v2) — profil dev ----------
-  #  Sert LLM-CODE (v1 vs v2) et LLM-BROWSE (cible propre pour la soutenance).
-  #  Le port hôte 8002 permet la démo « navigateur visible » lancée depuis l'hôte.
+  # --- Site de démonstration « Brocante Léman » (v1/v2) — profil dev ---------
+  # Sert LLM-CODE (v1 vs v2) et LLM-BROWSE (cible de démonstration).
+  # Le port hôte 8002 permet la démo avec navigateur visible depuis l'hôte.
   mock_shop:
     build: ./mock_shop
     profiles: [dev]
     ports:
-      - "8002:8000"          # accès hôte (démo Chromium visible + inspection)
+      - "8002:8000"          # accès hôte (démo visible + inspection)
     networks: [osint_net]
     restart: unless-stopped
+
+  # --- Variante VM cible : Ollama conteneurisé avec GPU NVIDIA ---------------
+  # Sur la VM de production, décommenter ce service et remplacer dans
+  # config.yaml l'URL Ollama par http://ollama:11434.
+  #
+  # ollama:
+  #   image: ollama/ollama:latest
+  #   volumes:
+  #     - ollama_data:/root/.ollama
+  #   networks: [osint_net]
+  #   deploy:
+  #     resources:
+  #       reservations:
+  #         devices:
+  #           - driver: nvidia
+  #             count: all
+  #             capabilities: [gpu]
+  #   restart: unless-stopped
 
 networks:
   osint_net:
@@ -141,4 +153,4 @@ volumes:
   postgres_data:
   qdrant_data:
   n8n_data:
-  # ollama_data:   # décommenter avec le service ollama
+  # ollama_data:  # décommenter avec le service ollama
