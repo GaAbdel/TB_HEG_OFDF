@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import time
 from concurrent.futures import ThreadPoolExecutor
+from urllib.parse import urlparse
 
 from typing import TYPE_CHECKING
 
@@ -37,9 +38,9 @@ from osint.persistance.repositories import (
     finish_run,
     get_active_selectors,
     get_or_create_model_version,
+    get_platform,
     insert_extractor_candidate,
     list_selector_platforms,
-    platform_id,
     upsert_listing,
 )
 from osint.persistance.store import content_hash
@@ -71,9 +72,13 @@ def _handle_broken_extractor(
             config_snapshot={"platform": platform, "base_url": base_url},
         )
         # On ne persiste un candidat que s'il DIFFÈRE des sélecteurs cassés.
+        # Les métadonnées de navigation (_list_path, _next_page...) sont HORS
+        # de la portée de LLM-CODE : on les refusionne dans le candidat pour
+        # qu'une approbation ne fasse pas régresser la configuration.
         if proposed and proposed != exc.selectors:
             candidate_id = insert_extractor_candidate(
-                conn, platform=platform, selectors=proposed, source="llm-code",
+                conn, platform=platform, selectors={**exc.meta, **proposed},
+                source="llm-code",
                 repair_history=result.get("history"), validation=result.get("record"),
             )
         stats = {
@@ -97,7 +102,7 @@ async def run_search_pipeline(
     *,
     seeds: list[str],
     platform: str = "fake_market",
-    base_url: str = "http://fake_market:8000",
+    base_url: str | None = None,
     max_terms: int | None = None,
     action_budget: int = 500,
 ) -> dict:
@@ -107,6 +112,29 @@ async def run_search_pipeline(
     """
     cfg.assert_lpd_compliance(consentement_cloud=True)
     _t0 = time.monotonic()
+
+    # 0) PÉRIMÈTRE : la plateforme et son URL canonique viennent de la BASE,
+    # pas du client. Le référentiel `platforms` est la source de vérité du
+    # périmètre de collecte : accepter un base_url arbitraire reviendrait à
+    # laisser l'appelant redéfinir l'allowlist des garde-fous. Un base_url
+    # explicite n'est toléré que s'il coïncide avec la valeur canonique
+    # (compatibilité avec les clients existants) ou si la base n'en a pas.
+    with transaction() as conn:
+        plat = get_platform(conn, platform)
+    if plat is None:
+        raise ValueError(f"plateforme inconnue en base : {platform!r}")
+    pid = plat["id"]
+    canonical = (plat.get("base_url") or "").rstrip("/")
+    if canonical:
+        if base_url and base_url.rstrip("/") != canonical:
+            raise ValueError(
+                f"base_url {base_url!r} refusé : l'URL canonique de "
+                f"'{platform}' est {canonical!r} (référentiel platforms). "
+                "Modifier la cible = modifier le référentiel, pas la requête."
+            )
+        base_url = canonical
+    elif not base_url:
+        raise ValueError(f"aucune URL canonique en base pour {platform!r} et aucun base_url fourni")
 
     # 1) EXPAND : amorces -> termes enrichis (dédupliqués) + catégories visées.
     terms: list[str] = []
@@ -124,9 +152,17 @@ async def run_search_pipeline(
     # 2) COLLECTE ciblée sous garde-fous.
     # Deux familles d'extracteurs : classiques (parsing figé, ex. fake_market) et
     # pilotés par sélecteurs chargés en base (ex. mock_shop), ces derniers étant
-    # réparables par LLM-CODE. Ricardo/Tutti/Anibis exigent un extracteur dédié
-    # (à construire par l'OFDF).
-    guardrails = Guardrails.from_config(cfg, allowlist=[platform], action_budget=action_budget)
+    # réparables par LLM-CODE.
+    #
+    # Allowlist de périmètre : le domaine effectif est DÉRIVÉ de base_url, pas
+    # du label de plateforme. Sur les services Docker internes, l'hôte de
+    # l'URL est le nom du service (fake_market, mock_shop) : comportement
+    # historique inchangé. Sur une plateforme réelle (www.anibis.ch), le
+    # garde-fou verrouille la collecte sur le domaine cible et ses
+    # sous-domaines — le label seul ne matcherait jamais l'hôte réel et
+    # bloquerait la collecte légitime.
+    host = urlparse(base_url).hostname or platform
+    guardrails = Guardrails.from_config(cfg, allowlist=[host], action_budget=action_budget)
     concurrency = cfg.get("collecte", "concurrence_max", default=4)
 
     if platform in EXTRACTORS:
@@ -134,6 +170,9 @@ async def run_search_pipeline(
     else:
         # Sinon : extracteur à sélecteurs SI la plateforme a une version active
         # en base (source de vérité déclarative, pas de registre codé en dur).
+        # La config peut porter des métadonnées de navigation (_list_path,
+        # _card_selector, _next_page, _max_pages) : elles sont interprétées par
+        # l'extracteur lui-même — onboarder un site = une ligne en base.
         with transaction() as conn:
             active_selectors = get_active_selectors(conn, platform)
             known = sorted(set(EXTRACTORS) | set(list_selector_platforms(conn)))
@@ -165,10 +204,6 @@ async def run_search_pipeline(
             params={"seeds": seeds, "terms": len(terms), "target_categories": target_categories},
             config_snapshot={"platform": platform, "base_url": base_url},
         )
-        pid = platform_id(conn, platform)
-        if pid is None:
-            finish_run(conn, run_id, status="failed", error=f"plateforme inconnue : {platform}", actor="api")
-            raise ValueError(f"plateforme inconnue en base : {platform!r}")
         model_version_id = get_or_create_model_version(
             conn, agent="LLM-SCORE", model_name=score_model, prompt_version="score_v1",
         )

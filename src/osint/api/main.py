@@ -242,7 +242,9 @@ _jobs = JobStore()
 class SearchRequest(BaseModel):
     seeds: list[str]
     platform: str = "fake_market"
-    base_url: str = "http://fake_market:8000"
+    # Optionnel : l'URL canonique vient du référentiel `platforms` (base).
+    # Une valeur explicite n'est acceptée que si elle coïncide avec lui.
+    base_url: str | None = None
     max_terms: int | None = None
 
 
@@ -255,7 +257,7 @@ async def _default_search_runner(params: dict) -> dict:
         cfg,
         seeds=params["seeds"],
         platform=params.get("platform", "fake_market"),
-        base_url=params.get("base_url", "http://fake_market:8000"),
+        base_url=params.get("base_url"),
         max_terms=params.get("max_terms"),
     )
 

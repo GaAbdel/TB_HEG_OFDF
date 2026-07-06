@@ -33,6 +33,19 @@ def platform_id(conn: "Connection", name: str) -> int | None:
     return row["id"] if row else None
 
 
+def get_platform(conn: "Connection", name: str) -> dict | None:
+    """Fiche d'une plateforme (id, base_url canonique) ou None si inconnue.
+
+    Le `base_url` en base est la SOURCE DE VÉRITÉ du périmètre de collecte
+    Mode A : c'est lui — et non une valeur fournie par le client — qui
+    détermine le domaine autorisé par les garde-fous.
+    """
+    row = conn.execute(
+        "SELECT id, name, base_url FROM platforms WHERE name = %s", (name,)
+    ).fetchone()
+    return dict(row) if row else None
+
+
 def get_or_create_platform(conn: "Connection", name: str, base_url: str) -> int:
     """Retourne l'id de la plateforme, en la créant si elle n'existe pas.
 

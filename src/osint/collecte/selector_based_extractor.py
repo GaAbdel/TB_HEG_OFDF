@@ -7,6 +7,15 @@ RÉPARABLE : si le site change et casse l'extraction, LLM-CODE propose de
 nouveaux sélecteurs (candidat en attente de validation admin), sans que le code
 change.
 
+Métadonnées de navigation (clés préfixées `_` dans la config JSONB) :
+la structure du site — chemin de la page de résultats, sélecteur des cartes,
+lien « page suivante », plafond de pages — relève de la CONFIGURATION, pas du
+code. Les clés `_list_path`, `_card_selector`, `_next_page` et `_max_pages`
+sont extraites du dictionnaire de sélecteurs à l'initialisation ; les clés
+restantes sont les champs d'extraction. Une config sans clé `_*` reproduit
+exactement le comportement historique (mono-page, valeurs par défaut) :
+onboarder un site = insérer sa ligne en base, sans toucher au code.
+
 Détection de rupture : si, sur les pages de détail visitées, les champs requis
 sont massivement absents, l'extracteur lève `ExtractorBrokenError` en emportant
 un échantillon de HTML défaillant — matière première de la réparation.
@@ -14,6 +23,7 @@ un échantillon de HTML défaillant — matière première de la réparation.
 
 from __future__ import annotations
 
+import hashlib
 import re
 from urllib.parse import urljoin
 
@@ -29,6 +39,10 @@ from osint.collecte.selector_extractor import (
 
 _PRICE_RE = re.compile(r"([\d'’.,]+)\s*([A-Za-z]{3})?")
 
+# Clés de la config JSONB décrivant la STRUCTURE du site (navigation), par
+# opposition aux champs d'extraction. Documentées ici comme contrat.
+_META_KEYS = ("_list_path", "_card_selector", "_next_page", "_max_pages")
+
 
 class ExtractorBrokenError(Exception):
     """Levée quand l'extraction échoue massivement (sélecteurs obsolètes).
@@ -37,11 +51,18 @@ class ExtractorBrokenError(Exception):
     alimenter la réparation LLM-CODE.
     """
 
-    def __init__(self, sample_html: str, selectors: dict, missing: list[str]) -> None:
+    def __init__(
+        self, sample_html: str, selectors: dict, missing: list[str],
+        meta: dict | None = None,
+    ) -> None:
         super().__init__(f"extracteur cassé — champs manquants : {missing}")
         self.sample_html = sample_html
-        self.selectors = selectors
+        self.selectors = selectors      # champs d'extraction (portée LLM-CODE)
         self.missing = missing
+        # Métadonnées de navigation (_list_path, _next_page...) : HORS de la
+        # portée de la réparation, mais à REFUSIONNER dans tout candidat pour
+        # qu'une approbation ne fasse pas régresser la configuration.
+        self.meta = dict(meta or {})
 
 
 def _parse_price(text: str | None) -> tuple[float | None, str | None]:
@@ -59,9 +80,28 @@ def _parse_price(text: str | None) -> tuple[float | None, str | None]:
     return amount, (m.group(2).upper() if m.group(2) else None)
 
 
-def _external_id(url: str) -> str | None:
-    m = re.search(r"/listing/(\d+)", url)
-    return m.group(1) if m else None
+def _external_id(url: str) -> str:
+    """Identifiant stable d'une annonce à partir de son URL.
+
+    1. Format historique `/listing/<id>` (fake_market, mock_shop) : l'id.
+    2. Segment final numérique (convention des marketplaces réelles, dont
+       Anibis : `/fr/vi/<région>/<catégorie>/<slug>/<id>`) : l'identifiant
+       RÉEL de l'annonce sur la plateforme — traçable par l'enquêteur.
+    3. Sinon : empreinte SHA-256 tronquée de l'URL NORMALISÉE (sans query
+       string ni slash final, insensibles aux paramètres de session/tracking).
+
+    Dans les trois cas l'identifiant est stable entre deux runs -> la clé
+    naturelle UNIQUE (platform_id, external_id) et la déduplication par
+    upsert fonctionnent sans hypothèse sur le format d'URL du site.
+    """
+    clean = url.split("?", 1)[0].split("#", 1)[0].rstrip("/")
+    m = re.search(r"/listing/(\d+)$", clean)
+    if m:
+        return m.group(1)
+    m = re.search(r"/(\d+)$", clean)
+    if m:
+        return m.group(1)
+    return hashlib.sha256(clean.encode("utf-8")).hexdigest()[:16]
 
 
 class SelectorBasedExtractor:
@@ -81,12 +121,41 @@ class SelectorBasedExtractor:
     ) -> None:
         self.base_url = base_url.rstrip("/")
         self.guardrails = guardrails
-        self.selectors = selectors
         self.concurrency = concurrency
         self.terms = terms
-        self.list_path = list_path
-        self.card_selector = card_selector
         self.break_threshold = break_threshold
+
+        # --- Métadonnées de navigation (config déclarative, clés `_*`) -------
+        # Copie défensive : la config chargée depuis la base ne doit pas être
+        # mutée. Les kwargs `list_path`/`card_selector` restent les défauts,
+        # surchargés par la config si elle les déclare.
+        selectors = dict(selectors)
+        self.list_path: str = selectors.pop("_list_path", list_path)
+        self.card_selector: str = selectors.pop("_card_selector", card_selector)
+        self.next_page_selector: str | None = selectors.pop("_next_page", None)
+        try:
+            self.max_pages: int = max(1, int(selectors.pop("_max_pages", 1)))
+        except (TypeError, ValueError):
+            self.max_pages = 1
+        # Plafond d'annonces par run (0/absent = illimité) : contrôle direct de
+        # la durée d'une collecte — chaque annonce coûte un fetch de détail PUIS
+        # un scoring LLM, de loin le poste dominant en topologie locale.
+        try:
+            self.max_listings: int = max(0, int(selectors.pop("_max_listings", 0)))
+        except (TypeError, ValueError):
+            self.max_listings = 0
+        # Les clés restantes sont les champs d'extraction (contrat LLM-CODE :
+        # la réparation ne porte QUE sur ces champs, jamais sur la navigation).
+        self.selectors = selectors
+        # Métadonnées conservées telles que déclarées en base : refusionnées
+        # dans tout candidat de réparation (cf. ExtractorBrokenError.meta).
+        self.meta: dict = {
+            "_list_path": self.list_path,
+            "_card_selector": self.card_selector,
+            **({"_next_page": self.next_page_selector} if self.next_page_selector else {}),
+            **({"_max_pages": self.max_pages} if self.max_pages > 1 else {}),
+            **({"_max_listings": self.max_listings} if self.max_listings else {}),
+        }
 
     async def run(self) -> list[dict]:
         async with BrowserSession(
@@ -96,20 +165,47 @@ class SelectorBasedExtractor:
 
     async def _collect(self, fetch) -> list[dict]:
         """Cœur testable : `fetch(url) -> html`. Lève ExtractorBrokenError si cassé."""
-        list_html = await fetch(self.base_url + self.list_path)
-        soup = BeautifulSoup(list_html, "html.parser")
-        hrefs = [
-            urljoin(self.base_url + "/", a.get("href"))
-            for a in soup.select(self.card_selector)
-            if a.get("href")
-        ]
+        # --- Parcours de la ou des pages de résultats -------------------------
+        # Boucle bornée deux fois : par `_max_pages` (plafond déclaratif) et,
+        # en profondeur, par le budget d'actions du garde-fou que chaque fetch
+        # consomme déjà. Sans `_next_page` en config : une seule page,
+        # comportement historique inchangé.
+        hrefs: list[str] = []
+        list_html: str | None = None
+        url: str | None = self.base_url + self.list_path
+        pages = 0
+        visited: set[str] = set()
+        while url and pages < self.max_pages:
+            if url in visited:  # cycle de pagination (lien « suivant » bouclant)
+                break
+            visited.add(url)
+            list_html = await fetch(url)
+            soup = BeautifulSoup(list_html, "html.parser")
+            hrefs += [
+                urljoin(url, a.get("href"))
+                for a in soup.select(self.card_selector)
+                if a.get("href")
+            ]
+            pages += 1
+            nxt = (
+                soup.select_one(self.next_page_selector)
+                if self.next_page_selector
+                else None
+            )
+            url = urljoin(url, nxt.get("href")) if (nxt and nxt.get("href")) else None
+
+        # Dédoublonnage en préservant l'ordre : une même annonce peut
+        # apparaître sur plusieurs pages (remontées, mises en avant).
+        hrefs = list(dict.fromkeys(hrefs))
+        if self.max_listings:
+            hrefs = hrefs[: self.max_listings]
 
         records: list[dict] = []
         broken = 0
         first_bad_html: str | None = None
 
-        for url in hrefs:
-            html = await fetch(url)
+        for href in hrefs:
+            html = await fetch(href)
             fields = extract_with_selectors(html, self.selectors)
             miss = missing_fields(fields, REQUIRED)
             if miss:
@@ -120,8 +216,8 @@ class SelectorBasedExtractor:
             amount, currency = _parse_price(fields.get("price"))
             records.append(
                 {
-                    "external_id": _external_id(url),
-                    "url": url,
+                    "external_id": _external_id(href),
+                    "url": href,
                     "title": fields.get("title"),
                     "price_amount": amount,
                     "price_currency": currency,
@@ -134,10 +230,10 @@ class SelectorBasedExtractor:
         # Rupture : trop de pages de détail sans champs requis -> extracteur obsolète.
         total = len(hrefs)
         if total and (broken / total) >= self.break_threshold:
-            fields = extract_with_selectors(first_bad_html or list_html, self.selectors)
+            fields = extract_with_selectors(first_bad_html or list_html or "", self.selectors)
             raise ExtractorBrokenError(
-                first_bad_html or list_html, self.selectors,
-                missing_fields(fields, REQUIRED),
+                first_bad_html or list_html or "", self.selectors,
+                missing_fields(fields, REQUIRED), meta=self.meta,
             )
 
         # Filtre par termes (site de démo à faible volume) : sous-chaîne.
