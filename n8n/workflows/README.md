@@ -1,9 +1,10 @@
 # Workflows n8n — planification du Mode A
 
 Ce dossier contient des workflows n8n **d'exemple** pour la surveillance
-automatique (Mode A). Ils ne sont pas activés par défaut : Il faut les importer et les valider sois-même.
+automatique (Mode A). Ils ne sont pas activés par défaut : il faut les importer
+et les valider soi-même.
 
-> ⚠️ Ces workflows n'ont pas pu être testés automatiquement
+> ⚠️ Ces workflows n'ont pas pu être testés automatiquement.
 
 ## Prérequis
 
@@ -13,8 +14,23 @@ Lancer la pile avec le profil `full` (qui inclut n8n) :
 docker compose --profile full up -d
 ```
 
-n8n est alors disponible sur `http://localhost:5678` (identifiants dans `.env` :
-`N8N_USER` / `N8N_PASSWORD`).
+## Accéder à n8n
+
+Par défaut, le Compose ne publie pas l'interface n8n sur l'hôte. Pour un test
+local, ajouter temporairement au service `n8n` dans `docker-compose.yml` :
+
+    ports:
+      - "5678:5678"
+
+puis recréer le service :
+
+```bash
+docker compose --profile full up -d --force-recreate n8n
+```
+
+Au premier accès sur `http://localhost:5678`, n8n demande la création d'un
+compte propriétaire (les variables `N8N_BASIC_AUTH_*` sont ignorées par les
+versions récentes de l'image).
 
 ## Importer le workflow
 
@@ -28,7 +44,7 @@ n8n est alors disponible sur `http://localhost:5678` (identifiants dans `.env` :
 
 ## Adapter
 
-Dans le nœud **« Déclencher une recherche »**, ajuste le corps JSON :
+Dans le nœud **« Déclencher une recherche »**, ajuster le corps JSON :
 
 ```json
 {
@@ -41,7 +57,7 @@ Dans le nœud **« Déclencher une recherche »**, ajuste le corps JSON :
 - `seeds` : les termes de veille (interprétés par LLM-EXPAND).
 - `platform` / `base_url` : la plateforme cible.
 
-Dans le nœud **« Toutes les 6 heures »**, ajuste l'intervalle.
+Dans le nœud **« Toutes les 6 heures »**, ajuster l'intervalle.
 
 ## Valider
 
