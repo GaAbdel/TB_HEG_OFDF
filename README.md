@@ -1,280 +1,683 @@
-# OSINT-OFDF — Pipeline de détection d'annonces suspectes
+# OSINT-OFDF — Pipeline de détection d’annonces suspectes
 
-Pipeline OSINT conteneurisé d'aide à l'enquête, développé pour l'Office fédéral
-de la douane et de la sécurité des frontières (OFDF). Il parcourt des plateformes
-de petites annonces, en extrait les offres et produit pour chacune un **signal de
-suspicion argumenté** (tabac, alcool, espèces protégées, viande, contrefaçon,
-armes), ancré sur un corpus de règles douanières. Le système produit des signaux,
-jamais des décisions : la validation reste à l'enquêteur, et chaque étape est tracée.
+Pipeline OSINT conteneurisé d’aide à l’enquête, développé pour l’Office fédéral
+de la douane et de la sécurité des frontières (OFDF). Il collecte des annonces,
+les structure, récupère le contexte réglementaire pertinent et produit un
+**signal de suspicion argumenté**.
 
-Version : 0.9.0
+Le système produit des signaux, jamais des décisions : la validation reste à
+l’enquêteur et chaque étape est tracée.
 
-## Démarrage automatisé (recommandé)
+**Version : 0.9.0**
 
-Un script de démarrage prépare tout en une commande : création du `.env`,
-construction et démarrage de la pile, attente de l'API, provisionnement du RAG,
-puis vérification. Il ne dispense pas d'installer les prérequis (Docker ; Ollama
-en mode local — voir ci-dessous).
+---
+
+## 1. Parcours rapide pour l’évaluateur
+
+### Prérequis
+
+- Docker Desktop ou Docker Engine avec `docker compose`
+- environ 16 Go de RAM recommandés pour la configuration de référence
+- plusieurs gigaoctets de stockage disponibles pour les images Docker, le
+  navigateur Playwright, le modèle local éventuel et le modèle d’embeddings
+- selon la topologie :
+  - **locale** : Ollama démarré sur l’hôte avec `qwen3:8b`
+  - **cloud** : une clé API du fournisseur configuré
+
+### Préparer l’environnement
 
 ```bash
-# Windows (PowerShell, aucune dépendance) :
-powershell -ExecutionPolicy Bypass -File .\start.ps1
-#   ajouter -Dev pour inclure les marchés de démonstration
-
-# Git Bash / Linux / macOS :
-./start.sh          # ou ./start.sh --dev
+cp .env.example .env
 ```
 
-La procédure manuelle détaillée ci-dessous reste valable pour qui veut
-comprendre ou contrôler chaque étape.
+Éditer `.env` et renseigner au minimum :
 
-## Prérequis logiciels
+```env
+POSTGRES_PASSWORD=...
+ADMIN_PASSWORD=...
+```
 
-Installer et démarrer **avant** toute autre étape :
+En cloud, renseigner également :
 
-- **Docker Desktop** (fournit `docker` et `docker compose`), lancé et actif.
-- **Selon le mode de modèle choisi** (voir la section « Choix du fournisseur de
-  modèle » ci-dessous) :
-  - *mode local* : **Ollama** installé sur l'hôte, avec le modèle `qwen3:8b`
-    (`ollama pull qwen3:8b`, ~5 Go). Ollama doit tourner pendant l'utilisation.
-  - *mode cloud* : une **clé d'API** du fournisseur (p. ex. Anthropic). Aucune
-    installation d'Ollama requise.
+```env
+LLM_API_KEY=...
+```
 
-## Choix du fournisseur de modèle (local ou cloud)
+### Démarrer la démonstration
 
-Le système fonctionne avec un modèle **local** (souveraineté des données, défaut)
-ou **cloud** (aucune installation, plus rapide selon la machine). Ce choix se fait
-dans `config.yaml`, champ `topologie`, et détermine ce qu'il faut préparer.
+Git Bash, Linux ou macOS :
 
-| Mode | `topologie` | À préparer | Données transmises à un tiers |
-|---|---|---|---|
-| **Local** (défaut) | `locale` | Ollama + `qwen3:8b` sur l'hôte | Aucune |
-| **Cloud** | `cloud` | `LLM_API_KEY` dans `.env` | Oui — déclenche l'avis LPD |
+```bash
+./start.sh --dev
+```
 
-Un modèle **différent par agent** est possible via le bloc `per_agent` de
-`config.yaml` : par exemple LLM-SCORE en local et LLM-BROWSE en cloud.
+Windows PowerShell :
 
-> **Important (souveraineté / LPD).** Router ne serait-ce qu'**un seul agent**
-> vers un fournisseur cloud (via `per_agent`) constitue déjà une transmission de
-> données à un tiers, **même si `topologie` reste `locale`**. En contexte OFDF,
-> toute bascule cloud doit être un choix conscient et journalisé. Pour une
-> souveraineté totale, garder `topologie: locale` et aucun agent routé en cloud.
+```powershell
+powershell -ExecutionPolicy Bypass -File .\start.ps1 -Dev
+```
 
-Basculer le système entier en cloud (p. ex. pour une démonstration) :
+### Vérifier le déploiement
+
+```bash
+docker compose exec app python scripts/smoke_test.py
+docker compose exec app python -m pytest -q
+```
+
+Résultat de référence de la suite de tests :
+
+```text
+147 passed
+```
+
+### Ouvrir l’application
+
+- interface enquêteur : http://localhost:8000/ui
+- console d’administration : http://localhost:8000/admin
+- documentation de l’API : http://localhost:8000/docs
+- marché fictif Mode A : http://localhost:8001
+- marché fictif Mode B / LLM-CODE : http://localhost:8002
+
+> Le profil `dev` est requis pour utiliser les marchés fictifs depuis
+> l’interface. Il n’est pas nécessaire pour exécuter `pytest` ni
+> `scripts/evaluate.py`.
+
+---
+
+## 2. Démarrage automatisé
+
+Les scripts de démarrage :
+
+1. créent `.env` à partir de `.env.example` s’il manque ;
+2. construisent l’image applicative ;
+3. démarrent PostgreSQL, Qdrant et l’application ;
+4. attendent la disponibilité de l’API ;
+5. créent les collections Qdrant ;
+6. ingèrent le corpus réglementaire ;
+7. exécutent le smoke test.
+
+Git Bash, Linux ou macOS :
+
+```bash
+./start.sh
+./start.sh --dev
+```
+
+Windows PowerShell :
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\start.ps1
+powershell -ExecutionPolicy Bypass -File .\start.ps1 -Dev
+```
+
+La procédure manuelle reste disponible ci-dessous.
+
+---
+
+## 3. Topologies de modèle
+
+La topologie globale se règle dans `config.yaml` :
 
 ```yaml
-# config.yaml
-topologie: cloud     # au lieu de "locale"
+topologie: locale
 ```
 
-et renseigner `LLM_API_KEY` dans `.env`. Toute modification de `config.yaml`
-ou de `.env` exige de **recréer le conteneur** : `docker compose up -d app`.
+Valeurs disponibles :
 
-## Installation pas à pas
+| Topologie | Usage | Préparation | Transmission à un tiers |
+|---|---|---|---|
+| `locale` | Ollama sur l’hôte | `ollama pull qwen3:8b` | Non, sauf surcharge cloud par agent |
+| `centrale` | Serveur interne compatible OpenAI | URL interne dans `config.yaml` | Non si l’infrastructure reste interne |
+| `cloud` | Fournisseur externe | `LLM_API_KEY` dans `.env` | Oui |
+
+### Basculer le pipeline en cloud
+
+Dans `config.yaml` :
+
+```yaml
+topologie: cloud
+```
+
+Dans `.env` :
+
+```env
+LLM_API_KEY=...
+```
+
+Appliquer les deux modifications :
 
 ```bash
-# 1. Secrets et paramètres (jamais versionnés)
-cp .env.example .env
-#    Éditer .env : POSTGRES_PASSWORD et ADMIN_PASSWORD sont requis.
-#    En mode cloud, renseigner aussi LLM_API_KEY (ex. clé Anthropic « sk-ant-... »,
-#    sans guillemets). En mode local, LLM_API_KEY reste vide.
-#    /!\  Sous Windows, vérifier que le fichier s'appelle bien « .env » et non
-#    « .env.txt » : ls -la .env
-
-# 2. Construction et démarrage du noyau (postgres + qdrant + app)
-docker compose up -d --build
-#    Le schéma PostgreSQL est créé automatiquement au premier démarrage.
-#    Le premier build est long (dépendances Python + navigateur Playwright).
-
-# 3. Provisionnement de la base vectorielle (RAG), une seule fois
-docker compose exec app python scripts/init_qdrant.py    # crée les collections
-docker compose exec app python scripts/ingest_rules.py   # charge data/rules/*.md
-#    /!\  Au premier « ingest_rules », le modèle d'embeddings (~2,25 Go) se
-#    télécharge : l'étape peut sembler figée plusieurs minutes. C'est normal,
-#    laisser terminer. Le corpus de règles doit être présent dans data/rules/.
-
-# 4. Vérification du déploiement
-docker compose exec app python scripts/smoke_test.py
-#    Doit afficher la topologie active et « OK » pour postgres, qdrant ET model.
-#    Si « model » est KO : en local, vérifier qu'Ollama tourne (ollama list) ;
-#    en cloud, vérifier LLM_API_KEY et que config.yaml est bien en « cloud »
-#    (puis « docker compose up -d app » pour recharger).
-
-# 5. Accès
-#    Interface enquêteur      : http://localhost:8000/ui
-#    Console d'administration : http://localhost:8000/admin   (ADMIN_PASSWORD requis)
-#    Documentation d'API      : http://localhost:8000/docs
+docker compose up -d --force-recreate app
 ```
 
-### Vérifier que le RAG est bien peuplé (recommandé)
+### Important : routage actuel de LLM-BROWSE
 
-Qdrant n'est pas exposé sur l'hôte (accessible uniquement sur le réseau Docker) :
-la vérification se fait donc depuis le conteneur `app`.
+La configuration livrée utilise une topologie globale locale, mais surcharge
+actuellement l’agent `LLM-BROWSE` avec un modèle Anthropic :
+
+```yaml
+per_agent:
+  LLM-BROWSE:
+    model: anthropic/claude-sonnet-4-6
+```
+
+Conséquences :
+
+- le Mode A et les agents non surchargés suivent la topologie globale ;
+- le Mode B nécessite une clé `LLM_API_KEY` dans cette configuration ;
+- utiliser le Mode B transmet des données au fournisseur cloud ;
+- cette transmission déclenche le garde-fou LPD prévu par l’application.
+
+Pour une exécution entièrement locale, remplacer cette surcharge par :
+
+```yaml
+per_agent:
+  LLM-BROWSE:
+    model: ollama/qwen3:8b
+    api_base: ${OLLAMA_BASE_URL}
+```
+
+La qualité de navigation peut être inférieure avec le modèle local selon la
+machine et le site exploré.
+
+---
+
+## 4. Installation manuelle
+
+### 4.1 Créer `.env`
+
+```bash
+cp .env.example .env
+```
+
+Sous Windows, vérifier que le fichier ne s’appelle pas `.env.txt` :
+
+```bash
+ls -la .env
+```
+
+### 4.2 Construire et démarrer le noyau
+
+```bash
+docker compose up -d --build
+```
+
+Le noyau comprend :
+
+- `app`
+- `postgres`
+- `qdrant`
+
+### 4.3 Provisionner le RAG
+
+```bash
+docker compose exec app python scripts/init_qdrant.py
+docker compose exec app python scripts/ingest_rules.py
+```
+
+Le premier lancement télécharge le modèle d’embeddings. Cette étape peut durer
+plusieurs minutes.
+
+Le corpus réglementaire versionné se trouve dans :
+
+```text
+data/rules/
+```
+
+Il est visible dans le conteneur sous :
+
+```text
+/app/data/rules/
+```
+
+### 4.4 Vérifier le déploiement
+
+```bash
+docker compose exec app python scripts/smoke_test.py
+```
+
+Le smoke test vérifie :
+
+- PostgreSQL
+- Qdrant
+- la topologie active
+- la disponibilité du modèle lorsque la sonde est applicable
+
+En topologie cloud avec une URL implicite gérée par LiteLLM, la sonde réseau du
+modèle peut être volontairement ignorée.
+
+---
+
+## 5. Persistance des données
+
+Le service `app` monte :
+
+```yaml
+- ./data:/app/data
+```
+
+Ce montage est en lecture-écriture. Il permet :
+
+- de lire le corpus RAG dans `data/rules/`
+- de persister les journaux du Mode B dans `data/audit/`
+- de persister les résultats d’évaluation dans `data/eval/`
+- de persister les propositions LLM-CODE dans
+  `data/extractor_proposals/`
+
+Ces fichiers survivent à la recréation du conteneur.
+
+Les autres données persistantes utilisent des volumes Docker nommés :
+
+- `postgres_data`
+- `qdrant_data`
+- `n8n_data`
+- `models_cache`
+
+### Permissions Linux
+
+Le conteneur exécute l’application avec l’utilisateur UID `1000`. Sur Linux, en
+cas de `Permission denied` lors d’une écriture dans `data/` :
+
+```bash
+sudo mkdir -p data/audit data/eval data/extractor_proposals
+sudo chown -R 1000:1000 \
+  data/audit \
+  data/eval \
+  data/extractor_proposals
+```
+
+Il n’est normalement pas nécessaire d’appliquer cette commande avec Docker
+Desktop sous Windows.
+
+---
+
+## 6. Vérifier le RAG
+
+Qdrant n’est pas publié sur l’hôte. La vérification s’effectue depuis
+le conteneur `app` :
 
 ```bash
 docker compose exec app python -c "from qdrant_client import QdrantClient; c=QdrantClient(host='qdrant', port=6333); print('points:', c.get_collection('customs_rules').points_count)"
 ```
 
-Un nombre de points supérieur à zéro confirme que les règles sont ingérées. S'il
-vaut 0, relancer `ingest_rules.py` et vérifier le contenu de `data/rules/`.
+Un nombre supérieur à zéro confirme que les règles ont été ingérées.
 
-### Prise en compte des modifications
+Vérifier les fichiers visibles dans le conteneur :
 
-| Fichier modifié | Commande pour appliquer |
+```bash
+docker compose exec app ls -la /app/data/rules/
+```
+
+Sous Git Bash, si le chemin `/app/...` est converti en chemin Windows, utiliser :
+
+```bash
+MSYS_NO_PATHCONV=1 docker compose exec app ls -la /app/data/rules/
+```
+
+ou :
+
+```bash
+docker compose exec app ls -la //app/data/rules/
+```
+
+---
+
+## 7. Prise en compte des modifications
+
+| Élément modifié | Commande |
 |---|---|
-| `config.yaml` | `docker compose restart app` (relit la config montée en volume) |
-| `.env` | `docker compose up -d app` (recrée le conteneur, recharge l'environnement) |
+| `config.yaml` uniquement | `docker compose restart app` |
 | `prompts/` | `docker compose restart app` |
-| `src/` (code) | `docker compose up -d --build app` (reconstruit l'image) |
-| `data/rules/` | `docker compose exec app python scripts/ingest_rules.py` |
+| `.env` | `docker compose up -d --force-recreate app` |
+| `docker-compose.yml` | `docker compose up -d --force-recreate app` |
+| `src/` | `docker compose up -d --build app` |
+| `scripts/` | `docker compose up -d --build app` |
+| `docker/app.Dockerfile` | `docker compose up -d --build app` |
+| `requirements.txt` | `docker compose up -d --build app` |
+| `data/rules/` | relancer `scripts/ingest_rules.py` |
 
-> **Pourquoi deux commandes différentes ?** `up -d` compare la *définition* du
-> service (image, variables du `.env`, montages) et ne recrée le conteneur que
-> si elle a changé — le **contenu** d'un fichier monté en volume lui est
-> invisible : modifier `config.yaml` puis `up -d app` ne fait donc **rien**.
-> `restart` redémarre le processus, qui relit sa configuration — mais sans
-> recharger le `.env`. En cas de doute :
-> `docker compose up -d --force-recreate app` couvre les deux cas.
+### Pourquoi `restart` n’a pas appliqué le montage `data/`
 
-## Démonstration sur les marchés fictifs (profil `dev`)
+```bash
+docker compose restart app
+```
 
-Les plateformes de test `fake_market` et `mock_shop` ne font **pas** partie du
-cœur de production : elles sont isolées dans le profil `dev`. Toute recherche de
-démonstration qui les vise exige donc de démarrer la pile avec ce profil :
+redémarre le conteneur existant. Cette commande :
+
+- relit les fichiers déjà montés ;
+- ne recharge pas `.env` ;
+- n’ajoute pas un nouveau volume ;
+- n’applique pas un nouveau port ;
+- ne reconstruit pas l’image.
+
+Après une modification de `docker-compose.yml`, utiliser :
+
+```bash
+docker compose up -d --force-recreate app
+```
+
+Après une modification de code ou de script copié dans l’image, utiliser :
+
+```bash
+docker compose up -d --build app
+```
+
+En cas de doute et si le code a changé :
+
+```bash
+docker compose up -d --build --force-recreate app
+```
+
+---
+
+## 8. Démonstration — profil `dev`
+
+Les services `fake_market` et `mock_shop` ne démarrent pas avec le profil par
+défaut.
+
+Démarrer le profil de démonstration :
 
 ```bash
 docker compose --profile dev up -d --build
 ```
 
-Sans ce profil, une recherche Mode A sur `fake_market` (ou `mock_shop`) échoue
-avec `net::ERR_NAME_NOT_RESOLVED` : le conteneur du marché fictif n'est pas
-démarré, son nom d'hôte n'est donc pas résolu sur le réseau Docker.
+ou :
 
-En Git Bash / Linux / macOS, le script `./start.sh --dev` réalise ce démarrage
-en une commande.
+```bash
+./start.sh --dev
+```
 
-### Dérouler la démonstration
+Sans ce profil, une collecte visant un marché fictif peut échouer avec :
 
-Une fois la pile démarrée avec le profil `dev`, ouvrir l'interface enquêteur :
-**http://localhost:8000/ui**
+```text
+net::ERR_NAME_NOT_RESOLVED
+```
 
-- **Mode A (surveillance)** : la plateforme `fake_market` est présélectionnée
-  dans la liste — cliquer « Lancer la recherche », puis observer les annonces
-  collectées, leurs scores argumentés et le rapport généré.
-- **Mode B (exploration)** : cocher un site autorisé, saisir éventuellement une
-  requête ciblée (ex. « cigarettes » — LLM-EXPAND en dérive des formulations
-  voisines transmises à l'agent de navigation). Un champ **vide** déclenche une
-  exploration **libre** : tout est relevé, le tri se fait au score seul.
+### Mode A — surveillance
 
-Les marchés fictifs restent consultables directement dans un navigateur :
-**http://localhost:8001** (`fake_market`) et **http://localhost:8002**
-(`mock_shop`) — utile pour comparer ce que voit l'humain et ce que relève le
-pipeline.
+1. ouvrir http://localhost:8000/ui ;
+2. sélectionner `fake_market` ;
+3. lancer la recherche ;
+4. consulter les annonces, les scores et le rapport.
 
-> **Note.** La suite de tests (`docker compose exec app python -m pytest -q`)
-> ne nécessite **pas** le profil `dev` : les fixtures HTML et les marchés
-> fictifs sont embarqués dans l'image au build, la suite s'exécute hors ligne
-> sur le cœur seul.
+### Mode B — exploration
 
-## Exécution hôte (démonstration LLM-BROWSE en navigateur visible)
+1. vérifier que `LLM_API_KEY` est renseignée si `LLM-BROWSE` reste configuré sur
+   Anthropic ;
+2. sélectionner un site autorisé ;
+3. saisir éventuellement une requête ;
+4. lancer l’exploration ;
+5. consulter les résultats et la trace d’audit.
 
-La quasi-totalité du système tourne dans Docker : aucun environnement Python
-local n'est requis. **Seule exception** : les scripts qui ouvrent un navigateur
-*visible* (`scripts/demo_soutenance.py`, `scripts/browse_demo.py`) doivent
-s'exécuter sur l'hôte, car le conteneur `app` n'a pas d'affichage graphique.
+Les marchés restent consultables directement :
 
-Préparer l'environnement hôte une seule fois :
+- http://localhost:8001 — `fake_market`
+- http://localhost:8002 — `mock_shop`
+
+---
+
+## 9. Démonstration avec navigateur visible
+
+La pile principale fonctionne dans Docker. Les scripts qui ouvrent une fenêtre
+de navigateur visible doivent être lancés depuis l’hôte.
+
+Créer l’environnement :
 
 ```bash
 python -m venv .venv
-source .venv/Scripts/activate      # Windows / Git Bash ; Linux/macOS : source .venv/bin/activate
-pip install -r requirements.txt
-playwright install chromium
-export LLM_API_KEY=...              # LLM-BROWSE peut viser un fournisseur cloud
 ```
 
-Puis, environnement activé :
+Activer sous Windows / Git Bash :
+
+```bash
+source .venv/Scripts/activate
+```
+
+Activer sous Linux / macOS :
+
+```bash
+source .venv/bin/activate
+```
+
+Installer les dépendances :
+
+```bash
+pip install -r requirements.txt
+playwright install chromium
+```
+
+Exporter la clé si LLM-BROWSE utilise le cloud :
+
+```bash
+export LLM_API_KEY=...
+```
+
+Lancer la démonstration :
 
 ```bash
 PYTHONPATH=src python scripts/demo_soutenance.py
 ```
 
-## Profils de déploiement
+---
 
-Le profil par défaut ne démarre que le cœur (`postgres`, `qdrant`, `app`). Les
-marchés fictifs et la planification sont isolés dans des profils séparés, pour
-ne jamais tourner en production sans décision explicite.
+## 10. Évaluation
 
-```bash
-# Cœur seul (production)
-docker compose up -d --build
-
-# Démonstration : cœur + marchés fictifs (ports hôte 8001 et 8002)
-docker compose --profile dev up -d --build
-
-# Planification par n8n
-docker compose --profile full up -d
-```
-
-| Service | Profil | Rôle |
-|---|---|---|
-| app | (défaut) | API, pipeline d'analyse, extracteurs, interfaces |
-| postgres | (défaut) | Mémoire épisodique, scores, journal d'audit |
-| qdrant | (défaut) | Base vectorielle (RAG) |
-| n8n | full | Planification des exécutions périodiques |
-| fake_market | dev | Marché fictif déterministe (évaluation), port 8001 |
-| mock_shop | dev | Marché fictif à sélecteurs (démo LLM-CODE), port 8002 |
-
-## Topologies de modèle
-
-La topologie est un paramètre de `config.yaml` (`topologie: locale | centrale | cloud`),
-sans modification de code :
-
-- **locale** : Ollama sur l'hôte, aucun transfert à un tiers (défaut).
-- **centrale** : serveur d'inférence interne compatible OpenAI, via `api_base`.
-- **cloud** : fournisseur externe ; toute transmission déclenche un avertissement
-  de consentement, évalué par agent.
-
-Un modèle distinct peut être attribué à chaque agent via le bloc `per_agent`.
-
-## Résolution des problèmes courants
-
-| Symptôme | Cause probable | Action |
-|---|---|---|
-| `.env not found` au `up` | Étape 1 non faite | `cp .env.example .env` |
-| `service "app" is not running` | Pile non démarrée | `docker compose up -d --build` puis `docker compose ps` |
-| `net::ERR_NAME_NOT_RESOLVED` sur `fake_market`/`mock_shop` | Marché fictif non démarré (profil `dev`) | `docker compose --profile dev up -d` |
-| `Aucun fichier .md dans /app/data/rules` | `data/` non monté ou corpus absent | Vérifier le montage `./data:/app/data` (compose) et le contenu de `data/rules/` |
-| `model` KO, `topologie=locale` | Ollama non démarré | Lancer Ollama, `ollama list` doit montrer `qwen3:8b` |
-| `model` KO en cloud | Clé absente / config non rechargée | Vérifier `LLM_API_KEY` et `topologie: cloud`, puis `docker compose up -d app` |
-| `'ascii' codec can't encode` à l'appel du modèle | Clé d'API absente ou caractère parasite dans `.env` | Vérifier `LLM_API_KEY` (`grep LLM_API_KEY .env`) |
-| Score toujours nul | RAG vide | `ingest_rules.py` ; vérifier `points_count` |
-| Changement de `config.yaml` sans effet | Conteneur non recréé | `docker compose up -d app` |
-
-## Évaluation
+L’évaluation compare le pipeline LLM + RAG à une référence simple par mots-clés
+sur 284 annonces annotées.
 
 ```bash
 docker compose exec app python scripts/evaluate.py
 ```
 
-Compare le pipeline (LLM + RAG) à une référence par mots-clés sur le jeu de
-284 annonces annotées. Produit `data/eval/results.json` et `data/eval/metrics.json`.
+Au premier lancement, le script copie automatiquement les entrées canoniques :
 
-## Tests
+```text
+/app/fake_market/listings.json
+/app/fake_market/dataset_manifest.json
+```
+
+vers le répertoire de travail persistant :
+
+```text
+/app/data/eval/
+```
+
+Les sorties sont écrites sur l’hôte dans :
+
+```text
+data/eval/results.json
+data/eval/metrics.json
+```
+
+L’évaluation est reprenable : `results.json` sert de point de reprise.
+
+Pour recommencer depuis zéro :
+
+```bash
+rm -f data/eval/results.json data/eval/metrics.json
+docker compose exec app python scripts/evaluate.py
+```
+
+> En topologie cloud, cette commande effectue jusqu’à 284 appels au fournisseur
+> configuré et peut consommer des crédits API réels. Vérifier la clé, le modèle,
+> les limites de débit et le budget avant de la lancer.
+
+Après modification de `scripts/evaluate.py`, reconstruire l’image :
+
+```bash
+docker compose up -d --build app
+```
+
+---
+
+## 11. Tests
 
 ```bash
 docker compose exec app python -m pytest -q
 ```
 
-Couvrent extraction, garde-fous, validation de schéma, chaînage du journal
-d'audit et points d'entrée de l'API, sur fixtures HTML statiques, sans réseau
-ni appel de modèle.
+Les tests couvrent notamment :
 
-## Sécurité et confidentialité
+- extraction
+- validation de schéma
+- garde-fous
+- corpus réglementaire
+- journal d’audit
+- points d’entrée de l’API
+- logique pure de l’évaluation
 
-- Secrets fournis par variables d'environnement (`.env`), jamais versionnés.
-- Mode local par défaut : aucune donnée d'enquête ne quitte l'infrastructure.
-- Journal d'audit scellé par chaînage de hachage : altération détectable.
-- Console d'administration désactivée si `ADMIN_PASSWORD` n'est pas défini.
+Ils utilisent des fixtures locales et ne nécessitent pas le profil `dev`.
 
-Architecture détaillée et exploitation : voir `documentation.md`.
+Résultat de référence :
+
+```text
+143 passed
+```
+
+---
+
+## 12. Planification n8n — profil `full`
+
+Démarrer le service :
+
+```bash
+docker compose --profile full up -d
+```
+
+Un workflow d’exemple est fourni dans :
+
+```text
+n8n/workflows/surveillance_mode_a.json
+```
+
+Il déclenche périodiquement l’API du Mode A. Le workflow n’est pas activé ni
+importé automatiquement.
+
+Le fichier d’exemple vise `fake_market`. Pour l’exécuter tel quel, démarrer
+également le profil `dev` :
+
+```bash
+docker compose --profile full --profile dev up -d --build
+```
+
+La version actuelle du Compose ne publie pas l’interface n8n sur l’hôte. Le
+workflow fourni constitue donc un exemple de planification à importer et valider
+dans un déploiement où l’administration n8n est explicitement exposée ou gérée
+sur le réseau d’administration.
+
+n8n ne contient pas la logique métier : il appelle l’API de l’application à
+intervalle régulier.
+
+---
+
+## 13. Profils Docker Compose
+
+| Service | Profil | Rôle |
+|---|---|---|
+| `app` | défaut | API, pipeline, collecte et interfaces |
+| `postgres` | défaut | mémoire relationnelle et audit |
+| `qdrant` | défaut | mémoire vectorielle RAG |
+| `fake_market` | `dev` | marché fictif Mode A |
+| `mock_shop` | `dev` | démonstration Mode B / LLM-CODE |
+| `n8n` | `full` | planification externe |
+
+Commandes :
+
+```bash
+# Noyau
+docker compose up -d --build
+
+# Noyau + marchés fictifs
+docker compose --profile dev up -d --build
+
+# Noyau + n8n
+docker compose --profile full up -d
+
+# n8n + marchés fictifs
+docker compose --profile full --profile dev up -d --build
+```
+
+---
+
+## 14. Arrêt et réinitialisation
+
+Arrêter les conteneurs sans supprimer les données :
+
+```bash
+docker compose down
+```
+
+Arrêter également les profils optionnels :
+
+```bash
+docker compose --profile dev --profile full down
+```
+
+Supprimer les conteneurs **et les volumes Docker nommés** :
+
+```bash
+docker compose down -v
+```
+
+> `down -v` supprime notamment PostgreSQL, Qdrant, le cache du modèle
+> d’embeddings et les données n8n. Il faudra ensuite recréer les collections et
+> réingérer le corpus. Le dossier hôte `data/` n’est pas supprimé par cette
+> commande.
+
+Réinitialiser uniquement les résultats d’évaluation :
+
+```bash
+rm -f data/eval/results.json data/eval/metrics.json
+```
+
+---
+
+## 15. Résolution des problèmes courants
+
+| Symptôme | Cause probable | Action |
+|---|---|---|
+| `.env not found` | `.env` absent | `cp .env.example .env` |
+| `service "app" is not running` | pile non démarrée | `docker compose up -d --build` |
+| `net::ERR_NAME_NOT_RESOLVED` | profil `dev` absent | `docker compose --profile dev up -d` |
+| `Aucun fichier .md dans /app/data/rules` | corpus absent ou montage non appliqué | vérifier `data/rules/`, puis recréer `app` |
+| `FileNotFoundError: /app/data/rules/...` dans pytest | volume `data/` non appliqué | `docker compose up -d --force-recreate app` |
+| `FileNotFoundError: /app/data/eval/listings.json` | ancienne image de `evaluate.py` ou données non provisionnées | reconstruire `app`, puis relancer l’évaluation |
+| `model` KO en local | Ollama arrêté ou modèle absent | démarrer Ollama et vérifier `ollama list` |
+| erreur de connexion Ollama en topologie cloud | configuration non relue | vérifier `topologie: cloud`, puis recréer `app` |
+| `model` KO en cloud | clé absente ou environnement non rechargé | vérifier `LLM_API_KEY`, puis recréer `app` |
+| changement de `config.yaml` sans effet | processus non redémarré | `docker compose restart app` |
+| changement de `.env` sans effet | ancien environnement conservé | `docker compose up -d --force-recreate app` |
+| nouveau volume ou port sans effet | ancien conteneur conservé | `docker compose up -d --force-recreate app` |
+| modification de code ou script sans effet | image non reconstruite | `docker compose up -d --build app` |
+| chemin `/app/...` converti en `C:/Program Files/Git/...` | conversion MSYS de Git Bash | préfixer `MSYS_NO_PATHCONV=1` ou utiliser `//app/...` |
+| `Permission denied` sous Linux dans `data/` | UID hôte incompatible | corriger les droits des dossiers de sortie |
+
+---
+
+## 16. Sécurité et confidentialité
+
+- les secrets sont fournis par `.env` et ne sont pas versionnés ;
+- la topologie globale locale conserve les appels des agents non surchargés sur
+  l’infrastructure locale ;
+- `LLM-BROWSE` est actuellement surchargé vers Anthropic et implique donc un
+  transfert lorsqu’il est utilisé ;
+- tout recours au cloud est soumis au garde-fou de consentement prévu ;
+- les journaux du Mode B sont persistés dans `data/audit/` ;
+- la console d’administration est protégée par `ADMIN_PASSWORD` ;
+- les actions à autonomie élevée restent bornées et tracées.
+
+---
+
+## 17. Documentation complémentaire
+
+Architecture et exploitation détaillées :
+
+```text
+documentation.md
+```
+
+Workflow n8n d’exemple :
+
+```text
+n8n/workflows/README.md
+```
