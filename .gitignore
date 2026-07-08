@@ -34,3 +34,4 @@ docker-compose.override.yml
 # Fichiers de travail internes
 .claude/
 AUDIT_CLAUDE_CODE.md
+scripts/dev/

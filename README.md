@@ -8,7 +8,7 @@ les structure, récupère le contexte réglementaire pertinent et produit un
 Le système produit des signaux, jamais des décisions : la validation reste à
 l’enquêteur et chaque étape est tracée.
 
-**Version : 0.9.0**
+**Version : 0.10.0**
 
 ---
 
@@ -67,7 +67,7 @@ docker compose exec app python -m pytest -q
 Résultat de référence de la suite de tests :
 
 ```text
-147 passed
+169 passed
 ```
 
 ### Ouvrir l’application
@@ -335,6 +335,7 @@ docker compose exec app ls -la //app/data/rules/
 | `docker/app.Dockerfile` | `docker compose up -d --build app` |
 | `requirements.txt` | `docker compose up -d --build app` |
 | `data/rules/` | relancer `scripts/ingest_rules.py` |
+| `extractor_versions` (base) | aucune reconstruction — relu à chaque recherche |
 
 ### Pourquoi `restart` n’a pas appliqué le montage `data/`
 
@@ -370,7 +371,122 @@ docker compose up -d --build --force-recreate app
 
 ---
 
-## 8. Démonstration — profil `dev`
+## 8. Onboarding d’un site réel
+
+Le Mode A distingue **deux familles d’extraction**. Le choix se fait après une
+courte reconnaissance du site cible ; il détermine si l’ajout du site est une
+simple opération de configuration ou un développement.
+
+| Famille | Quand l’utiliser | Onboarding |
+|---|---|---|
+| **Sélecteurs déclaratifs** | La navigation et les champs peuvent être décrits par une configuration stable (sélecteurs CSS sur le DOM rendu) | Une ligne dans `extractor_versions` (aucun code) |
+| **Extracteur codé** | Le site exige une logique ou un format de données propre — donnée hors du texte du DOM (ex. JSON-LD, API interne), navigation ou transformation particulière | Développement d’un extracteur, enregistrement dans le pipeline, reconstruction |
+
+Le JSON-LD n’est pas une famille distincte : c’est une **technique** qu’un
+extracteur codé peut employer. Anibis en est l’exemple (section 8.3).
+
+La frontière entre les deux familles est un principe d’architecture : ce qui est
+modifiable sans revue humaine (des sélecteurs) vit en base comme **donnée** ; ce
+qui exige une revue (du code exécutable) vit dans `src/` sous contrôle de
+version. Ce partage gouverne aussi la réparation assistée :
+
+| Famille | Proposition LLM-CODE en cas de rupture | Application |
+|---|---|---|
+| Sélecteurs | Oui — un candidat de sélecteurs est déposé en base | Jamais automatique : validation en console admin |
+| Extracteur codé | Possible sous forme de proposition de code | Jamais automatique : revue et déploiement manuels. Le déclenchement automatique sur panne d’un extracteur codé (ex. Anibis) n’est pas câblé à ce jour |
+
+### 8.1 Reconnaissance (préalable, une fois par site)
+
+Ouvrir le site, effectuer une recherche sur un terme cible, puis répondre par
+observation directe (outils de développement du navigateur) :
+
+1. **Le contenu est-il dans le HTML rendu ?** (afficher le code source, y
+   rechercher le titre d’une annonce visible).
+2. **Une annonce de la liste est-elle un lien suivable** (`<a href>`) vers une
+   page de détail, ou une interaction JavaScript sans lien ?
+3. **Comment passe-t-on à la page suivante ?** (lien/numéro de page, paramètre
+   d’URL, ou défilement infini ?)
+
+Ces critères **orientent** la décision, ils ne la déterminent pas mécaniquement :
+contenu accessible, annonce en `<a href>`, pagination par lien ou paramètre
+d’URL penchent vers les **sélecteurs** ; donnée structurée hors texte (JSON-LD),
+logique d’interaction irréductible penchent vers l’**extracteur codé**. Le choix
+final dépend aussi de la stabilité des éléments, des attentes de chargement
+nécessaires, de la gestion du consentement, des transformations de données et
+des interactions propres au site.
+
+### 8.2 Site à sélecteurs — onboarding par configuration
+
+L’ajout se fait par une seule ligne dans `extractor_versions` (version active).
+Les clés préfixées `_` décrivent la navigation ; les autres sont les champs
+d’extraction :
+
+```sql
+INSERT INTO extractor_versions (platform, selectors, status, source) VALUES
+  ('exemple',
+   '{
+      "_list_path":     "/recherche?q=...",
+      "_card_selector": "<sélecteur du lien d’annonce>",
+      "_next_page":     "<sélecteur du lien suivant>",   -- OU _page_param
+      "_page_param":    "?page=",                         -- pagination par URL
+      "_max_pages":     "2",
+      "_max_listings":  "8",
+      "title":          "<sélecteur titre>",
+      "price":          "<sélecteur prix>",
+      "description":    "<sélecteur description>",
+      "seller":         "<sélecteur vendeur>",
+      "location":       "<sélecteur localité>"
+    }'::jsonb,
+   'active', 'manual');
+```
+
+Aucune reconstruction : la configuration est relue à chaque recherche. Le
+périmètre réseau autorisé est dérivé du `base_url` de la plateforme dans la
+table `platforms` (source de vérité), pas de la requête cliente.
+
+### 8.3 Exemple : Anibis (extracteur codé, JSON-LD)
+
+Les pages d’annonce observées lors de la reconnaissance exposaient un bloc
+JSON-LD schema.org de type `Product` (titre, prix, devise, vendeur, localité,
+description). L’extracteur utilise cette source lorsqu’elle est présente et
+valide ; c’est un contrat plus robuste que des sélecteurs visuels sur un site à
+classes CSS générées. Anibis relève donc de la famille **extracteur codé** :
+`AnibisExtractor` est enregistré dans le pipeline (reconstruction requise), et
+seule sa **configuration de recherche** vit en base — le pipeline lit cette
+configuration (`get_active_selectors`) et l’injecte à l’extracteur au moment de
+l’exécution.
+
+Onboarding de la configuration de recherche (après reconstruction de l’image).
+**Exemple à compléter après reconnaissance — ne pas exécuter tel quel avec la
+valeur `<...>` :**
+
+```bash
+docker compose exec postgres sh -c 'psql -U "$POSTGRES_USER" -d "$POSTGRES_DB" -c "
+INSERT INTO extractor_versions (platform, selectors, status, source) VALUES (
+  '\''anibis'\'',
+  '\''{\"_list_path\":\"/fr/q/cherche/<blob-de-recherche>\",\"_max_pages\":\"2\",\"_max_listings\":\"8\"}'\''::jsonb,
+  '\''active'\'', '\''manual'\''
+);"'
+```
+
+Anibis n’expose pas d’URL de recherche en clair : le chemin `_list_path` est un
+identifiant de recherche **opaque**, relevé depuis la barre d’adresse après une
+recherche manuelle. Conséquence à connaître : cette URL correspond à une
+recherche précise et figée ; elle **ne prend pas automatiquement** le mot-clé
+saisi par l’enquêteur, et LLM-EXPAND ne la modifie pas — les termes enrichis
+servent au filtrage de pertinence des résultats, pas à la construction de la
+requête. Les plafonds `_max_pages` / `_max_listings` bornent la durée de collecte
+(chaque annonce = une page de détail + un scoring).
+
+Vérifier l’onboarding :
+
+```bash
+docker compose exec app curl -s localhost:8000/platforms | grep -i anibis
+```
+
+---
+
+## 9. Démonstration — profil `dev`
 
 Les services `fake_market` et `mock_shop` ne démarrent pas avec le profil par
 défaut.
@@ -393,21 +509,44 @@ Sans ce profil, une collecte visant un marché fictif peut échouer avec :
 net::ERR_NAME_NOT_RESOLVED
 ```
 
-### Mode A — surveillance
+### Mode A — surveillance (marché fictif)
 
 1. ouvrir http://localhost:8000/ui ;
 2. sélectionner `fake_market` ;
 3. lancer la recherche ;
 4. consulter les annonces, les scores et le rapport.
 
+### Mode A — surveillance (Anibis, site réel)
+
+Après onboarding de la configuration Anibis (section 8.3) :
+
+1. ouvrir http://localhost:8000/ui ;
+2. sélectionner `anibis` ;
+3. lancer la recherche ;
+4. consulter les annonces extraites (via JSON-LD), les scores et le rapport.
+
 ### Mode B — exploration
 
 1. vérifier que `LLM_API_KEY` est renseignée si `LLM-BROWSE` reste configuré sur
    Anthropic ;
 2. sélectionner un site autorisé ;
-3. saisir éventuellement une requête ;
+3. saisir éventuellement une requête : elle **oriente l’exploration** de l’agent
+   (focus) et la priorisation des résultats via LLM-EXPAND ;
 4. lancer l’exploration ;
 5. consulter les résultats et la trace d’audit.
+
+> **Portée de l’exploration.** L’agent dispose d’actions génériques de
+> navigation, de clic et de saisie (il révèle par exemple les numéros masqués
+> derrière un bouton). En revanche, le prompt de la configuration livrée lui
+> interdit de **soumettre un formulaire** : il n’utilise donc pas le moteur de
+> recherche interne du site, et ne fait qu’explorer les pages atteignables par
+> navigation. Cette contrainte est levable par le prompt (voir évolutions), sans
+> modification de code.
+>
+> Conséquence : sur un site où le ciblage passe par la recherche interne,
+> l’exploration peut ne remonter aucune annonce. Le Mode B vise les sites à
+> structure inconnue ; pour une plateforme à structure connue (ex. Anibis), le
+> Mode A reste l’outil adapté.
 
 Les marchés restent consultables directement :
 
@@ -416,7 +555,7 @@ Les marchés restent consultables directement :
 
 ---
 
-## 9. Démonstration avec navigateur visible
+## 10. Démonstration avec navigateur visible
 
 La pile principale fonctionne dans Docker. Les scripts qui ouvrent une fenêtre
 de navigateur visible doivent être lancés depuis l’hôte.
@@ -460,7 +599,7 @@ PYTHONPATH=src python scripts/demo_soutenance.py
 
 ---
 
-## 10. Évaluation
+## 11. Évaluation
 
 L’évaluation compare le pipeline LLM + RAG à une référence simple par mots-clés
 sur 284 annonces annotées.
@@ -510,7 +649,7 @@ docker compose up -d --build app
 
 ---
 
-## 11. Tests
+## 12. Tests
 
 ```bash
 docker compose exec app python -m pytest -q
@@ -518,7 +657,7 @@ docker compose exec app python -m pytest -q
 
 Les tests couvrent notamment :
 
-- extraction
+- extraction (sélecteurs, pagination, extracteur Anibis / JSON-LD)
 - validation de schéma
 - garde-fous
 - corpus réglementaire
@@ -531,12 +670,12 @@ Ils utilisent des fixtures locales et ne nécessitent pas le profil `dev`.
 Résultat de référence :
 
 ```text
-147 passed
+169 passed
 ```
 
 ---
 
-## 12. Planification n8n — profil `full`
+## 13. Planification n8n — profil `full`
 
 Démarrer le service :
 
@@ -570,7 +709,7 @@ intervalle régulier.
 
 ---
 
-## 13. Profils Docker Compose
+## 14. Profils Docker Compose
 
 | Service | Profil | Rôle |
 |---|---|---|
@@ -599,7 +738,7 @@ docker compose --profile full --profile dev up -d --build
 
 ---
 
-## 14. Arrêt et réinitialisation
+## 15. Arrêt et réinitialisation
 
 Arrêter les conteneurs sans supprimer les données :
 
@@ -623,6 +762,10 @@ docker compose down -v
 > d’embeddings et les données n8n. Il faudra ensuite recréer les collections et
 > réingérer le corpus. Le dossier hôte `data/` n’est pas supprimé par cette
 > commande.
+>
+> La configuration d’onboarding d’un site (table `extractor_versions`) vit dans
+> `postgres_data` : `down -v` la supprime. Après un tel reset, ré-exécuter
+> l’onboarding (section 8) pour les sites concernés.
 
 Réinitialiser uniquement les résultats d’évaluation :
 
@@ -632,7 +775,7 @@ rm -f data/eval/results.json data/eval/metrics.json
 
 ---
 
-## 15. Résolution des problèmes courants
+## 16. Résolution des problèmes courants
 
 | Symptôme | Cause probable | Action |
 |---|---|---|
@@ -642,6 +785,7 @@ rm -f data/eval/results.json data/eval/metrics.json
 | `Aucun fichier .md dans /app/data/rules` | corpus absent ou montage non appliqué | vérifier `data/rules/`, puis recréer `app` |
 | `FileNotFoundError: /app/data/rules/...` dans pytest | volume `data/` non appliqué | `docker compose up -d --force-recreate app` |
 | `FileNotFoundError: /app/data/eval/listings.json` | ancienne image de `evaluate.py` ou données non provisionnées | reconstruire `app`, puis relancer l’évaluation |
+| collecte à `0` sur un site réel | extracteur non déployé, ou onboarding absent | vérifier l’enregistrement de l’extracteur et la ligne `extractor_versions` (section 8) |
 | `model` KO en local | Ollama arrêté ou modèle absent | démarrer Ollama et vérifier `ollama list` |
 | erreur de connexion Ollama en topologie cloud | configuration non relue | vérifier `topologie: cloud`, puis recréer `app` |
 | `model` KO en cloud | clé absente ou environnement non rechargé | vérifier `LLM_API_KEY`, puis recréer `app` |
@@ -654,7 +798,7 @@ rm -f data/eval/results.json data/eval/metrics.json
 
 ---
 
-## 16. Sécurité et confidentialité
+## 17. Sécurité et confidentialité
 
 - les secrets sont fournis par `.env` et ne sont pas versionnés ;
 - la topologie globale locale conserve les appels des agents non surchargés sur
@@ -662,13 +806,15 @@ rm -f data/eval/results.json data/eval/metrics.json
 - `LLM-BROWSE` est actuellement surchargé vers Anthropic et implique donc un
   transfert lorsqu’il est utilisé ;
 - tout recours au cloud est soumis au garde-fou de consentement prévu ;
+- le périmètre réseau de collecte est borné par une liste d’autorisation dérivée
+  du référentiel des plateformes ;
 - les journaux du Mode B sont persistés dans `data/audit/` ;
 - la console d’administration est protégée par `ADMIN_PASSWORD` ;
 - les actions à autonomie élevée restent bornées et tracées.
 
 ---
 
-## 17. Documentation complémentaire
+## 18. Documentation complémentaire
 
 Architecture et exploitation détaillées :
 
@@ -681,3 +827,5 @@ Workflow n8n d’exemple :
 ```text
 n8n/workflows/README.md
 ```
+
+
