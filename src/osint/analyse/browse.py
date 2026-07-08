@@ -284,7 +284,7 @@ async def run_browse(
         task=build_browse_task(start_url, focus=focus, generated_terms=generated_terms),
         llm=browse_llm,
         browser_session=session,
-        use_vision=False,      # lecture seule, pas de capture
+        use_vision=True,      # lecture seule, pas de capture
         use_thinking=False,    # stabilise le format de sortie (corrige les erreurs Pydantic)
     )
     if Controller is not None and exclude_actions:
