@@ -52,21 +52,35 @@ def complete(
     agent: str | None = None,
     temperature: float = 0.0,
     max_tokens: int = 1024,
+    json_mode: bool = False,
     **extra: Any,
 ) -> str:
     """Envoie une requête au modèle résolu et renvoie le texte de la réponse.
- 
-    Le modèle (et son éventuelle clé/endpoint) est déterminé par la topologie
-    active via `cfg.resolve_model(agent)`. Le préfixe du nom de modèle
-    (`anthropic/`, `openai/`, `ollama/`) indique à LiteLLM où router : le reste
-    du pipeline n'a pas à le savoir.
- 
+
+    Le modèle, son éventuelle clé et son endpoint sont déterminés par la
+    topologie active via `cfg.resolve_model(agent)`. Le préfixe du nom de
+    modèle (`anthropic/`, `openai/`, `ollama/`) indique à LiteLLM où router
+    l'appel : le reste du pipeline n'a pas à gérer le fournisseur.
+
+    Lorsque `json_mode` est activé, les adaptations propres au fournisseur
+    sont appliquées ici. Pour Ollama, le raisonnement est désactivé afin
+    d'éviter qu'il consomme tout le budget de génération avant la réponse
+    finale, et le format JSON natif est demandé.
+
     Note : le franchissement du garde-fou LPD (consentement cloud) est de la
     responsabilité de l'appelant, AVANT d'appeler cette fonction.
     """
     import litellm  # import paresseux : pas requis pour les tests hors-ligne
- 
+
     spec = cfg.resolve_model(agent)
+    provider = spec.model.split("/", 1)[0]
+
+    # Paramètres spécifiques aux sorties JSON avec Ollama.
+    # Aucun changement pour Anthropic, OpenAI ou le serveur central.
+    if json_mode and provider in {"ollama", "ollama_chat"}:
+        extra.setdefault("think", False)
+        extra.setdefault("format", "json")
+
     response = litellm.completion(
         messages=messages,
         temperature=temperature,
@@ -74,5 +88,7 @@ def complete(
         **spec.as_litellm_kwargs(),
         **extra,
     )
+
     return response.choices[0].message.content or ""
+
  

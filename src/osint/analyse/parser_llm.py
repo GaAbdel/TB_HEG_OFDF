@@ -70,7 +70,7 @@ def parse_listing_llm(cfg: "Config", content: str, *, prompt_version: str = "par
         {"role": "system", "content": system_prompt},
         {"role": "user", "content": _strip_html(content)},
     ]
-    raw = complete(cfg, agent="LLM-PARSE", messages=messages, temperature=0.0, max_tokens=500)
+    raw = complete(cfg, agent="LLM-PARSE", messages=messages, temperature=0.0, max_tokens=500,  json_mode=True,)
     rec = parse_output(raw)
     ok, problems = validate_record(rec)
     rec.update(

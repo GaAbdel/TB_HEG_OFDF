@@ -118,7 +118,7 @@ def score_listing(
         {"role": "system", "content": system_prompt},
         {"role": "user", "content": user_content},
     ]
-    raw = complete(cfg, agent="LLM-SCORE", messages=messages, temperature=0.0, max_tokens=400)
+    raw = complete(cfg, agent="LLM-SCORE", messages=messages, temperature=0.0, max_tokens=400, json_mode=True,)
     result = parse_score(raw)
     result.update(
         prompt_version=prompt_version,

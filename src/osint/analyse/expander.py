@@ -56,7 +56,7 @@ def expand_terms(cfg: "Config", seed: str, *, prompt_version: str = "expand_v1")
         {"role": "system", "content": system_prompt},
         {"role": "user", "content": f"Consigne de l'enquêteur : {seed}"},
     ]
-    raw = complete(cfg, agent="LLM-EXPAND", messages=messages, temperature=0.3, max_tokens=300)
+    raw = complete(cfg, agent="LLM-EXPAND", messages=messages,temperature=0.3, max_tokens=300, json_mode=True,)
     return {
         "seed": seed,
         "terms": _parse_terms(raw),
